@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">    
+    <head>        
+        <title>Review offer</title>        
+        <meta charset="utf-8"> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">        
+        <link rel="stylesheet" href="css/bootstrap.min.css">        
+        <link rel="stylesheet" href="css/font-awesome.min.css">        
+        <link rel="stylesheet" href="css/style.css">        
+        <script src="js/jquery.min.js"></script>        
+        <script src="js/bootstrap.min.js"></script>  
+        <script src="js/toastr.js"></script>
+        <link rel="stylesheet" href="css/toastr.css">
+        <script src="js/toastr.js"></script>    
+    </head>    
+    <body  onload="myFunction()" style="margin:0;" > 
+        <!--Loader-->    
+        <div id="loader-bg" class="loader-bg"></div>
+        <div id="loader"></div>
+
+        <section class="back-button-section">            
+            <div class="container">                
+                <div class="row">                    
+                    <div class="col-xs-12">                        
+                        <div class="back-button">                            
+                            <a href="task-details.html"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>                            
+                            Review offers                        
+                        </div>                    
+                    </div>                
+                </div>            
+            </div>        
+        </section>        
+        <div id="null_value">            
+            <section class="main-content margin_b0">                
+                <div class="container-fluid">                    
+                    <div class="row">                        
+                        <div class="col-md-12">                            
+                            <ul class="pagination-list">                                
+                                <li class="col-xs-3 text-left no-padding"><i class="fa fa-angle-left" style="font-size: 22px" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;<span id="prev"></span></li>                                
+                                <li class="col-xs-6 no-padding"><div class=""><span id="offsetvalur"></span> / <span id="totalpost"></span></div></li>                                
+                                <li class="col-xs-3 text-right no-padding"><span id="next"></span> &nbsp;&nbsp;&nbsp;<i class="fa fa-angle-right" style="font-size: 22px" aria-hidden="true"></i></li>                            
+                            </ul>                            
+                            <div class="clearfix"></div>                        
+                        </div>                    
+                    </div>                
+                </div>            
+            </section>            
+            <section class="prof-content">                
+                <div class="bg-opecity">                    
+                    <div class="container-fluid">                        
+                        <div class="row">                            
+                            <div class="col-xs-3">                                
+                                <div class="profile-pic" id="profile_photo"></div>                            
+                            </div>                            
+                            <div class="col-xs-9">                                
+                                <div class="profile-info">                                    
+                                    <h3 id="full_name"></h3>                                    
+                                    <div class="rating" id="avg_rating">  
+                                        <p style="margin: 0">100% Completion rate <a href="#" title="Dismissible popover" data-toggle="popover" data-placement="top" data-trigger="focus" data-content="Click anywhere in the document to close this popover"><i class="fa fa-info-circle" aria-hidden="true"></i></a></p>                                    
+                                    </div>                               
+                                </div>                            
+                            </div>                        
+                        </div>                    
+                    </div>                
+                </div>            
+            </section>            
+            <section class="main-content no-margin">                
+                <div class="container-fluid">                    
+                    <div class="row">                        
+                        <div class="col-md-12">                            
+                            <h3 id="offername"></h3>                            
+                            <h1 class="price-text">$<span id="price"></span></h1>                            
+                            <p id="descriptions"></p>                        
+                        </div>                    
+                    </div>                
+                </div>            
+            </section>            
+            <section class="main-content margin_t0">                
+                <h4 class="reviews-title">reviews</h4>                
+                <div class="container-fluid">                    
+                    <div class="row">                       
+                        <div class="col-xs-12">                            
+                            <div style="width: 80%">                                
+                                <div>                                    
+                                    <div class="pull-left" style="width:33%;">                                        
+                                        <div class="rating text-right" style="font-size: 13px;" id="rating_five">                                            
+                                            <i class="fa fa-star" aria-hidden="true"></i>                                            
+                                            <i class="fa fa-star" aria-hidden="true"></i>                                            
+                                            <i class="fa fa-star" aria-hidden="true"></i>                                            
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                        </div>                                    
+                                    </div>                                    
+                                    <div class="pull-left" style="width:60%;">                                        
+                                        <div class="progress" style="height:9px;">                                            
+                                            <div class="progress-bar progress-bar-defult" role="progressbar" aria-valuenow="5" aria-valuemin="0" aria-valuemax="5" style="width: 1000%">                                                
+                                                <span class="sr-only">80% Complete (danger)</span>                                            
+                                            </div>                                        
+                                        </div>                                    
+                                    </div>                                    
+                                    <div class="" style="margin-left:10px;" id="star-five">1</div>                                    
+                                    <div class="clearfix"></div>                                
+                                </div>                                
+                                <div class="clearfix"></div>                                
+                                <div>                                    
+                                    <div class="pull-left" style="width:33%;">                                        
+                                        <div class="rating text-right" style="font-size: 13px;" id="rating_four">                                            
+                                            <i class="fa fa-star" aria-hidden="true"></i>                                            
+                                            <i class="fa fa-star" aria-hidden="true"></i>                                            
+                                            <i class="fa fa-star" aria-hidden="true"></i>                                            
+                                            <i class="fa fa-star" aria-hidden="true"></i>                                        
+                                        </div>                                    
+                                    </div>                                    
+                                    <div class="pull-left" style="width:60%;">                                        
+                                        <div class="progress" style="height:9px;">                                            
+                                            <div class="progress-bar progress-bar-defult" role="progressbar" aria-valuenow="4" aria-valuemin="0" aria-valuemax="5" style="width: 80%">                                                
+                                                <span class="sr-only">80% Complete (danger)</span>                                            
+                                            </div>                                        
+                                        </div>                                    
+                                    </div>                                    
+                                    <div class="" style="margin-left:10px;" id="star-four">1</div>                                    
+                                    <div class="clearfix"></div>                                
+                                </div>                                
+                                <div class="clearfix"></div>                                
+                                <div>                                    
+                                    <div class="pull-left" style="width:33%;">                                        
+                                        <div class="rating text-right" style="font-size: 13px;color: #ccc" id="rating_three">                                            
+                                            <i class="fa fa-star" aria-hidden="true"></i>                                            
+                                            <i class="fa fa-star" aria-hidden="true"></i>                                            
+                                            <i class="fa fa-star" aria-hidden="true"></i>                                        
+                                        </div>                                    
+                                    </div>                                    
+                                    <div class="pull-left" style="width:60%;">                                        
+                                        <div class="progress" style="height:9px;">                                            
+                                            <div class="progress-bar progress-bar-defult" role="progressbar" aria-valuenow="3" aria-valuemin="0" aria-valuemax="5" style="width: 60%">                                                
+                                                <span class="sr-only">80% Complete (danger)</span>                                            
+                                            </div>                                        
+                                        </div>                                    
+                                    </div>                                    
+                                    <div class="" style="margin-left:10px;" id="star-three">0</div>                                
+                                </div>                                
+                                <div class="clearfix"></div>                                
+                                <div>                                    
+                                    <div class="pull-left" style="width:33%;">                                        
+                                        <div class="rating text-right" style="font-size: 13px;color: #ccc" id="rating_two">                                            
+                                            <i class="fa fa-star" aria-hidden="true"></i>                                            
+                                            <i class="fa fa-star" aria-hidden="true"></i>                                        
+                                        </div>                                    
+                                    </div>                                    
+                                    <div class="pull-left" style="width:60%;">                                        
+                                        <div class="progress" style="height:9px;">                                            
+                                            <div class="progress-bar progress-bar-defult" role="progressbar" aria-valuenow="2" aria-valuemin="0" aria-valuemax="5" style="width: 40%">                                                
+                                                <span class="sr-only">80% Complete (danger)</span>                                            
+                                            </div>                                        
+                                        </div>                                    
+                                    </div>                                    
+                                    <div class="" style="margin-left:10px;" star-two>0</div>                                
+                                </div>                                
+                                <div class="clearfix"></div>                                
+                                <div>                                    
+                                    <div class="pull-left" style="width:33%">                                        
+                                        <div class="rating text-right" style="font-size: 13px;color: #ccc" id="rating_one">                                            
+                                            <i class="fa fa-star" aria-hidden="true"></i>                                        
+                                        </div>                                    
+                                    </div>                                    
+                                    <div class="pull-left" style="width:60%;">                                        
+                                        <div class="progress" style="height:9px;">                                            
+                                            <div class="progress-bar progress-bar-defult" role="progressbar" aria-valuenow="1" aria-valuemin="0" aria-valuemax="5" style="width: 20%">                                                
+                                                <span class="sr-only">80% Complete (danger)</span>                                            
+                                            </div>                                        
+                                        </div>                                    
+                                    </div>                                    
+                                    <div class="" style="margin-left:10px;" id="star-one">0</div>                                
+                                </div>                            
+                            </div>                            
+                            <div class="review-avg">                                
+                                <div class="rating" id="show_avg_rating">                                    
+                                    <i class="fa fa-star" aria-hidden="true"></i>                                    
+                                    <i class="fa fa-star" aria-hidden="true"></i>                                    
+                                    <i class="fa fa-star" aria-hidden="true"></i>                                    
+                                    <i class="fa fa-star" aria-hidden="true"></i>                                    
+                                    <i class="fa fa-star defult-star" aria-hidden="true"></i>                                
+                                </div>                                
+                                <h5>Be the face of our product</h5>                            
+                            </div>                            
+                            <div class="review-about">                                
+                                <h4>ABOUT</h4>                                
+                                <p id="aboutme" class="text-left"></p>                                
+                                <h5 class="member-date"></h5>                           
+                            </div>
+                            <div class="review-verification">                               
+                                <h4>VERIFICATION</h4>                                
+                                <ul>                                    
+                                    <li>Mobile <span><i class="fa fa-phone" aria-hidden="true"></i></span></li>                                    
+                                    <!--                                    <li>Credit Card <span><i class="fa fa-credit-card" aria-hidden="true"></i></span></li>                                    
+                                                                        <li>Facebook <span><i class="fa fa-facebook" aria-hidden="true"></i></span></li>                                -->
+                                </ul>                            
+                            </div>                            
+                            <!--<a href="verification.html" class="btn btn-default more-option margin_b_30">Learn more</a>-->                            
+                            <!--                        <a href="verification.html" class="btn btn-default more-option margin_b_30" data-toggle="modal" data-target="#myModal">Learn more</a>-->                            
+                            <!--<h5 class="text-left"><span style="color: #46c94f">James L.</span> said "Job will done!"</h5>-->                        
+                        </div> 
+                        <div class="private-message">
+                            <button class="awaiting-btn accept-btn text-center" data-toggle="modal"  data-target="#private-message"  >Private Message</button>
+                        </div>
+                    </div>            
+            </section>            
+            <div style="margin-bottom: 100px"></div>            
+            <div class="post-comment" id="accept_offer" style="padding: 15px">
+
+            </div>        
+        </div>        
+        <!-- Modal -->        
+        <div class="modal fade" id="myModal" role="dialog">            
+            <div class="modal-dialog">                
+                <!-- Modal content-->                
+                <div class="modal-content">                    
+                    <div class="modal-body">                        
+                        <section class="main-content">                            
+                            <div class="container-fluid">                                
+                                <div class="row">                                    
+                                    <div class="col-md-12">                                        
+                                        <h3>Verifications </h3>                                        
+                                        <p class="text-left">Verifications help to build trust in our community and also provides more information when deciding who to work with on a task. A green tick shows that the verification is currently active.</p>                                    
+                                    </div>                                
+                                </div>                                
+                                <div class="row">                                    
+                                    <div class="id-varify-title">                                        
+                                        <h3>ID VERIFICATIONS </h3>                                    
+                                    </div>                                    
+                                    <div class="col-xs-12">                                        
+                                        <div class="id-verification">                                            
+                                            <ul>                                                
+                                                <li><img src="images/phone.png" /> Mobile </li>                                                
+                                                <li><img src="images/card.png" /> Bank account </li>                                                
+                                                <li><img src="images/police_check.png" />Police check</li>                                                
+                                                <li><img src="images/pro.png" />Pro badge</li>                                                
+                                                <li><img src="images/commbank.png" /> CommBank</li>                                                 
+                                                <li><img src="images/ikea.png" />IKEA Badge</li>                                            
+                                            </ul>                                        
+                                        </div>                                    
+                                    </div>                                
+                                </div>                                
+                                <div class="row">                                    
+                                    <div class="col-md-12 id-varify-title no-padding">                                        
+                                        <h3>SOCIAL VERIFICATIONS </h3>                                        
+                                        <div class="social-varification">                                            
+                                            <ul>                                                
+                                                <li><a href="" style="color: #1da1f3"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>                                                
+                                                <li><a href="" style="color: #345c99"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>                                                
+                                                <li><a href="" style="color: #0875ad"><i class="fa fa-linkedin" aria-hidden="true"></i></a></li>                                            
+                                            </ul>                                        
+                                        </div>                                        
+                                        <br>                                        
+                                        <button type="button" class="btn btn-default more-option margin_b_30" >OK</button>                                    
+                                    </div>                                
+                                </div>                            
+                            </div>                        
+                        </section>                    
+                    </div>                
+                </div>            
+            </div>        
+        </div>   
+        <!--Model-->
+        <div class="modal fade" id="private-message" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Send Private Message</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form id="semd_message">
+                            <div class="form-group">
+                                <label for="comment">Message:</label>
+                                <textarea class="form-control" rows="5" id="p_message" placeholder="Type here..."></textarea>
+                            </div>
+                            <div class="form-group">
+                                <button type="button" class="awaiting-btn accept-btn text-center" id="snedMessage">Send</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <input type="hidden" name="proposal_users_id" id="proposal_users_id" value="" />
+        <script src="js/custom.js"></script>        
+        <script type="text/javascript">
+        function get_offer() {
+            localStorage.removeItem("task_id");
+            localStorage.removeItem("offset");
+            var urlParams = location.search.split(/[?&]/).slice(1).map(function (paramPair) {
+                return paramPair.split(/=(.+)?/).slice(0, 2);
+            }).reduce(function (obj, pairArray) {
+                obj[pairArray[0]] = pairArray[1];
+                obj[pairArray[1]] = pairArray[3];
+                return obj;
+            }, {});
+            localStorage.setItem('task_id', urlParams.task_id.replace(/%20/g, " "));
+            localStorage.setItem('offset', urlParams.offset.replace(/%20/g, " "));
+            // Add back btn
+            $('.back-button').html('<a href="task-details.html?task_id=' + localStorage.getItem("task_id") + '"><i class="fa fa-arrow-left" aria-hidden="true"></i></a> Review offers');
+            $.ajax({
+                type: "GET",
+                url: localStorage.getItem("url_service") + '/rest-api/server',
+                data: {
+                    cmd: "get_view_offer",
+                    task_id: localStorage.getItem("task_id"),
+                    users_id: localStorage.getItem("users_id"),
+                    offset: localStorage.getItem("offset")},
+                success: function (results) {
+                    Arr = JSON.parse(results);
+                    if (Arr.status == 'success') {
+                        $("#full_name").html(Arr[0].first_name + ' ' + Arr[0].last_name);
+                        image = 'picture/3a.png';
+                        if (Arr[0].file_picture) {
+                            image = Arr[0].file_picture;
+                        }
+
+                        avg_rating = '';
+                        str = '';
+                        for (j = 0; j < Arr.rating; j++) {
+                            str = '<i class="fa fa-star" aria-hidden="true"></i>';
+                            avg_rating = avg_rating.concat(str);
+                        }
+                        if ((5 - Arr.rating) > 0) {
+                            for (j = 0; j < (5 - Arr.rating); j++) {
+                                str = '<i class="fa fa-star" aria-hidden="true" style="color: #ccc;"></i>';
+                                avg_rating = avg_rating.concat(str);
+                            }
+                        }
+
+                        $('#star-five').html(Arr.rating_five);
+                        if (Arr.rating_five > 0) {
+                            $('#rating_five').html('<i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i>');
+                        } else {
+                            $('#rating_five').html('<i class="fa fa-star" aria-hidden="true" style="color: #ccc;" ></i><i class="fa fa-star" aria-hidden="true" style="color: #ccc;" ></i><i class="fa fa-star" aria-hidden="true" style="color: #ccc;" ></i><i class="fa fa-star" aria-hidden="true" style="color: #ccc;" ></i><i class="fa fa-star" aria-hidden="true" style="color: #ccc;" ></i>');
+                        }
+
+                        $('#star-four').html(Arr.rating_four);
+                        if (Arr.rating_four > 0) {
+                            $('#rating_four').html('<i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i>');
+                        } else {
+                            $('#rating_four').html('<i class="fa fa-star" aria-hidden="true" style="color: #ccc;" ></i><i class="fa fa-star" aria-hidden="true" style="color: #ccc;" ></i><i class="fa fa-star" aria-hidden="true" style="color: #ccc;" ></i><i class="fa fa-star" aria-hidden="true" style="color: #ccc;" ></i>');
+                        }
+
+                        $('#star-three').html(Arr.rating_three);
+                        if (Arr.rating_three > 0) {
+                            $('#rating_three').html('<i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i>');
+                        } else {
+                            $('#rating_three').html('<i class="fa fa-star" aria-hidden="true" style="color: #ccc;" ></i><i class="fa fa-star" aria-hidden="true" style="color: #ccc;" ></i><i class="fa fa-star" aria-hidden="true" style="color: #ccc;" ></i>');
+                        }
+
+                        $('#star-two').html(Arr.rating_two);
+                        if (Arr.rating_two > 0) {
+                            $('#rating_two').html('<i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i>');
+                        } else {
+                            $('#rating_two').html('<i class="fa fa-star" aria-hidden="true" style="color: #ccc;" ></i><i class="fa fa-star" aria-hidden="true" style="color: #ccc;" ></i>');
+                        }
+
+                        $('#star-one').html(Arr.rating_one);
+                        if (Arr.rating_one > 0) {
+                            $('#rating_one').html('<i class="fa fa-star" aria-hidden="true"></i>');
+                        } else {
+                            $('#rating_one').html('<i class="fa fa-star" aria-hidden="true" style="color: #ccc;" ></i>');
+                        }
+
+                        $('#show_avg_rating').html(avg_rating);
+                        avg_rating = avg_rating.concat('<span>(' + Arr.total_count + ')</span>');
+                        $('#avg_rating').html(avg_rating);
+
+                        $("#profile_photo").html('<img src="https://www.yuhu.life/' + image + '" alt="" title="">');
+                        $("#price").html(Arr[0].cost);
+                        $("#aboutme").html(Arr[0].about_me);
+                        $("#proposal_users_id").val(Arr[0].proposal_users_id);
+                        $("#offername").html(Arr[0].first_name + "'s offer");
+                        $("#descriptions").html('"' + Arr[0].proposal + '"');
+                        $("#totalpost").html(Arr.total);
+                        $("#offsetvalur").html(localStorage.getItem("offset"));
+                        $(".member-date").html('Member since ' + Arr[0].user_create);
+                        if ((localStorage.getItem("users_id")) == (Arr[0].taskowner_users_id)) {
+                            $("#accept_offer").html('<a class="awaiting-btn accept-btn text-center"  href="accept-offer.html?task_id=' + Arr[0].task_id + '&proposal_users_id=' + Arr[0].proposal_users_id + '" >Accept offer</a>');
+                        } else {
+                            $("#accept_offer").hide();
+                        }
+                        offset = +(localStorage.getItem("offset")) + +1;
+                        offsetless = +(localStorage.getItem("offset")) - +1;
+                        if (Arr.total > localStorage.getItem("offset")) {
+                            $("#next").html('<a href="review-offer.html?task_id=' + Arr[0].task_id + '&offset=' + offset + '" class="next-button" title="Next">Next</a>');
+                        } else {
+                            $("#next").html('<a href="javascript:void(0);" class="next-button" title="Next">Next</a>');
+                        }
+                        if ((localStorage.getItem("offset")) > 1) {
+                            $("#prev").html('<a href="review-offer.html?task_id=' + Arr[0].task_id + '&offset=' + offsetless + '" class="next-button" title="Next">Prev</a>');
+                        } else {
+                            $("#prev").html('<a href="javascript:void(0);" class="next-button" title="Next">Prev</a>');
+                        }
+                        if (Arr.is_book == 'ok') {
+                            $('#accept_offer').html('');
+                        }
+                        if (Arr.hire == 'yes') {
+                            $('#accept_offer').html('<a class="awaiting-btn accept-btn text-center"  href="#" style="background-color: #ccc">Accepted</a>');
+                        }
+
+                    } else {
+                        $("#null_value").html('<h4 class="text-center" style="margin-top: 70px;">No offers have heen submitted yet.</h4>');
+                    }
+                }});
+        }
+        get_offer();
+
+        $('#snedMessage').click(function () {
+            if ($("#p_message").val() == '') {
+                toastr.options.timeOut = 1500;
+                toastr.error('Message field is required.');
+                return false;
+            }
+            $.ajax({
+                type: "POST",
+                url: localStorage.getItem("url_service") + '/rest-api/server',
+                data: {
+                    cmd: "start_private_message",
+                    task_id: localStorage.getItem("task_id"),
+                    users_id: localStorage.getItem("users_id"),
+                    message: $("#p_message").val(),
+                    proposal_users_id: $("#proposal_users_id").val()
+                },
+                success: function (results) {
+                    Arr = JSON.parse(results);
+                    if (Arr.status == 'success') {
+                        toastr.options.onHidden = function () {
+                            window.location.href = Arr.redirect_url;
+                        };
+                        toastr.options.timeOut = 1500;
+                        toastr.success(Arr['msg']);
+                    } else {
+                        toastr.options.timeOut = 1500;
+                        toastr.error(Arr['msg']);
+                    }
+                }
+            });
+        });
+
+        </script>    
+    </body>
+</html>

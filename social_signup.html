@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Sign up</title>
+        <meta charset="utf-8">
+        <meta name="theme-color" content="#033c56" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/font-awesome.min.css">
+        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="css/respnsive.css">
+        <link rel="stylesheet" href="css/toastr.css">
+
+        <script src="js/jquery.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/jquery.mobile-1.4.5.min.js"></script>
+        <script src="js/toastr.js"></script>
+
+    </head>
+    <body onload="myFunction()" style="margin:0;">
+        <!--Loader-->    
+        <div id="loader-bg" class=""></div>
+        <div id="loader" style="display: none"></div>
+
+        <section class="back-button-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="back-button">
+                            <a href="index.html"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
+                            Sign up
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="main-content">
+            <div class="container">    
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="logo">
+                            <img src="images/main-logo.png" style="width: 150px" alt="yuhu"/>
+                        </div>
+                    </div>
+                    <div class="col-xs-12">
+                        <form class="form-horizontal" action="login.html">
+                            <div class="input-form">
+                                <div class="form-group has-success has-feedback">
+                                    <div class="col-sm-12">
+                                        <input type="text" name="first_name" id="first_name" class="form-control" placeholder="First Name" required>
+                                        <span class="form-control-feedback"><i class="fa fa-user" aria-hidden="true"></i></span>
+                                    </div>
+                                </div>
+                                <div class="form-group has-success has-feedback">
+                                    <div class="col-sm-12">
+                                        <input type="text" name="last_name" id="last_name" class="form-control" placeholder="Last Name" required>
+                                        <span class="form-control-feedback"><i class="fa fa-user" aria-hidden="true"></i></span>
+                                    </div>
+                                </div>
+                                <div class="form-group has-success has-feedback">
+                                    <div class="col-sm-12">
+                                        <input type="text" name="location" id="location" class="form-control" placeholder="Address, City, State, Zip" required>
+                                        <span class="form-control-feedback"><i class="fa fa-location-arrow" aria-hidden="true"></i></span>
+
+                                        <input type="hidden" name="latitude" id="latitude"  value="" style="width:250px;" >
+                                        <input type="hidden" name="longitude" id="longitude"  value=""  style="width:250px;" >
+                                        <script type="text/javascript">
+                                            $(document).ready(function () {
+                                                $("#location").blur(function () {
+                                                    codeAddress();
+                                                });
+
+                                                function codeAddress() {
+
+                                                    var address = $("#location").val();
+
+                                                    $.ajax({
+                                                        url: "http://maps.googleapis.com/maps/api/geocode/json?address=" + address + "&sensor=false",
+                                                        type: "POST",
+                                                        success: function (res) {
+                                                            $("#latitude").val(res.results[0].geometry.location.lat);
+                                                            $("#longitude").val(res.results[0].geometry.location.lng);
+                                                        }
+
+                                                    });
+                                                }
+
+                                            });
+                                        </script>
+                                    </div>
+                                </div>
+                                <div class="form-group has-success has-feedback">
+                                    <div class="col-sm-12">
+                                        <input type="text" name="email" id="email" class="form-control" placeholder="Email" required>
+                                        <span class="form-control-feedback"><i class="fa fa-envelope" aria-hidden="true"></i></span>
+                                    </div>
+                                </div>
+                                <div class="form-group has-success has-feedback">
+                                    <div class="col-sm-12">
+                                        <input type="password"  name="password" id="password" class="form-control" placeholder="Password" required>
+                                        <span class="form-control-feedback"><i class="fa fa-unlock-alt" aria-hidden="true"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <input type="hidden" id="access_key" name="access_key" value="" />
+                            <div class="text-center">
+                                <button type="button" id="activate-step-2" class="btn submit-btn"   onclick="register();">Sign up</button>
+                            </div>
+                        </form>
+
+                        <div class="have-an-account">
+                            <p>Already have an account? <a style="font-weight: 400; font-size: 17px" href="login.html">Log in</a></p>
+                        </div>
+                        <div class="center super-small">By clicking on "Sign up" you confirm that you accept the <a href="javascript:void();" style="font-weight: 400"  onClick="terms_condition();" >Terms & Conditions</a> and <a href="javascript:void();" style="font-weight: 400" onClick="terms_condition();">Privacy Policy</a>.</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Modal -->
+        <div id="myModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Terms & conditions</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p id="modal_content"></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script language="javascript">
+            $(document).ready(function () {
+                // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
+                //$('.modal').modal();
+            });
+
+        </script>
+
+        <script language="JavaScript">
+            var getUrlParameter = function getUrlParameter(sParam) {
+                var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+                        sURLVariables = sPageURL.split('&'),
+                        sParameterName,
+                        i;
+
+                for (i = 0; i < sURLVariables.length; i++) {
+                    sParameterName = sURLVariables[i].split('=');
+
+                    if (sParameterName[0] === sParam) {
+                        return sParameterName[1] === undefined ? true : sParameterName[1];
+                    }
+                }
+            };
+
+            localStorage.setItem('id', getUrlParameter('id'));
+            localStorage.setItem('email', getUrlParameter('email'));
+            localStorage.setItem('first_name', getUrlParameter('first_name'));
+            localStorage.setItem('last_name', getUrlParameter('last_name'));
+            if (getUrlParameter('location')) {
+                localStorage.setItem('location', getUrlParameter('location'));
+            }
+            if (getUrlParameter('birthday')) {
+                localStorage.setItem('birthday', getUrlParameter('birthday'));
+            }
+            localStorage.setItem('picture', getUrlParameter('picture'));
+            //set value
+            $('#email').val(localStorage.getItem("email"));
+            $('#first_name').val(localStorage.getItem("first_name"));
+            $('#last_name').val(localStorage.getItem("last_name"));
+            $('#access_key').val(localStorage.getItem("id"));
+            $('#location').val(localStorage.getItem("location"));
+
+            function register()
+            {
+                if ($("#location").val() === "")
+                {
+                    toastr.options.timeOut = 1500;
+                    toastr.error("Location is required fields");
+                    return 0;
+                }
+
+                if ($("#password").val() === "")
+                {
+                    toastr.options.timeOut = 1500;
+                    toastr.error("Password is required fields");
+                    return 0;
+                }
+                document.getElementById("loader").style.display = "block";
+                $("#loader-bg").addClass("loader-bg");
+                $.ajax({
+                    type: "POST",
+                    url: localStorage.getItem("url_service") + '/rest-api/server',
+                    data: {
+                        cmd: "social_register",
+                        first_name: $("#first_name").val(),
+                        last_name: $("#last_name").val(),
+                        email: $.trim($("#email").val()),
+                        password: $("#password").val(),
+                        location: $("#location").val(),
+                        latitude: $("#latitude").val(),
+                        longitude: $("#longitude").val(),
+                        access_key: $("#access_key").val(),
+                        birthday: localStorage.getItem("birthday"),
+                        picture: localStorage.getItem("picture"),
+                        social_link_name: getUrlParameter('social_link_name'),
+                        status: 'active'
+                    },
+                    success: function (data) {
+                        Arr = JSON.parse(data);
+                        if (Arr['status'] === "success")
+                        {
+
+                            localStorage.setItem("users_id", Arr['users_id']);
+                            localStorage.setItem("email", Arr['email']);
+                            localStorage.setItem("password", Arr['password']);
+                            localStorage.setItem("user_type", Arr['user_type']);
+                            localStorage.setItem("first_name", Arr['first_name']);
+                            localStorage.setItem("last_name", Arr['last_name']);
+
+                            localStorage.setItem("location", Arr['location']);
+                            localStorage.setItem("latitude", Arr['latitude']);
+                            localStorage.setItem("longitude", Arr['longitude']);
+
+                            localStorage.setItem("file_picture", Arr['file_picture']);
+                            localStorage.setItem("session_id", Arr['session_id']);
+
+
+                            toastr.options.onHidden = function () {
+                                $("#loader-bg").removeClass("loader-bg");
+                                document.getElementById("loader").style.display = "none";
+                                window.location.href = "task-post.html?parent_id=0";
+                            };
+
+                            toastr.options.timeOut = 1500;
+                            toastr.success(Arr['msg']);
+                        } else
+                        {
+                            toastr.options.timeOut = 1500;
+                            toastr.error(Arr['msg']);
+                        }
+
+                    }
+                });
+            }
+
+
+            function terms_condition()
+            {
+                $('.modal').modal();
+
+                $.ajax({
+                    type: "GET",
+                    url: localStorage.getItem("url_service") + '/rest-api/server',
+                    data: {
+                        cmd: "terms_condition"
+                    },
+                    success: function (results) {
+                        //append the html to the modal
+                        $('#modal_content').html(results);
+                        //init the tabs
+                        //open the modal
+                        $('#modal1').modal('open');
+                    }
+                });
+
+            }
+
+        </script>
+    </body>
+</html>

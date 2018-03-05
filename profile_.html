@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="theme-color" content="#033c56" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/component.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/toastr.css">
+    <link rel="stylesheet" href="css/respnsive.css">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery.mobile-1.4.5.min.js"></script>
+    <script src="js/toastr.js"></script>
+    <script src="js/custom.js"></script>
+</head>
+
+<body onload="myFunction()" style="margin:0;">
+    <!--Loader-->
+    <div id="loader-bg" class="loader-bg"></div>
+    <div id="loader"></div>
+    <section class="back-button-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="back-button"> <a href="more-option.html"><i class="fa fa-arrow-left" aria-hidden="true"></i></a> Profile </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="profile-top text-center ">
+        <div class="bg-color bg-opecity">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="image-pro">
+                            <div id="profile_pic"> </div>
+                            <div class="camera">
+                                <div class="box">
+                                    <input type="file" name="file-5[]" id="file-5" class="inputfile inputfile-4" data-multiple-caption="{count} files selected" multiple />
+                                    <label for="file-5"></label>
+                                </div>
+                            </div>
+                            <h4 id="fullname"></h4>
+                            <p>Last online Now
+                                <br><i class="fa fa-map-marker" aria-hidden="true"></i> <span id="location"></span></p>
+                        </div> <a id="activate-step-2" class="btn submit-btn" style="padding: 5px 0 8px; margin-bottom: 15px;">Request a quote</a>
+                        <p class="report-member"><small><i class="fa fa-flag" aria-hidden="true"></i> Report this member</small></p>
+                        <div class="camera" style="right: 15px; top: 0"> <i class="fa fa-camera" aria-hidden="true"></i> </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="margin_b_30"></div>
+    <section class="profile-bottom">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="form-group text-center">
+                        <div class="btn-group" id="status" data-toggle="buttons" style="margin-top: 5px;">
+                            <label class="btn btn-default btn-on btn-sm" id="worker_btn" style="width: 130px; font-size: 14px;">
+                                <input value="worker" name="" id="worker" type="radio">As a Worker</label>
+                            <label class="btn btn-default btn-off btn-sm " id="employer_btn" style="width: 130px; font-size: 14px;">
+                                <input value="employer" name="" id="employer" type="radio">As a Poster</label>
+                        </div>
+                    </div>
+                    <p class="text-size-info text-center">Looks like you haven't received any reviewas just yet.</p>
+                    <h5 class="text-title">verifications</h5> <a href="verification.html" class="btn btn-default more-option margin_b_30">Learn more</a>
+                    <div class="review-avg text-center">
+                        <div class="rating"> <i class="fa fa-star" aria-hidden="true"></i> <i class="fa fa-star" aria-hidden="true"></i> <i class="fa fa-star" aria-hidden="true"></i> <i class="fa fa-star" aria-hidden="true"></i> <i class="fa fa-star defult-star" aria-hidden="true"></i> <span><small>24 reviews</small></span> </div>
+                        <p class="text-size-info">97% Completion Rate <a href="#" title="" data-toggle="popover" data-placement="top" data-trigger="focus" data-content="Click anywhere in the document to close this popover" data-original-title="Dismissible popover"><i class="fa fa-info-circle" aria-hidden="true"></i></a> </p>
+                        <h5 class="text-title">about</h5>
+                        <p class="text-size-info text-left" id="about_me">We have 10 years cleaning experience and we are a professional cleaning service business. We specialize in domestic and commercial cleaning.we can offer you quality cleaning service</p>
+                        <h5 class="text-title">Languages</h5>
+                        <div class="tag-selector static language_chip">
+                            <!--<div class="tag-item">                                    <span class="text" id="language"></span>                                </div>--></div>
+                        <h5 class="text-title">skills</h5>
+                        <div class="tag-selector static education_chip">
+                            <!--<div class="tag-item">                                    <span class="text" id="education"></span>                                </div>--></div>
+                        <h5 class="text-title">Works</h5>
+                        <div class="tag-selector static work_chip">
+                            <!--<div class="tag-item">                                    <span class="text" id="work"></span>                                </div>--></div>
+                        <h5 class="text-title">Specialities</h5>
+                        <div class="tag-selector static specialities_chip">
+                            <!--<div class="tag-item">                                    <span class="text" id="specialities"></span>                                </div>--></div>
+                        <div class="margin_b_30"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script>
+        $("#activate-step-2").click(function() {
+            update();
+        });
+
+        function profile() {
+            $.ajax({
+                headers: {
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Methods": "GET, POST, PUT",
+                    "Access-Control-Allow-Headers": "Content-Type",
+                },
+                type: "GET",
+                url: localStorage.getItem("url_service") + '/rest-api/server',
+                data: {
+                    "cmd": "profile",
+                    "users_id": localStorage.getItem("users_id")
+                },
+                success: function(data) {
+                    Arr = JSON.parse(data);
+                    $("#fullname").html(Arr[0].first_name + ' ' + Arr[0].last_name);
+                    if ((Arr[0].user_type) === 'employer') {
+                        $("#employer_btn").addClass('active');
+                    }
+                    if ((Arr[0].user_type) === 'worker') {
+                        $("#worker_btn").addClass('active');
+                    }
+                    $("#location").html(Arr[0].location);
+                    $("#tagline").val(Arr[0].tagline);
+                    $("#about_me").html(Arr[0].about_me);
+                    $("#email").val(Arr[0].email);
+                    $("#dob").val(Arr[0].dob);
+                    $("#ssn").val(Arr[0].ssn);
+                    $("#latitude").val(Arr[0].latitude);
+                    $("#longitude").val(Arr[0].longitude);
+                    $("#transportation").val(Arr[0].transportation);
+                    if (Arr[0].language.length > 0) {
+                        str = "";
+                        arrChip = Arr[0].language.split(",");
+                        for (i = 0; i < arrChip.length; i++) {
+                            str = str + '<div class="tag-item">' + '<span class="text" id="language">' + arrChip[i] + '</span>' + '</div>';
+                        }
+                        $(".language_chip").html(str);
+                    }
+                    if (Arr[0].education.length > 0) {
+                        str = "";
+                        arrChip2 = Arr[0].education.split(",");
+                        for (i = 0; i < arrChip2.length; i++) {
+                            str = str + '<div class="tag-item">' + '<span class="text" id="education">' + arrChip2[i] + '</span>' + '</div>';
+                        }
+                        $(".education_chip").html(str);
+                    }
+                    if (Arr[0].work.length > 0) {
+                        str = "";
+                        arrChip3 = Arr[0].work.split(",");
+                        for (i = 0; i < arrChip3.length; i++) {
+                            str = str + '<div class="tag-item">' + '<span class="text" id="work">' + arrChip3[i] + '</span>' + '</div>';
+                        }
+                        $(".work_chip").html(str);
+                    }
+                    if (Arr[0].specialities.length > 0) {
+                        str = "";
+                        arrChip4 = Arr[0].specialities.split(",");
+                        for (i = 0; i < arrChip4.length; i++) {
+                            str = str + '<div class="tag-item">' + '<span class="text" id="specialities">' + arrChip4[i] + '</span>' + '</div>';
+                        }
+                        $(".specialities_chip").html(str);
+                    }
+                    image = '3a.png';
+                    if (Arr[0].photo) {
+                        image = Arr[0].photo;
+                    }
+                    $("#profile_pic").html('<img src="images/' + image + '" />');
+                }
+            });
+        }
+        profile();
+
+        function change_worker() {
+            $.ajax({
+                headers: {
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Methods": "GET, POST, PUT",
+                    "Access-Control-Allow-Headers": "Content-Type",
+                },
+                type: "POST",
+                url: localStorage.getItem("url_service") + '/rest-api/server',
+                data: {
+                    cmd: "user_type_update",
+                    user_type: $("#worker").val(),
+                    users_id: localStorage.getItem("users_id")
+                },
+                success: function(results) {
+                    Arr = JSON.parse(results);
+                    if (Arr['status'] === "success") {
+                        toastr.options.timeOut = 1500;
+                        toastr.success(Arr['msg']);
+                    }
+                },
+                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                    toastr.options.timeOut = 1500;
+                    toastr.error("some error");
+                }
+            });
+        }
+
+        function change_employer() {
+            $.ajax({
+                headers: {
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Methods": "GET, POST, PUT",
+                    "Access-Control-Allow-Headers": "Content-Type",
+                },
+                type: "POST",
+                url: localStorage.getItem("url_service") + '/rest-api/server',
+                data: {
+                    cmd: "user_type_update",
+                    user_type: $("#employer").val(),
+                    users_id: localStorage.getItem("users_id")
+                },
+                success: function(results) {
+                    Arr = JSON.parse(results);
+                    if (Arr['status'] === "success") {
+                        toastr.options.timeOut = 1500;
+                        toastr.success(Arr['msg']);
+                    }
+                },
+                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                    toastr.options.timeOut = 1500;
+                    toastr.error("some error");
+                }
+            });
+        }
+        $('#worker_btn').click(function() {
+            change_worker();
+        });
+        $('#employer_btn').click(function() {
+            change_employer();
+        });
+    </script>
+</body>
+
+</html>

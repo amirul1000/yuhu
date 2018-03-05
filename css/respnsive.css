@@ -1,0 +1,55 @@
+
+@media only screen and (min-width:481px) and (max-width:729px) {
+    .task-area {
+        height: 120px;
+        padding: 30px 0;
+        width: 120px;
+    }
+    .task-area img {
+        max-height: 65px;
+    }
+    .task a{
+        margin-bottom: 35px;
+    }
+}
+
+@media only screen and (max-width:480px) {
+    .task-area {
+        height: 86px;
+        padding: 20px 0;
+        width: 86px;
+    }
+    .task-area img {
+        max-height: 45px;
+    }
+    .task a{
+        margin-bottom: 30px;
+    }
+    .task a p{
+        font-size: 16px;
+    }
+}
+
+@media only screen and (max-width:360px) {
+    .task-area {
+        height: 80px;
+        padding: 20px 0;
+        width: 80px;
+    }
+    .task-area i {
+        font-size: 24px;
+    }
+    .task-area p {
+        font-size: 14px;
+    }
+    .task-area img {
+        max-height: 40px;
+    }
+    .task a{
+        margin-bottom: 10px;
+    }
+    .task a p{
+        font-size: 14px;
+    }
+
+}

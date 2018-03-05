@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">    
+    <head>      
+        <title>Notification</title> 
+        <meta charset="utf-8">    
+        <meta name="viewport" content="width=device-width, initial-scale=1">   
+        <link rel="stylesheet" href="css/bootstrap.min.css">    
+        <link rel="stylesheet" href="css/font-awesome.min.css">  
+        <link rel="stylesheet" href="css/style.css">     
+        <script src="js/jquery.min.js"></script>   
+        <script src="js/bootstrap.min.js"></script>  
+        <script src="js/toastr.js"></script>     
+        <link rel="stylesheet" href="css/toastr.css">    
+        <script src="js/custom.js"></script>  
+    </head>  
+    <body  onload="myFunction()" style="margin:0;">     
+        <!--Loader-->       
+        <div id="loader-bg" class="loader-bg"></div>     
+        <div id="loader"></div>                
+        <section class="back-button-section">        
+            <div class="container">             
+                <div class="row">              
+                    <div class="col-xs-12">        
+                        <div class="back-button">         
+                            <a href="more-option.html"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>      
+                            Notifications           
+                        </div>               
+                    </div>         
+                </div>       
+            </div>     
+        </section>     
+        <section class="main-content">     
+            <div class="container-fluid">        
+                <div class="row" id="notifications">             
+
+                </div>         
+            </div>     
+        </section>  
+        <script>
+            $.ajax({
+                type: "POST",
+                url: localStorage.getItem("url_service") + '/rest-api/server',
+                data: {
+                    cmd: "get_notifications",
+                    session_id: localStorage.getItem("session_id"),
+                    users_id: localStorage.getItem("users_id")},
+                success: function (results) {
+                    Arr = JSON.parse(results);
+
+                    str_notification = '';
+                    image = 'picture/3a.png';
+                    for (i = 0; i < Arr.length; i++) {
+                        if (Arr[i].file_picture) {
+                            image = Arr[i].file_picture;
+                        }
+                        if (Arr[i].type == 'offer') {
+                            text = 'has made an offer on ';
+                            icon = '<i class="fa fa-gavel" aria-hidden="true"></i>';
+                        } else if (Arr[i].type == 'comment') {
+                            text = 'commented on  ';
+                            icon = '<i class="fa fa-comment" aria-hidden="true" style="background-color: #00ccff;"></i>';
+                        }
+                        strs = '<div class="col-md-12 notification">' +
+                                '<div class="profile-photo">' +
+                                '<img src="https://www.yuhu.life/' + image + '" alt="" title="">' +
+                                '</div>' +
+                                '<div class="notification-text">' +
+                                '<div class="notification-title">' +
+                                '<p><strong>' + Arr[i].first_name + ' ' + Arr[i].last_name + '</strong> ' + text +
+                                '<strong> ' + Arr[i].task_title + '</strong></p>' +
+                                '</div>  ' +
+                                '<div class="offer-comment">' +
+                                '<div class="offer-icon">' +
+                                '<a href="make-offer.html?task_id=' + Arr[i].task_id + '">' + icon + '</i></a>' +
+                                '</div>' +
+                                '<div class="notification-time">' +
+                                '<p>' + Arr[i].created + '</p>' +
+                                '</div>' +
+                                '</div>' +
+                                '</div>' +
+                                '</div>';
+                        str_notification = str_notification.concat(strs);
+                    }
+                    $("#notifications").html(str_notification);
+
+
+                }});
+        </script>
+    </body>
+</html>

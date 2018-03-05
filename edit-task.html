@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Edit Task</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/font-awesome.min.css">
+        <link rel="stylesheet" href="css/jquery.mobile-1.4.5.min.css">
+
+        <link href="css/mobiscroll.jquery.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="css/respnsive.css">
+        <link rel="stylesheet" href="css/toastr.css">
+
+        <script src="js/jquery.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/jquery.mobile-1.4.5.min.js"></script>
+        <script src="js/mobiscroll.custom-3.2.5.min.js"></script>
+        <script src="js/toastr.js"></script>
+        <script src="js/step-form.js"></script>
+        <script src="js/custom.js"></script>
+
+        <style>
+            .second-hide {
+                display: block;
+            }
+        </style>
+
+        <script type="text/javascript">
+            //image upload
+            document.querySelector("html").classList.add('js');
+
+            var fileInput = document.querySelector(".input-file"),
+                    button = document.querySelector(".input-file-trigger"),
+                    the_return = document.querySelector(".file-return");
+
+            button.addEventListener("keydown", function (event) {
+                if (event.keyCode == 13 || event.keyCode == 32) {
+                    fileInput.focus();
+                }
+            });
+            button.addEventListener("click", function (event) {
+                fileInput.focus();
+                return false;
+            });
+            fileInput.addEventListener("change", function (event) {
+                the_return.innerHTML = this.value;
+            });
+
+            $(document).ready(function () {
+                var urlParams = location.search.split(/[?&]/).slice(1).map(function (paramPair) {
+                    return paramPair.split(/=(.+)?/).slice(0, 2);
+                }).reduce(function (obj, pairArray) {
+                    obj[pairArray[0]] = pairArray[1];
+                    return obj;
+                }, {});
+                localStorage.setItem('task_id', urlParams.task_id.replace(/%20/g, " "));
+            });
+        </script>	
+
+    </head>
+
+
+
+    <body>
+        <section class="back-button-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="back-button" id="back-button">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="task task-create" style="padding-top: 60px">
+            <div class="container hide" >
+                <div class="row form-group">
+                    <div class="col-xs-12">
+                        <ul class="nav nav-justified setup-panel">
+                            <li class="active">
+                                <span></span>
+                                <a href="#step-1" id="step-11">Details</a>
+                            </li>
+                            <li class="disabled">
+                                <span></span>
+                                <a href="#step-2" id="step-12">due date</a>
+                            </li>
+                            <li class="disabled">
+                                <span></span>
+                                <a href="#step-3" id="step-13">Budget</a>
+                            </li>
+                            <li class="disabled">
+                                <span></span>
+                                <a href="#step-4" id="step-14">Budget</a>
+                            </li>
+                            <li class="disabled">
+                                <span></span>
+                                <a href="#step-5" id="step-15">Budget</a>
+                            </li>
+                            <li class="disabled">
+                                <span></span>
+                                <a href="#step-6" id="step-16">Budget</a>
+                            </li>
+                            <li class="disabled">
+                                <span></span>
+                                <a href="#step-7" id="step-17">Budget</a>
+                            </li>
+                            <li class="disabled">
+                                <span></span>
+                                <a href="#step-8" id="step-18">Budget</a>
+                            </li>
+                            <li class="disabled">
+                                <span></span>
+                                <a href="#step-9" id="step-19">Budget</a>
+                            </li>
+                            <li class="disabled">
+                                <span></span>
+                                <a href="#step-10" id="step-20">Budget</a>
+                            </li>
+                            <li class="disabled">
+                                <span></span>
+                                <a href="#step-11" id="step-21">Budget</a>
+                            </li>
+
+                        </ul>
+                    </div>
+                </div>
+            </div>	
+
+            <form class="container text-left">
+                <div class="row setup-content" id="step-1">
+                    <div class="col-xs-12">
+                        <div class="form-group">
+                            <h3 class="label-area">Task Title </h3>
+                            <label class="form-label" for="taks"><span class="pull-right text-limit"><span style="color: #839094; font-size: 13px; padding-right: 5px;">Maximum 40 characters</span> <span id="taskcharacters">0</span>/40</span></label>
+                            <input type="text" class="form-control input-lg" name="task_title" id="task_title" maxlength="40" />
+                            <script language="javascript">
+                                $(document).ready(function () {
+                                    $('#taskcharacters').html($('#task_title').val().length);
+                                    $('#task_title').keyup(function () {
+                                        var cs = $(this).val().length;
+                                        $('#taskcharacters').html(cs);
+                                    });
+                                });
+                            </script>
+                            <div class="exm-area">
+                                <h4>For Example...</h4>
+                                <p>Replace My Roof</p>
+                                <p>Clean My House</p>
+                                <p>Tutor My Son In Math</p>
+                                <p>Take Care Of My Dog</p>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-xs-12 margin-top-50">
+                        <div class="form-group text-center post-btn">
+                            <button type="button" id="activate-step-2" class="btn submit-btn pull-right" style="width: 35%; font-weight: 500">Next</button>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row setup-content" id="step-2">
+                    <div class="col-xs-12">
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100" style="width:10%">
+                                10%
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="col-xs-12">
+                        <div class="form-group">
+                            <h3 class="label-area">Task description </h3>
+                            <label class="form-label" for="taks"><span class="pull-right text-limit"><span style="color: #839094; font-size: 13px; padding-right: 5px;">Minimum 25 characters</span> <span id="descriptioncharacters">0</span>/25+</span></label>
+                            <textarea class="form-control" rows="6"  name="description" id="description" ></textarea>
+                            <script language="javascript">
+                                $(document).ready(function () {
+                                    $('#descriptioncharacters').html($('#description').val().length);
+                                    $('#description').keyup(function () {
+                                        var cs = $(this).val().length;
+                                        $('#descriptioncharacters').html(cs);
+                                    });
+                                });
+
+                                //input field multiple line placeholder text
+                                var textAreas = document.getElementsByTagName('textarea');
+                                Array.prototype.forEach.call(textAreas, function (elem) {
+                                    elem.placeholder = elem.placeholder.replace(/\\n/g, '\n');
+                                });
+                            </script>
+                            <div class="exm-area">
+                                <h4>What are your expectations?</h4>
+                                <p style="margin-bottom: 12px">For Example...</p>
+                                <p>I need someone to visit my house twice daily for 7 days to feed and walk my golden retriever.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 margin-top-50">
+                        <div class="form-group text-center post-btn">
+                            <ul class="nav nav-justified setup-panel pull-left" style="width: 35%; display: inline-block">
+                                <li class="" style="width: 100%">
+                                    <a href="#step-1" class="btn btn-default more-option back-btn">Back</a>
+                                </li>
+                            </ul>
+                            <button type="button" id="activate-step-3" class="btn submit-btn pull-right" style="width: 35%; font-weight: 500">Next</button>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row setup-content" id="step-3">
+                    <div class="col-xs-12">
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width:20%">
+                                20%
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="col-md-12">
+                        <link href="Simple-Ajax-Uploader-master/assets/css/styles.css" rel="stylesheet">
+                        <div class="form-group" style="margin-bottom: 0">
+                            <h3 class="label-area">Better Describe Task with pictures or video</h3>
+                            <h5 class="not-rq">(not required)</h5>
+                            <div class="input-file-container">  
+                                <input class="input-file inputfile" id="uploadBtn1" type="file" >
+                                <label tabindex="0" for="uploadBtn1" class="input-file-trigger"><i class="fa fa-picture-o" aria-hidden="true"></i> Take/Upload a Picture</label>
+                            </div>
+                            <p class="t-up">Supported files png, jpg, jpeg</p>
+                            <div id="msgBox1"></div>
+                            <div class="row" style="padding-top:10px;">
+                                <div class="col-xs-10">
+                                    <div id="progressOuter1" class="progress progress-striped active" style="display:none;">
+                                        <div id="progressBar1" class="progress-bar progress-bar-success"  role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!--</div>-->
+                            <script src="Simple-Ajax-Uploader-master/SimpleAjaxUploader.js"></script>
+                            <script>
+                                function escapeTags(str) {
+                                    return String(str)
+                                            .replace(/&/g, '&amp;')
+                                            .replace(/"/g, '&quot;')
+                                            .replace(/'/g, '&#39;')
+                                            .replace(/</g, '&lt;')
+                                            .replace(/>/g, '&gt;');
+                                }
+
+                                $(document).ready(function () {
+
+                                    var btn = document.getElementById('uploadBtn1'),
+                                            progressBar = document.getElementById('progressBar1'),
+                                            progressOuter = document.getElementById('progressOuter1'),
+                                            msgBox = document.getElementById('msgBox1');
+
+                                    var uploader = new ss.SimpleUpload({
+                                        button: btn,
+                                        url: localStorage.getItem("url_service") + '/rest-api/file_upload?session_id=' + localStorage.getItem("session_id"),
+                                        sessionProgressUrl: 'Simple-Ajax-Uploader-master/code/sessionProgress.php',
+                                        name: 'task_picture',
+                                        multipart: true,
+                                        hoverClass: 'hover',
+                                        focusClass: 'focus',
+                                        responseType: 'json',
+                                        allowedExtensions: ['jpg', 'jpeg', 'png'],
+                                        maxSize: 8224,
+                                        startXHR: function () {
+                                            progressOuter.style.display = 'block'; // make progress bar visible
+                                            this.setProgressBar(progressBar);
+                                        },
+                                        onSubmit: function () {
+                                            msgBox.innerHTML = ''; // empty the message box
+                                            btn.innerHTML = 'Uploading...'; // change button text to "Uploading..."
+                                        },
+                                        onComplete: function (filename, response) {
+                                            //btn.innerHTML = 'Choose Another File';
+                                            btn.innerHTML = 'Choose File';
+                                            progressOuter.style.display = 'none'; // hide progress bar when upload is completed
+
+
+                                            if (!response) {
+                                                msgBox.innerHTML = 'Unable to upload Supported files pdf, png, jpg, jpeg';
+                                                return;
+                                            }
+
+                                            if (response.success === true) {
+                                                msgBox.innerHTML = '<strong>' + escapeTags(filename) + '</strong>';
+                                                var msg = 'successfully uploaded...';
+                                                toastr.options.timeOut = 1500;
+                                                toastr.success(msg);
+
+                                            } else {
+                                                if (response.msg) {
+                                                    profile();
+                                                    msgBox.innerHTML = escapeTags(response.msg);
+
+                                                } else {
+                                                    msgBox.innerHTML = 'An error occurred and the upload failed.';
+                                                }
+                                            }
+                                        },
+                                        error: function (error) {
+                                            progressOuter.style.display = 'none';
+                                            alert('Unable to upload Supported files pdf, png, jpg, jpeg');
+                                            msgBox.innerHTML = 'Unable to upload Supported files pdf, png, jpg, jpeg';
+                                        }
+                                    });
+                                });
+                            </script>
+
+                        </div>
+                        <!--Video-->
+                        <div class="form-group">
+                            <link href="Simple-Ajax-Uploader-master/assets/css/styles.css" rel="stylesheet">
+                            <div class="input-file-container">  
+                                <input class="input-file inputfile" id="uploadBtn2" type="file" >
+                                <label tabindex="0" for="uploadBtn2" class="input-file-trigger"><i class="fa fa-video-camera" aria-hidden="true"></i> Take/Upload a Video</label>
+                            </div>
+                            <p class="t-up">Supported files mp4, mov, gif, ogg</p>
+
+                            <div class="row" style="padding-top:10px;">
+                                <div class="col-xs-10">
+                                    <div id="progressOuter2" class="progress progress-striped active" style="display:none;">
+                                        <div id="progressBar2" class="progress-bar progress-bar-success"  role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" style="padding-top:10px;">
+                                <div class="col-xs-10">
+                                    <div id="msgBox2">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <script src="Simple-Ajax-Uploader-master/SimpleAjaxUploader.js"></script>
+                            <script>
+                                function escapeTags(str) {
+                                    return String(str)
+                                            .replace(/&/g, '&amp;')
+                                            .replace(/"/g, '&quot;')
+                                            .replace(/'/g, '&#39;')
+                                            .replace(/</g, '&lt;')
+                                            .replace(/>/g, '&gt;');
+                                }
+
+                                $(document).ready(function () {
+
+                                    var btn = document.getElementById('uploadBtn2'),
+                                            progressBar = document.getElementById('progressBar2'),
+                                            progressOuter = document.getElementById('progressOuter2'),
+                                            msgBox = document.getElementById('msgBox2');
+
+                                    var uploader = new ss.SimpleUpload({
+                                        button: btn,
+                                        url: localStorage.getItem("url_service") + '/rest-api/file_upload?session_id=' + localStorage.getItem("session_id"),
+                                        sessionProgressUrl: 'Simple-Ajax-Uploader-master/code/sessionProgress.php',
+                                        name: 'task_video',
+                                        multipart: true,
+                                        hoverClass: 'hover',
+                                        focusClass: 'focus',
+                                        responseType: 'json',
+                                        allowedExtensions: ['mp4', 'mov', 'gif', 'ogg'],
+                                        startXHR: function () {
+                                            progressOuter.style.display = 'block'; // make progress bar visible
+                                            this.setProgressBar(progressBar);
+                                        },
+                                        onSubmit: function () {
+                                            msgBox.innerHTML = ''; // empty the message box
+                                            btn.innerHTML = 'Uploading...'; // change button text to "Uploading..."
+                                        },
+                                        onComplete: function (filename, response) {
+                                            //btn.innerHTML = 'Choose Another File';
+                                            btn.innerHTML = 'Choose File';
+                                            progressOuter.style.display = 'none'; // hide progress bar when upload is completed
+
+                                            if (!response) {
+                                                msgBox.innerHTML = 'Unable to upload Supported video mp4, mov, gif, ogg';
+                                                return;
+                                            }
+
+                                            if (response.success === true) {
+                                                msgBox.innerHTML = '<strong>' + escapeTags(filename) + '</strong>' + ' successfully uploaded.';
+
+                                            } else {
+                                                if (response.msg) {
+                                                    profile();
+                                                    msgBox.innerHTML = escapeTags(response.msg);
+
+                                                } else {
+                                                    msgBox.innerHTML = 'An error occurred and the upload failed.';
+                                                }
+                                            }
+                                        },
+                                        onError: function () {
+                                            progressOuter.style.display = 'none';
+                                            msgBox.innerHTML = 'Unable to upload Supported video mp4, mov, gif, ogg';
+                                        }
+                                    });
+                                });
+                            </script>
+
+                        </div>
+                    </div>
+                    <div class="col-xs-12 margin-top-50">
+                        <div class="form-group text-center post-btn">
+                            <ul class="nav nav-justified setup-panel pull-left" style="width: 35%; display: inline-block">
+                                <li class="" style="width: 100%">
+                                    <a href="#step-2" class="btn btn-default more-option back-btn">Back</a>
+                                </li>
+                            </ul>
+                            <button type="button" id="activate-step-4" class="btn submit-btn pull-right" style="width: 35%; font-weight: 500">Next</button>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row setup-content" id="step-4">
+                    <div class="col-xs-12">
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" style="width:30%">
+                                30%
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="col-md-12">
+                        <h3 class="label-area">Location Of Task</h3>
+                        <h5 class="not-rq no-margin">Can This Task be Completed Online?</h5>
+                        <div class="exm-area" style="margin: 15px 0">
+                            <p>Examples of online taskes:</p>
+                            <p>Design a logo</p>
+                            <p>Design a website</p>
+                            <p>Accounting work</p>
+                            <p>Expert Consultation</p>
+                        </div>
+
+                        <div class="form-group text-center">
+                            <div class="btn-group" id="status" data-toggle="buttons" style="margin-top: 5px;">
+                                <label class="btn btn-default btn-on btn-sm on-btn" id="online_yes_s" style="width: 130px; font-size: 16px;">
+                                    <input type="radio" value="2" name="online" id="online_yes" >YES
+                                </label>
+                                <label class="btn btn-default btn-off btn-sm off-btn " id="online_no_s" style="width: 130px; font-size: 16px;">
+                                    <input type="radio" value="1" name="online" id="online_no" >NO
+                                </label>
+                            </div>
+                        </div>
+                        <div class="first-hide"></div>
+                        <div class="second-hide">
+                            <div class="form-group">
+                                <input type="text" name="task_location" id="task_location" class="form-control input-lg" placeholder="New York, NY 10001">
+                                <h5 class="not-rq" style="line-height: 23px; margin-bottom: 40px">User City, State, Zip<br>Not Specific Address</h5>
+                                <input type="hidden" name="latitude" id="latitude"  value="" style="width:250px;" >
+                                <input type="hidden" name="longitude" id="longitude"  value=""  style="width:250px;" >
+
+                                <script type="text/javascript">
+                                    $(document).ready(function () {
+                                        $("#task_location").blur(function () {
+                                            codeAddress();
+                                        });
+
+                                        function codeAddress() {
+                                            var address = $("#task_location").val();
+                                            $.ajax({
+                                                url: "http://maps.googleapis.com/maps/api/geocode/json?address=" + address + "&sensor=false",
+                                                type: "POST",
+                                                success: function (res) {
+                                                    console.log(res.results[0].geometry.location.lat);
+                                                    console.log(res.results[0].geometry.location.lng);
+
+                                                    $("#latitude").val(res.results[0].geometry.location.lat);
+                                                    $("#longitude").val(res.results[0].geometry.location.lng);
+                                                }
+                                            });
+                                        }
+
+                                    });
+                                </script>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 margin-top-50">
+                        <div class="form-group text-center post-btn">
+                            <ul class="nav nav-justified setup-panel pull-left" style="width: 35%; display: inline-block">
+                                <li class="" style="width: 100%">
+                                    <a href="#step-3" class="btn btn-default more-option back-btn">Back</a>
+                                </li>
+                            </ul>
+                            <button type="button" id="activate-step-5" class="btn submit-btn pull-right" style="width: 35%; font-weight: 500">Next</button>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row setup-content" id="step-5">
+                    <div class="col-xs-12">
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:40%">
+                                40%
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="col-xs-12">
+                        <div class="form-group">
+                            <h3 class="label-area">Due Date</h3>
+                            <h5 class="not-rq">When do you need this task completed?</h5>
+                            <input type="text" class="form-control input-lg datePicker" name="due_date" id="due_date" placeholder="Select Date" />
+
+                        </div>
+                    </div>
+                    <div class="col-xs-12 margin-top-50">
+                        <div class="form-group text-center post-btn">
+                            <ul class="nav nav-justified setup-panel pull-left" style="width: 35%; display: inline-block">
+                                <li class="" style="width: 100%">
+                                    <a href="#step-4" class="btn btn-default more-option back-btn">Back</a>
+                                </li>
+                            </ul>
+                            <button type="button" id="activate-step-6" class="btn submit-btn pull-right" style="width: 35%; font-weight: 500">Next</button>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row setup-content" id="step-6">
+                    <div class="col-xs-12">
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width:50%">
+                                50%
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="col-xs-12">
+                        <h3 class="label-area">How will the worker be paid?</h3>
+                        <div class="form-group text-center">
+                            <div class="btn-group" id="status" data-toggle="buttons" style="margin-top: 5px;">
+                                <label class="btn btn-default btn-on btn-sm on-btn " style="width: 130px; font-size: 17px;" id="budget_type_total_s">
+                                    <input type="radio" value="1" name="budget_type" id="budget_type_total">Total
+                                </label>
+                                <label class="btn btn-default btn-off btn-sm  off-btn" style="width: 130px; font-size: 17px;" id="budget_type_hourly_s">
+                                    <input type="radio" value="2" name="budget_type" id="budget_type_hourly">Hourly rate
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 margin-top-50">
+                        <div class="form-group text-center post-btn">
+                            <ul class="nav nav-justified setup-panel pull-left" style="width: 35%; display: inline-block">
+                                <li class="" style="width: 100%">
+                                    <a href="#step-5" class="btn btn-default more-option back-btn">Back</a>
+                                </li>
+                            </ul>
+                            <button type="button" id="activate-step-7" class="btn submit-btn pull-right" style="width: 35%; font-weight: 500">Next</button>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row setup-content" id="step-7">
+                    <div class="col-xs-12">
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:60%">
+                                60%
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="col-xs-12">
+                        <div class="first-hide price-per-hour" style="display: block">
+                            <h3 class="label-area">Total budget</h3>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon" id="basic-addon2">$</span>
+                                    <input type="number" name="budget" id="budget" class="form-control input-lg" placeholder="Budget" aria-describedby="basic-addon2">
+                                </div>
+                                <h5 class="not-rq">How much will you pay?</h5>
+                                <div class="exm-area">
+                                    <p>Yuhu life workers will make offers which may be higher, lower, or the same as your stated budget. You will have the opportunity to negotiate an agreeable amount.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="second-hide price-per-fixed" style="display: none">
+                            <h3 class="label-area">Hourly Pay</h3>
+                            <div class="form-group">
+                                <div class="input-group hr-price">
+                                    <span class="input-group-addon" id="basic-addon2">$</span>
+                                    <input type="number" name="price_per_hour" id="price_per_hour" class="form-control input-lg" aria-describedby="basic-addon2">
+                                </div>
+                                <h5 class="not-rq">How much will you pay?</h5>
+                            </div>
+                            <div class="form-group">
+                                <div class="hr-price">
+                                    <input type="number" name="hours" id="hours" class="form-control input-lg" aria-describedby="basic-addon2">
+                                </div>
+                                <h5 class="not-rq">How many hours?</h5>
+                            </div>
+                            <div class="exm-area">
+                                <p style="font-size: 19px; margin-bottom: 15px">Enter the guaranteed Minimum number of hours.</p>
+                                <p>This is the amount that you will be charged on the yuhu life platform.</p>
+                                <p>Any additional hours will be paid onsite and directly to the worker.</p>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-xs-12 margin-top-50">
+                        <div class="form-group text-center post-btn">
+                            <ul class="nav nav-justified setup-panel pull-left" style="width: 35%; display: inline-block">
+                                <li class="" style="width: 100%">
+                                    <a href="#step-6" class="btn btn-default more-option back-btn">Back</a>
+                                </li>
+                            </ul>
+                            <button type="button" id="activate-step-8" class="btn submit-btn pull-right" style="width: 35%; font-weight: 500">Next</button>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row setup-content" id="step-8">
+                    <div class="col-xs-12">
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width:80%">
+                                80%
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="col-xs-12">
+                        <h3 class="label-area">On-site quote</h3>
+                        <p class="text-center" style="margin-bottom: 20px; font-size: 18px; line-height: 25px">occasionally, posted tasks require an on-site visit in order to provide an accurate quote.</p>
+                        <h5 class="not-rq">Can you be available for a free on-site quote if needed?</h5>
+                        <div class="form-group text-center">
+                            <div class="btn-group" data-toggle="buttons" style="margin-top: 30px;">
+                                <label class="btn btn-default btn-on btn-sm onsite_quote_yes" id="onsite_quote_no_y" style="width: 130px; font-size: 17px;" >
+                                    <input type="radio" value="yes" id="onsite_quote_yy" name="onsite_quote" >YES
+                                </label>
+                                <label class="btn btn-default btn-off btn-sm" id="onsite_quote_no" style="width: 130px; font-size: 17px;" >
+                                    <input type="radio" value="no" id="onsite_quote_nn" name="onsite_quote" >NO
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 margin-top-50">
+                        <div class="form-group text-center post-btn">
+                            <ul class="nav nav-justified setup-panel pull-left" style="width: 35%; display: inline-block">
+                                <li class="" style="width: 100%">
+                                    <a href="#step-7" class="btn btn-default more-option back-btn">Back</a>
+                                </li>
+                            </ul>
+                            <button type="button" id="activate-step-9" class="btn submit-btn pull-right" style="width: 35%; font-weight: 500">Next</button>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row setup-content step-9b" >
+                    <div class="col-xs-12">
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100" style="width:90%">
+                                90%
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="col-xs-12">
+                        <div id="end-date-hide" style="display: none">
+                            <h3 class="label-area">On-site quote availability</h3>
+                            <div class="form-group">
+                                <h5 class="not-rq">Earliest Availability</h5>
+                                <div class="input-append">
+                                    <input type="text" class="form-control input-lg" name="start_date" id="date-start" placeholder="MM/DD/YYYY" />
+                                </div>
+                                <p class="on-site-q">Earliest date that you're available for on-site quote</p>
+                            </div>
+                            <div class="form-group">
+                                <h5 class="not-rq">Latest Availability</h5>
+                                <div class="input-append">
+                                    <input type="text" class="form-control input-lg" name="end_date" id="date-end" placeholder="MM/DD/YYYY" />
+                                </div>
+                                <p class="on-site-q">Latest date that you're available for on-site quote</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 margin-top-50">
+                        <div class="form-group text-center post-btn">
+                            <ul class="nav nav-justified setup-panel pull-left" style="width: 35%; display: inline-block">
+                                <li class="" style="width: 100%">
+                                    <a href="#step-8" class="btn btn-default more-option back-btn">Back</a>
+                                </li>
+                            </ul>
+                            <button type="button" id="activate-step-10" class="btn submit-btn pull-right" style="width: 35%; font-weight: 500">Next</button>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row setup-content step-10b" id="step-9">
+                    <div class="col-xs-12">
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%">
+                                100%
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="col-xs-12">
+                        <h3 class="label-area">You're Finished!</h3>
+                        <p class="on-site-q" style="line-height: 30px">You are now ready to post your task. You will be notified with yuhu life workers post questions or comments and when they post an offer.</p>
+                    </div>
+                    <div class="col-xs-12 margin-top-50">
+                        <div class="form-group text-center post-btn">
+                            <ul class="nav nav-justified setup-panel pull-left" style="width: 35%; display: inline-block">
+                                <li class="" style="width: 100%">
+                                    <a href="#step-8" class="btn btn-default more-option back-btn step-10bs">Back</a>
+                                </li>
+                            </ul>
+                            <button type="button" id="btn_post_task" class="btn submit-btn pull-right" style="width: 35%; font-weight: 500">Post</button>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+
+        </section>
+
+
+
+        <script>
+            //////////////////Post the Job///////////////
+            $(document).ready(function () {
+                $.ajax({
+                    type: "POST",
+                    url: localStorage.getItem("url_service") + '/rest-api/server',
+                    data: {
+                        cmd: "task_info",
+                        task_id: localStorage.getItem("task_id")
+                    },
+                    success: function (results) {
+                        Arr = JSON.parse(results);
+                        $("#task_title").val(Arr[0].task_title);
+                        $("#description").val(Arr[0].description);
+                        $("#description").val(Arr[0].description);
+                        if (Arr[0].online == 2) {
+                            $("#online_yes").attr("checked", "checked");
+                            $("#online_yes_s").addClass('active');
+                            $('#location_hide').hide();
+                        } else {
+                            $("#online_no").attr("checked", "checked");
+                            $("#online_no_s").addClass('active');
+                        }
+                        $("#task_location").val(Arr[0].task_location);
+                        $("#due_date").val(Arr[0].due_date);
+                        $("#hours").val(Arr[0].hours);
+                        $("#latitude").val(Arr[0].latitude);
+                        $("#longitude").val(Arr[0].longitude);
+                        $("#price_per_hour").val(Arr[0].price_per_hour);
+                        $("#price_per_hour").val(Arr[0].price_per_hour);
+
+                        if (Arr[0].budget_type == 1) {
+                            $("#budget_type_total").attr("checked", "checked");
+                            $("#budget_type_total_s").addClass('active');
+                            $('#hours_rate').hide();
+                        } else {
+                            $("#budget_type_hourly").attr("checked", "checked");
+                            $("#budget_type_hourly_s").addClass('active');
+                            $('#fixed_budget').hide();
+                        }
+                        if (Arr[0].onsite_quote == 'yes') {
+                            $("#onsite_quote_yy").attr("checked", "checked");
+                            $("#onsite_quote_no_y").addClass('active');
+                            $('.step-9b').attr('id', 'step-9');
+                            $('.step-10b').attr('id', 'step-10');
+                            $(".step-10bs").attr("href", "#step-9");
+                            $("#end-date-hide").show();
+                        } else {
+                            $("#onsite_quote_nn").attr("checked", "checked");
+                            $("#onsite_quote_no").addClass('active');
+                            $('.step-9b').attr('id', 'step-10');
+                            $('.step-10b').attr('id', 'step-9');
+                            $(".step-10bs").attr("href", "#step-8");
+                        }
+                        $("#budget").val(Arr[0].budget);
+                        $("#no_workes").val(Arr[0].no_workes);
+                        $("#date-start").val(Arr[0].start_date);
+                        $("#date-end").val(Arr[0].complation_date);
+
+                    }
+                });
+
+                $('#back-button').html('<a href="task-details.html?task_id=' + localStorage.getItem("task_id") + '"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>Edit Task');
+
+                $('#btn_post_task').click(function (event) {
+
+                    event.preventDefault();
+                    event.stopPropagation();
+
+                    if ($("#task_title").val() == "")
+                    {
+                        toastr.options.timeOut = 1500;
+                        toastr.error("Task Title is required field");
+                        return;
+
+                    }
+                    if ($("#description").val() == "")
+                    {
+                        toastr.options.timeOut = 1500;
+                        toastr.error("Description is a required field");
+                        return;
+
+                    }
+
+
+                    $.ajax({
+                        headers: {
+                            "Access-Control-Allow-Origin": "*",
+                            "Access-Control-Allow-Methods": "GET, POST, PUT",
+                            "Access-Control-Allow-Headers": "Content-Type",
+                        },
+                        type: "POST",
+                        url: localStorage.getItem("url_service") + '/rest-api/server',
+                        data: {
+                            "cmd": "edit_task",
+                            "task_id": localStorage.getItem("task_id"),
+                            "category": localStorage.getItem("category"),
+                            "task_title": $("#task_title").val(),
+                            "description": $("#description").val(),
+                            "online": $('input[name="online"]:checked').val(),
+                            "task_location": $("#task_location").val(),
+                            "due_date": $("#due_date").val(),
+                            "hours": $("#hours").val(),
+                            "latitude": $("#latitude").val(),
+                            "longitude": $("#longitude").val(),
+                            "price_per_hour": $("#price_per_hour").val(),
+                            "budget_type": $('input[name="budget_type"]:checked').val(),
+                            "budget": $("#budget").val(),
+                            "no_workes": $("#no_workes").val(),
+                            "start_date": $("#date-start").val(),
+                            "complation_date": $("#date-end").val(),
+                            "session_id": localStorage.getItem("session_id")
+                        },
+                        success: function (results) {
+                            Arr = JSON.parse(results);
+
+                            if (Arr['status'] === "success")
+                            {
+                                localStorage.setItem("task_id", Arr['id']);
+
+                                toastr.options.onHidden = function () {
+                                    redirect_url = 'task-details.html?task_id=' + Arr['task_id'];
+                                    window.location.href = redirect_url;
+                                };
+
+                                toastr.options.timeOut = 1500;
+                                toastr.success(Arr['msg']);
+                            }
+
+
+                        },
+                    });
+
+
+                    return false;
+
+                });
+            });
+
+            $(function () {
+                var now = new Date(),
+                        max = new Date(now.getFullYear() + 100, now.getMonth(), now.getDate());
+
+                $('.datePicker').mobiscroll().date({
+                    theme: 'ios',
+                    lang: 'en',
+                    display: 'bottom',
+                    max: max,
+                    min: now
+                });
+            });
+            $('#date-start').on('change', function () {
+                if ($("#date-end").val()) {
+                    var start = $("#date-start").val();
+                    var end = $("#date-end").val();
+                    var arr = start.split('/');
+                    var arr2 = end.split('/');
+                    if ((arr[0] >= arr2[0]) && (arr[1] >= arr2[1]) && (arr[2] >= arr2[2])) {
+                        $("#date-end").html(start);
+                    }
+
+                }
+            });
+            $('#date-end').on('click', function () {
+                var now = new Date(),
+                        date = $("#date-start").val(),
+                        arr = date.split('/'),
+                        min = new Date(arr[2], arr[0], arr[1]),
+                        max = new Date(now.getFullYear() + 100, now.getMonth(), now.getDate());
+                $('#date-end').mobiscroll().date({
+                    theme: 'ios',
+                    lang: 'en',
+                    display: 'bottom',
+                    min: min,
+                    max: max
+                });
+            });
+
+
+            $(".onsite_quote_yes").click(function () {
+                $("#end-date-hide").show();
+                $('.step-9b').attr('id', 'step-9');
+                $('.step-10b').attr('id', 'step-10');
+                $(".step-10bs").attr("href", "#step-9");
+            });
+            $("#onsite_quote_no").click(function () {
+                $("#end-date-hide").hide();
+                $('.step-9b').attr('id', 'step-10');
+                $('.step-10b').attr('id', 'step-9');
+                $(".step-10bs").attr("href", "#step-8");
+            });
+        </script>
+    </body>
+</html>

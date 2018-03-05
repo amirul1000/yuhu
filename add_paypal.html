@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Add bank account</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/jquery.mobile-1.4.5.min.css">
+        <link rel="stylesheet" href="css/font-awesome.min.css">
+        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="css/respnsive.css">
+        <script src="js/jquery.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/jquery.mobile-1.4.5.min.js"></script>
+        <script src="js/toastr.js"></script>
+        <link rel="stylesheet" href="css/toastr.css">
+        <script src="js/custom.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                var urlParams = location.search.split(/[?&]/).slice(1).map(function (paramPair) {
+                    return paramPair.split(/=(.+)?/).slice(0, 2);
+                }).reduce(function (obj, pairArray) {
+                    obj[pairArray[0]] = pairArray[1];
+                    return obj;
+                }, {});
+                localStorage.setItem('task_id', urlParams.task_id.replace(/%20/g, " "));
+            });
+        </script>
+    </head>
+
+    <body onload="myFunction()" style="margin:0;">
+        <!--Loader-->
+        <div id="loader-bg" class="loader-bg"></div>
+        <div id="loader"></div>
+        <section class="back-button-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="back-button"> <a href="payement_settings.html"><i class="fa fa-arrow-left" aria-hidden="true"></i></a> PayPal Account </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="add-card-form">
+            <form action="">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="form-group">
+                                <label>PayPal ID:</label>
+                                <input type="email" name="paypal_id" id="paypal_id" class="form-control input-lg" placeholder="Enter your paypal Id"> 
+                            </div>
+                        </div>
+
+                        <div style="margin-bottom: 100px"></div>
+                        <div class="post-comment" style="padding: 15px">
+                            <button type="button" class="btn submit-btn" id="add_account" style="width: 100%">Save PayPal Account</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </section>
+        <script>
+            $.ajax({
+                headers: {
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Methods": "GET, POST, PUT",
+                    "Access-Control-Allow-Headers": "Content-Type",
+                },
+                type: "POST",
+                url: localStorage.getItem("url_service") + '/rest-api/server',
+                data: {
+                    cmd: "get_paypal",
+                    users_id: localStorage.getItem("users_id")
+                },
+                success: function (results) {
+                    Arr = JSON.parse(results);
+                    $('#paypal_id').val(Arr.paypal_id);
+                }
+            });
+
+            $('#add_account').click(function () {
+                $.ajax({
+                    headers: {
+                        "Access-Control-Allow-Origin": "*",
+                        "Access-Control-Allow-Methods": "GET, POST, PUT",
+                        "Access-Control-Allow-Headers": "Content-Type",
+                    },
+                    type: "POST",
+                    url: localStorage.getItem("url_service") + '/rest-api/server',
+                    data: {
+                        cmd: "save_paypal",
+                        paypal_id: $("#paypal_id").val(),
+                        users_id: localStorage.getItem("users_id")
+                    },
+                    success: function (results) {
+                        Arr = JSON.parse(results);
+                        if (Arr['status'] === "success") {
+                            toastr.options.onHidden = function () {
+                                window.location.href = 'payement_settings.html';
+                            };
+                            toastr.options.timeOut = 1500;
+                            toastr.success(Arr['msg']);
+                        } else {
+                            toastr.options.timeOut = 1500;
+                            toastr.error(Arr['msg']);
+                        }
+                    }
+                });
+            });
+        </script>
+    </body>
+
+</html>

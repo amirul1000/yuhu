@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en" style="overflow-y: hidden">
+    <head>
+        <title>Filter</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/font-awesome.min.css">
+        <link rel="stylesheet" href="css/select2.min.css">
+        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="css/respnsive.css">
+        <link rel="stylesheet" href="css/toastr.css">
+
+        <script src="js/jquery.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/select2.min.js"></script>
+        <script src="js/toastr.js"></script>
+    </head>
+    <body onload="myFunction()" style="margin:0;overflow-y: hidden" >
+        <!--Loader-->
+        <div id="loader-bg" class="loader-bg"></div>
+        <div id="loader"></div>
+        <section class="back-button-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="back-button"> <a href="all-task.html"><i class="fa fa-arrow-left" aria-hidden="true"></i></a> Filter settings </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="filter-section">
+            <form>
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Task Category</label>
+                                <select class="form-control input-lg multi-select2" name="states[]" id="specialities" multiple="multiple">
+
+                                </select>
+                            </div>
+                            <div class="form-group" >
+                                <label>Task Type</label>
+                                <select class="form-control" id="filter_task_type">
+                                    <option value="All">All</option>
+                                    <option value="Location">Task With Location</option>
+                                    <option value="Online">Online</option>
+                                </select>
+                            </div>
+                            <div class="form-group" >
+                                <label>Filter By</label>
+                                <select class="form-control" id="filter_short_by">
+                                    <option value="Most Recent">Most Recent</option>
+                                    <option value="Distance">Distance</option>
+                                    <option value="Price Ascending">Price Ascending</option>
+                                    <option value="Price Descending">Price Descending</option>
+                                </select>
+                            </div>
+                            <div class="form-group" >
+                                <label>Show tasks within</label>
+                                <select class="form-control" id="filter_task_distance">
+                                    <option value="5">5 miles</option>
+                                    <option value="10">10 miles</option>
+                                    <option value="20">20 miles</option>
+                                    <option value="50" selected>50 miles</option>
+                                    <option value="9999">Any distance</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="post-comment" style="padding: 15px">  
+                    <button type="button" id="update_filter" class="btn submit-btn">Update</button>
+                </div>
+<!--                <ul class="filter-submit">
+                    <li>
+                        <button type="button" id="update_filter" class="btn submit-btn">Update</button>
+                    </li>
+                    <li> <a href="" class="btn btn-default more-option margin_b_30">Reset</a> </li>
+                </ul>-->
+            </form>
+        </section>
+        <script src="js/custom.js"></script>
+        <script>
+        $.ajax({
+            headers: {
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Methods": "GET, POST, PUT",
+                "Access-Control-Allow-Headers": "Content-Type",
+            },
+            type: "POST",
+            url: localStorage.getItem("url_service") + '/rest-api/server',
+            data: {
+                "cmd": "getAllCatFilter",
+                users_id: localStorage.getItem("users_id"),
+                session_id: localStorage.getItem("session_id")
+            },
+            success: function (data) {
+                Arr = JSON.parse(data);
+                $('#specialities').html(Arr);
+            }
+        });
+
+        //multi select for category
+        $(document).ready(function () {
+            $('.multi-select2').select2();
+        });
+
+        //Update filter save
+        $("#update_filter").click(function () {
+            document.getElementById("loader").style.display = "block";
+            $("#loader-bg").addClass("loader-bg");
+            $.ajax({
+                headers: {
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Methods": "GET, POST, PUT",
+                    "Access-Control-Allow-Headers": "Content-Type",
+                },
+                type: "POST",
+                url: localStorage.getItem("url_service") + '/rest-api/server',
+                data: {
+                    cmd: "updateFilter",
+                    filter_task_category: $("select[name='states[]']").val(),
+                    filter_task_type: $("#filter_task_type").val(),
+                    filter_short_by: $("#filter_short_by").val(),
+                    filter_task_distance: $("#filter_task_distance").val(),
+                    users_id: localStorage.getItem("users_id"),
+                    session_id: localStorage.getItem("session_id")
+                },
+                success: function (data) {
+                    Arr = JSON.parse(data);
+                    if (Arr['status'] === "success")
+                    {
+                        toastr.options.onHidden = function () {
+                            window.location.href = "all-task.html";
+                            $("#loader-bg").removeClass("loader-bg");
+                            document.getElementById("loader").style.display = "none";
+                        }
+                        toastr.options.timeOut = 1500;
+                        toastr.success(Arr['msg']);
+
+                    } else {
+                        $("#loader-bg").removeClass("loader-bg");
+                        document.getElementById("loader").style.display = "none";
+                        toastr.options.timeOut = 1500;
+                        toastr.error(Arr['msg']);
+                    }
+                }
+            });
+        });
+
+        //Get  filter data
+        $.ajax({
+            headers: {
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Methods": "GET, POST, PUT",
+                "Access-Control-Allow-Headers": "Content-Type",
+            },
+            type: "POST",
+            url: localStorage.getItem("url_service") + '/rest-api/server',
+            data: {
+                cmd: "setFilterInfo",
+                users_id: localStorage.getItem("users_id"),
+                session_id: localStorage.getItem("session_id")
+            },
+            success: function (data) {
+                Arr = JSON.parse(data);
+                if (Arr['status'] === "success")
+                {
+                    if (Arr['filter_task_type']) {
+                        if (Arr['filter_task_type'] === 'All') {
+                            AllTask = 'selected';
+                        } else {
+                            AllTask = '';
+                        }
+                        if (Arr['filter_task_type'] === 'Location') {
+                            LocationTask = 'selected';
+                        } else {
+                            LocationTask = '';
+                        }
+                        if (Arr['filter_task_type'] === 'Online') {
+                            OnlineTask = 'selected';
+                        } else {
+                            OnlineTask = '';
+                        }
+                        $('#filter_task_type').html('<option value="All" ' + AllTask + '>All</option>' +
+                                '<option value="Location" ' + LocationTask + '>Task With Location</option>' +
+                                '<option value="Online" ' + OnlineTask + '>Online</option>');
+
+                    }
+                    // 
+                    if (Arr['filter_short_by']) {
+                        if (Arr['filter_short_by'] === 'Most Recent') {
+                            mostRecent = 'selected';
+                        } else {
+                            mostRecent = '';
+                        }
+                        if (Arr['filter_short_by'] === 'Distance') {
+                            distance = 'selected';
+                        } else {
+                            distance = '';
+                        }
+                        if (Arr['filter_short_by'] === 'Price Ascending') {
+                            priceAscending = 'selected';
+                        } else {
+                            priceAscending = '';
+                        }
+                        if (Arr['filter_short_by'] === 'Price Descending') {
+                            priceDescending = 'selected';
+                        } else {
+                            priceDescending = '';
+                        }
+                        $('#filter_short_by').html('<option value="Most Recent" ' + mostRecent + '>Most Recent</option>' +
+                                ' <option value="Distance" ' + distance + '>Distance</option>' +
+                                '<option value="Price Ascending" ' + priceAscending + '>Price Ascending</option>' +
+                                '<option value="Price Descending" ' + priceDescending + '>Price Descending</option>');
+                    }
+
+                    if (Arr['filter_task_distance']) {
+                        if (Arr['filter_task_distance'] === '5') {
+                            fiveMiles = 'selected';
+                        } else {
+                            fiveMiles = '';
+                        }
+                        if (Arr['filter_task_distance'] === '10') {
+                            tenMiles = 'selected';
+                        } else {
+                            tenMiles = '';
+                        }
+                        if (Arr['filter_task_distance'] === '20') {
+                            twentyMiles = 'selected';
+                        } else {
+                            twentyMiles = '';
+                        }
+                        if (Arr['filter_task_distance'] === '50') {
+                            fiftyMiles = 'selected';
+                        } else {
+                            fiftyMiles = '';
+                        }
+                        if (Arr['filter_task_distance'] === '9999') {
+                            anyDistance = 'selected';
+                        } else {
+                            anyDistance = '';
+                        }
+
+                        $('#filter_task_distance').html('<option value="5" ' + fiveMiles + '>5 miles</option>' +
+                                '<option value="10" ' + tenMiles + '>10 miles</option>' +
+                                '<option value="20" ' + twentyMiles + '>20 miles</option>' +
+                                '<option value="50 ' + fiftyMiles + '" >50 miles</option>' +
+                                '<option value="9999" ' + anyDistance + '>Any distance</option>');
+                    }
+
+
+                } else {
+
+                }
+            }
+        });
+
+        </script>
+
+    </body>
+
+</html>

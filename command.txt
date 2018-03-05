@@ -1,0 +1,59 @@
+package:com.yuhu.jobservice yuhujob
+
+cordova plugin add  com.paypal.cordova.mobilesdk
+cordova plugin add  cordova-plugin-camera
+cordova plugin add  cordova-plugin-device
+cordova plugin add cordova-plugin-facebook4 --save --variable APP_ID="134628060629380" --variable APP_NAME="yuhujob"
+cordova plugin add  cordova-plugin-firebase
+cordova plugin add  cordova-plugin-geolocation
+cordova plugin add cordova-plugin-googleplus --save --variable REVERSED_CLIENT_ID=com.googleusercontent.apps.1092609296185-gji5838t0tnk1bbeomadnjvkg3u78jis
+cordova plugin add  cordova-sms-plugin
+cordova plugin add onesignal-cordova-plugin
+cordova plugin add cordova-plugin-googlemaps   --variable API_KEY_FOR_ANDROID="AIzaSyBLh5icOgYtQoLSazu0N8Wv1ZjsZMOdrfw"
+
+
+C:\Users\Amirul Momenin>
+C:\Users\Amirul Momenin>keytool -exportcert -alias androiddebugkey -keystore "C:\Users\Amirul Momenin\.android\debug.keystore" | "C:\OpenSSL\bin\openssl.exe" sha1 -binary | "C:\OpenSSL\bin\openssl.exe" base64
+Enter keystore password:  android
+9oG2yU6l8U3rgPaNOOcVRC0Lx44=
+
+
+
+C:\Program Files\Java\jdk1.8.0_141\bin>keytool -list -v -keystore "C:\Users\Amirul Momenin\.android\debug.keystore" -alias androiddebugkey -storepass android -keypass android
+Alias name: androiddebugkey
+Creation date: Dec 23, 2017
+Entry type: PrivateKeyEntry
+Certificate chain length: 1
+Certificate[1]:
+Owner: C=US, O=Android, CN=Android Debug
+Issuer: C=US, O=Android, CN=Android Debug
+Serial number: 1
+Valid from: Sat Dec 23 16:38:47 BDT 2017 until: Mon Dec 16 16:38:47 BDT 2047
+Certificate fingerprints:
+         MD5:  C6:00:77:CB:20:8A:35:AA:E6:56:44:AD:65:4C:20:D1
+         SHA1: F6:81:B6:C9:4E:A5:F1:4D:EB:80:F6:8D:38:E7:15:44:2D:0B:C7:8E
+         SHA256: 7F:D4:6F:DC:25:3D:1D:1B:A0:FD:5E:87:8B:6A:6D:4A:BF:E5:05:9D:2E:31:0C:69:AA:78:91:0B:EE:DD:55:16
+         Signature algorithm name: SHA1withRSA
+         Version: 1
+
+
+<platform name="android">
+    <preference name="loadUrlTimeoutValue" value="700000" />
+    <preference name="Orientation" value="landscape" />
+    <preference name="BackgroundColor" value="0xff0000ff" />
+    <allow-intent href="market:*" />
+</platform>
+
+ <platform name="android">
+        <icon density="ldpi" src="res/icon/android/ldpi.png" />
+        <icon density="mdpi" src="res/icon/android/mdpi.png" />
+        <icon density="hdpi" src="res/icon/android/hdpi.png" />
+        <icon density="xhdpi" src="res/icon/android/xhdpi.png" />
+        <icon density="xxhdpi" src="res/icon/android/xxhdpi.png" />
+        <icon density="xxxhdpi" src="res/icon/android/xxxhdpi.png" />
+    </platform>
+
+
+
+
+

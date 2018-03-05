@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Edit Profile</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/font-awesome.min.css">
+        <link rel="stylesheet" href="css/select2.min.css">
+        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="css/respnsive.css">
+        <link rel="stylesheet" href="css/toastr.css">
+
+        <script src="js/jquery.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/toastr.js"></script>
+        <link rel="stylesheet" href="css/component.css" >
+        <script src="js/select2.min.js"></script>
+
+        <script type="text/javascript" src="js/selectize.js"></script>
+        <link rel='stylesheet' href='css/selectize.css'>
+        <link rel='stylesheet' href='css/selectize.default.css'>
+        <script src="js/custom.js"></script>
+        <style type="text/css">
+            .selectize-input {
+                width: 100% !important;
+                height: 62px !important;
+            }
+        </style>
+
+    </head>
+
+    <body  onload="myFunction()" style="margin:0;">
+        <!--Loader-->    
+        <div id="loader-bg" class="loader-bg"></div>
+        <div id="loader"></div>
+        <section class="back-button-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="back-button">
+                            <a href="settings.html"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
+                            Edit account
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="profile-edit">
+            <div class="all-info">
+                <h5>General Information</h5>
+                <div class="form-group">
+                    <label for="name">First Name</label>
+                    <input type="text" class="form-control" value="" id="firstname">
+                </div>
+                <div class="form-group">
+                    <label for="name">Last Name</label>
+                    <input type="text" class="form-control" value="" id="lasttname">
+                </div>
+                <div class="form-group">
+                    <label for="name">Address</label>
+                    <input type="text" class="form-control" value="" id="location">
+                    <input type="hidden" name="latitude" id="latitude"  value="" style="width:250px;" >
+                    <input type="hidden" name="longitude" id="longitude"  value=""  style="width:250px;" >
+                    <script type="text/javascript">
+                        $(document).ready(function () {
+                            $("#location").blur(function () {
+                                codeAddress();
+                            });
+
+                            function codeAddress() {
+
+                                var address = $("#location").val();
+
+                                $.ajax({
+                                    url: "http://maps.googleapis.com/maps/api/geocode/json?address=" + address + "&sensor=false",
+                                    type: "POST",
+                                    success: function (res) {
+                                        $("#latitude").val(res.results[0].geometry.location.lat);
+                                        $("#longitude").val(res.results[0].geometry.location.lng);
+                                    }
+
+                                });
+                            }
+
+                        });
+                    </script>
+
+                </div>
+                <div class="form-group">
+                    <label for="name">Tagline</label>
+                    <input type="text" class="form-control" value="" name="tagline" id="tagline">
+
+                </div>
+                <div class="form-group">
+                    <label for="name">About me</label>
+                    <input type="text" class="form-control" value="" id="about_me">
+                </div>
+
+                <h5>Private Information</h5>
+                <div class="form-group">
+                    <label for="name">Email</label>
+                    <input type="email" class="form-control" value="" id="email">
+                </div>
+                <div class="form-group">
+                    <label for="name">Birth Date</label>
+                    <input type="date" class="form-control" value="" id="dob">
+                </div>
+                <!-- <div class="form-group">
+                                    <label for="name">SSN</label>
+                                    <input type="text" class="form-control" value="" id="ssn">
+                                </div>-->
+                <div class="form-group">
+                    <label for="name">Portfolio</label>
+                    <div class="image-pro">
+                        <div id="profile_pic">
+
+                        </div>
+                        <link href="Simple-Ajax-Uploader-master/assets/css/styles.css" rel="stylesheet">
+                        <div class="camera" style=" left: 66px;right: unset;">
+                            <form  enctype="multipart/form-data">
+                            <div class="box">
+                                <input  type="file" id="uploadBtn" class="inputfile" />
+                            </div>
+                            </form>
+                        </div>
+                        <div class="row" style="padding-top:10px;">
+                            <div class="col-xs-10">
+                                <div id="progressOuter" class="progress progress-striped active" style="display:none;">
+                                    <div id="progressBar" class="progress-bar progress-bar-success"  role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" style="padding-top:10px;">
+                            <div class="col-xs-10">
+                                <div id="msgBox">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!--</div>-->
+                        <script src="Simple-Ajax-Uploader-master/SimpleAjaxUploader.js"></script>
+                        <script>
+                        function escapeTags(str) {
+                            return String(str)
+                                    .replace(/&/g, '&amp;')
+                                    .replace(/"/g, '&quot;')
+                                    .replace(/'/g, '&#39;')
+                                    .replace(/</g, '&lt;')
+                                    .replace(/>/g, '&gt;');
+                        }
+
+                        $(document).ready(function () {
+
+                            var btn = document.getElementById('uploadBtn'),
+                                    progressBar = document.getElementById('progressBar'),
+                                    progressOuter = document.getElementById('progressOuter'),
+                                    msgBox = document.getElementById('msgBox');
+
+                            var uploader = new ss.SimpleUpload({
+                                button: btn,
+                                url: localStorage.getItem("url_service") + '/rest-api/server?cmd=profile_pic_upload&users_id=' + localStorage.getItem("users_id"),
+                                sessionProgressUrl: 'Simple-Ajax-Uploader-master/code/sessionProgress.php',
+                                name: 'file_picture',
+                                multipart: true,
+                                hoverClass: 'hover',
+                                focusClass: 'focus',
+                                responseType: 'json',
+                                startXHR: function () {
+                                    progressOuter.style.display = 'block'; // make progress bar visible
+                                    this.setProgressBar(progressBar);
+                                },
+                                onSubmit: function () {
+                                    msgBox.innerHTML = ''; // empty the message box
+                                    btn.innerHTML = 'Uploading...'; // change button text to "Uploading..."
+                                },
+                                onComplete: function (filename, response) {
+                                    //btn.innerHTML = 'Choose Another File';
+                                    btn.innerHTML = 'Choose File';
+                                    progressOuter.style.display = 'none'; // hide progress bar when upload is completed
+
+                                    if (!response) {
+                                        msgBox.innerHTML = 'Unable to upload file';
+                                        return;
+                                    }
+
+                                    if (response.success === true) {
+                                        msgBox.innerHTML = '<strong>' + escapeTags(filename) + '</strong>' + ' successfully uploaded.';
+
+                                    } else {
+                                        if (response.msg) {
+                                            profile();
+                                            msgBox.innerHTML = escapeTags(response.msg);
+
+                                        } else {
+                                            msgBox.innerHTML = 'An error occurred and the upload failed.';
+                                        }
+                                    }
+                                },
+                                onError: function () {
+                                    progressOuter.style.display = 'none';
+                                    msgBox.innerHTML = 'Unable to upload file';
+                                }
+                            });
+                        });
+                        </script>
+
+                    </div>
+                </div>
+                <h5>SKILL</h5>
+<!--                <div class="form-group">
+                    <label for="name">Transportation</label>
+                    <input type="text" class="form-control" value="" id="transportation" placeholder="Ex. Online, Bus">
+                </div>-->
+                <div class="form-group">
+                    <label for="name">Language</label>
+                    <input type="text" class="form-control" value="" id="language" placeholder="Ex. US, UK">
+                </div>
+<!--                <div class="form-group">
+                    <label for="name">Education</label>
+                    <input type="text" class="form-control" value="" id="education" placeholder="Ex. HSC, SSC">
+                </div>-->
+<!--                <div class="form-group">
+                    <label for="name">Work</label>
+                    <input type="text" class="form-control" value="" id="work" placeholder="Ex. Online, Bus">
+                </div>-->
+                <div class="form-group">
+                    <label for="name">SKILLS</label>
+                    <select class="form-control" name="states[]" id="specialities" multiple="multiple">
+
+                    </select>
+                </div>
+            </div>
+            <hr>
+        </section>
+        <div class="modal fade" id="myupload" role="dialog" style="margin-top: 100px">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-body text-center" style="border: 1px solid #ccc; margin: 5px">
+                        <h4 style="margin: 0; font-weight: 400">Attach image</h4>
+                        <p style="font-weight: 300; color: #222; font-size: 13px">Select source</p>
+                        <a href="" class="btn btn-default more-option">Camera</a>
+                        <a href="" class="btn btn-default more-option margin_b_30">Gallery</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="form-group text-center">
+
+            <button type="button" name="mobile_btn" id="mobile_btn" class="btn submit-btn">Save</button>
+
+        </div>
+        <script language="JavaScript">
+            //localStorage.setItem("url_service", "http://10.0.2.2/jobs2Service");
+            //localStorage.setItem("url_service", "http://localhost/jobs2Service");
+
+            $("#activate-step-2").click(function () {
+                update();
+            });
+            function profile()
+            {
+                $.ajax({
+                    headers: {
+                        "Access-Control-Allow-Origin": "*",
+                        "Access-Control-Allow-Methods": "GET, POST, PUT",
+                        "Access-Control-Allow-Headers": "Content-Type",
+                    },
+                    type: "GET",
+                    url: localStorage.getItem("url_service") + '/rest-api/server',
+                    data: {
+                        "cmd": "profile",
+                        "session_id": localStorage.getItem("session_id"),
+                        "users_id": localStorage.getItem("users_id")
+                    },
+                    success: function (data) {
+                        Arr = JSON.parse(data);
+                        $("#firstname").val(Arr[0].first_name);
+                        $("#lasttname").val(Arr[0].last_name);
+                        $("#location").val(Arr[0].location);
+                        $("#tagline").val(Arr[0].tagline);
+                        $("#about_me").val(Arr[0].about_me);
+                        $("#email").val(Arr[0].email);
+                        $("#dob").val(Arr[0].dob);
+                        $("#ssn").val(Arr[0].ssn);
+                        $("#latitude").val(Arr[0].latitude);
+                        $("#longitude").val(Arr[0].longitude);
+                        $("#transportation").val(Arr[0].transportation);
+                        $("#language").val(Arr[0].language);
+                        $("#education").val(Arr[0].education);
+                        $("#work").val(Arr[0].work);
+                        $("#specialities").val(Arr[0].specialities);
+                        image = 'picture/3a.png';
+                        if (Arr[0].file_picture) {
+                            image = Arr[0].file_picture;
+                        }
+                        $("#profile_pic").html('<img src="'+ localStorage.getItem("url_service")+ '/' + image + '" />');
+                    }
+                });
+            }
+
+            profile();
+            $('#mobile_btn').click(function () {
+
+                $.ajax({
+                    headers: {
+                        "Access-Control-Allow-Origin": "*",
+                        "Access-Control-Allow-Methods": "GET, POST, PUT",
+                        "Access-Control-Allow-Headers": "Content-Type",
+                    },
+                    type: "POST",
+                    url: localStorage.getItem("url_service") + '/rest-api/server',
+                    data: {
+                        cmd: "update_profile",
+                        session_id: localStorage.getItem("session_id"),
+                        first_name: $("#firstname").val(),
+                        last_name: $("#lasttname").val(),
+                        location: $("#location").val(),
+                        tagline: $("#tagline").val(),
+                        about_me: $("#about_me").val(),
+                        email: $("#email").val(),
+                        dob: $("#dob").val(),
+                        ssn: $("#ssn").val(),
+                        latitude: $("#latitude").val(),
+                        longitude: $("#longitude").val(),
+                        transportation: $("#transportation").val(),
+                        language: $("#language").val(),
+                        education: $("#education").val(),
+                        work: $("#work").val(),
+                        specialities: $("#specialities").val(),
+                        users_id: localStorage.getItem("users_id")
+                    },
+                    success: function (results) {
+
+                        Arr = JSON.parse(results);
+                        if (Arr['status'] === "success")
+                        {
+                            toastr.options.timeOut = 1500;
+                            toastr.success(Arr['msg']);
+                        }
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+
+                        toastr.options.timeOut = 1500;
+                        toastr.error("some error");
+                    }
+
+                });
+            });
+
+
+
+            $.ajax({
+                headers: {
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Methods": "GET, POST, PUT",
+                    "Access-Control-Allow-Headers": "Content-Type",
+                },
+                type: "POST",
+                url: localStorage.getItem("url_service") + '/rest-api/server',
+                data: {
+                    "cmd": "get_parent_cat",
+                    "session_id": localStorage.getItem("session_id"),
+                    "users_id": localStorage.getItem("users_id")
+                },
+                success: function (data) {
+                    Arr = JSON.parse(data);
+                    $('#specialities').html(Arr);
+                }
+            });
+
+            //multi selet
+            $(document).ready(function () {
+                $('#specialities').select2();
+            });
+
+            function profile_pic_upload() {
+                alert($('#uploadBtn').val());
+                $.ajax({
+                    headers: {
+                        "Access-Control-Allow-Origin": "*",
+                        "Access-Control-Allow-Methods": "GET, POST, PUT",
+                        "Access-Control-Allow-Headers": "Content-Type",
+                    },
+                    type: "POST",
+                    url: localStorage.getItem("url_service") + '/rest-api/server',
+                    data: {
+                        cmd: "profile_pic_upload",
+                        session_id: localStorage.getItem("session_id"),
+                        profile_pic: $('#uploadBtn').val(),
+                        users_id: localStorage.getItem("users_id")
+                    },
+                    success: function (results) {
+
+                        Arr = JSON.parse(results);
+                        if (Arr['status'] === "success")
+                        {
+
+                            toastr.options.timeOut = 1500;
+                            toastr.success(Arr['msg']);
+                        }
+                    },
+                });
+            }
+            $('#profile_pic_info').change(function () {
+
+                profile_pic_upload();
+            });
+        </script>
+
+    </body>
+
+
+
+</html>

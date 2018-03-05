@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <title>Bootstrap Example</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/font-awesome.min.css">
+        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="css/respnsive.css">
+        <link rel="stylesheet" href="css/select2.min.css">
+
+        <script src="js/jquery.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/select2.min.js"></script>
+        <script src="js/toastr.js"></script>
+        <link rel="stylesheet" href="css/toastr.css">
+        <script src="js/custom.js"></script>
+        <style>
+            .select2-container{
+                width: 100% !important;
+                border: 1px solid rgba(0,0,0,.15);
+                border-radius: 4px;
+            }
+            .select2-container--default .select2-selection--multiple {
+                border-bottom: 0;
+            }
+            .select2-container--open .select2-dropdown--below {
+                width: 100% !important;
+            }
+        </style>
+    </head>
+
+    <body  onload="myFunction()" style="margin:0;">
+        <!--Loader-->    
+        <div id="loader-bg" class="loader-bg"></div>
+        <div id="loader"></div>
+        <section class="back-button-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="back-button">
+                            <a href="settings.html"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
+                            Live Settings
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="profile-edit">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="from-group margin_t_40 text-center">
+                            <p style="font-style: 18px">Do you want to show live location?</p>
+                            <div class="btn-group" id="status" data-toggle="buttons" style="margin-top: 5px;">
+                                <label class="btn btn-default btn-on btn-sm on-btn active" style="width: 130px; font-size: 14px;"><input value="Yes" name="live_status" checked="checked" type="radio">Yes</label>
+                                <label class="btn btn-default btn-off btn-sm off-btn" style="width: 130px; font-size: 14px;"><input value="No" name="live_status" type="radio">No</label>
+                            </div>
+                        </div>
+                        <div class="from-group margin_t_20">
+                            <p class="text-center" style="font-style: 18px">Select category that you want to show</p>
+                            <select class="form-control input-lg multi-select2" name="specialities[]" id="specialities" multiple="multiple">
+
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="post-comment" style="padding: 15px">  
+                <button type="button" name="mobile_btn" id="mobile_btn" class="btn submit-btn">Update</button>
+            </div>
+        </section>
+        <script>
+            //multi selet
+            $(document).ready(function () {
+                $('.multi-select2').select2();
+            });
+
+            $.ajax({
+                headers: {
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Methods": "GET, POST, PUT",
+                    "Access-Control-Allow-Headers": "Content-Type",
+                },
+                type: "GET",
+                url: localStorage.getItem("url_service") + '/rest-api/server',
+                data: {
+                    "cmd": "profile",
+                    session_id: localStorage.getItem("session_id"),
+                    "users_id": localStorage.getItem("users_id")
+                },
+                success: function (data) {
+                    Arr = JSON.parse(data);
+
+                    if (Arr[0].live_status == 1) {
+                        $('.on-btn').addClass('active');
+                        $('.off-btn').removeClass('active');
+                        $(".on-btn input[value='Yes']").attr('checked', 'checked');
+                    } else {
+                        $('.off-btn').addClass('active');
+                        $('.on-btn').removeClass('active');
+                        $(".off-btn input[value='No']").attr('checked', 'checked');
+                    }
+
+                }
+            });
+
+            // Show skills data
+            $.ajax({
+                headers: {
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Methods": "GET, POST, PUT",
+                    "Access-Control-Allow-Headers": "Content-Type",
+                },
+                type: "POST",
+                url: localStorage.getItem("url_service") + '/rest-api/server',
+                data: {
+                    "cmd": "getLivecat",
+                    "session_id": localStorage.getItem("session_id"),
+                    "users_id": localStorage.getItem("users_id")
+                },
+                success: function (data) {
+                    Arr = JSON.parse(data);
+                    $('#specialities').html(Arr);
+                }
+            });
+
+            $('#mobile_btn').click(function () {
+                $.ajax({
+                    headers: {
+                        "Access-Control-Allow-Origin": "*",
+                        "Access-Control-Allow-Methods": "GET, POST, PUT",
+                        "Access-Control-Allow-Headers": "Content-Type",
+                    },
+                    type: "POST",
+                    url: localStorage.getItem("url_service") + '/rest-api/server',
+                    data: {
+                        cmd: "update_profile",
+                        session_id: localStorage.getItem("session_id"),
+                        live_category: $("select[name='specialities[]']").val(),
+                        live_status: $(".active input[name='live_status']").val(),
+                        users_id: localStorage.getItem("users_id")
+                    },
+                    success: function (results) {
+                        Arr = JSON.parse(results);
+                        if (Arr['status'] === "success")
+                        {
+                            toastr.options.timeOut = 1500;
+                            toastr.success(Arr['msg']);
+                        }
+                    }
+
+                });
+            });
+
+
+
+        </script>
+    </body>
+</html>
+

@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Deposit Milestone</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/jquery.mobile-1.4.5.min.css">
+        <link rel="stylesheet" href="css/font-awesome.min.css">
+        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="css/respnsive.css">
+
+        <script src="js/jquery.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/jquery.mobile-1.4.5.min.js"></script>
+        <script src="js/toastr.js"></script>
+        <link rel="stylesheet" href="css/toastr.css">
+        <script src="js/custom.js"></script>
+
+    </head>
+    <body>
+        <!--Loader-->
+        <div id="loader-bg" class=""></div>
+        <div id="loader" style="display: none"></div>
+        <section class="back-button-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="back-button">
+                            <a href="review-offer.html"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
+                            Deposit Milestone
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+
+        <section class="main-content">
+            <div class="container-fluid">
+                <div class="row">
+                    <form>
+                        <div class="col-md-12 text-left">
+                            <div class="form-group  margin_t_20">
+                                <label class="form-label" for="taks">Message</label>
+                                <textarea class="form-control" rows="4" name="description" id="comment"></textarea>
+                            </div>
+                            <div id="pre-hour"></div>
+                            <div class="form-group">
+                                <label class="form-label" for="taks">Total Deposit Amount</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon" id="basic-addon2">$</span>
+                                    <input name="budget" id="budget" class="form-control input-lg" placeholder="Budget"  type="number">
+                                </div>
+                            </div>
+                            <div id="total_hours"></div>
+                            <input type="hidden" name="proposal_id" id="proposal_id" value="" />
+                            <input type="hidden" name="total-hours" id="total-hours" value="" />
+                        </div>
+
+                        <div class="col-xs-12 text-left">
+                            <h5>Your credit card information is safe from us.We are not keeping any information of your card with us</h5>
+
+                            <div class="margin_t_20">
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <div class="form-group">
+                                            <label class="text-size-info font-size16">Card Type</label>
+                                            <select name="creditCardType" id="creditCardType" class="form-control input-lg">
+                                                <option value="Visa" selected>Visa</option>
+                                                <option value="MasterCard">MasterCard</option>
+                                                <option value="Discover">Discover</option>
+                                                <option value="Amex">American Express</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12">
+                                        <div class="form-group">
+                                            <label class="text-size-info font-size16">Credit card number</label>
+                                            <input type="text" name="card_number" id="card_number" class="form-control input-lg" maxlength="16" pattern="([0-9]|[0-9]|[0-9])"  placeholder="Card number" >
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-4" style="padding-right: 6px">
+                                        <div class="form-group">
+                                            <label class="text-size-info font-size16" for="name">Expiry</label>
+                                            <input type="text" name="exp_month" id="exp_month" maxlength="2" pattern="([0-9]|[0-9]|[0-9])" class="form-control input-lg" placeholder="MM">
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-4 no-padding">
+                                        <div class="form-group">
+                                            <label class="text-size-info font-size16" for="name">&nbsp;</label>
+                                            <input type="text" name="exp_year" id="exp_year" maxlength="4" pattern="([0-9]|[0-9]|[0-9])" class="form-control input-lg" placeholder="YYYY">
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-4" style="padding-left: 6px;">
+                                        <div class="form-group">
+                                            <label class="text-size-info font-size16" for="name">CVC</label>
+                                            <input type="text" name="cvc" id="cvc" maxlength="3" pattern="([0-9]|[0-9]|[0-9])"  class="form-control input-lg">
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12">
+                                        <p class="text-size-info">To accept this offer, a payment will need to be made to hold funds while the task is being completed. Once the task is completed, you will be able to release the funds to the Yuhu Life worker.<a href="">Terms & Conditions</a></p>
+                                    </div>
+                                    <div class="margin_b_50 clearfix"></div>
+                                    <div style="margin-bottom: 100px"></div>
+                                    <div class="post-comment" style="padding: 15px">
+                                        <button type="button" id="pay_now" class="paypal-btn">Pay Now</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+
+        <script>
+
+            //////get proposal id
+            function task_info() {
+                localStorage.removeItem("task_id");
+                localStorage.removeItem("proposal_users_id");
+                var urlParams = location.search.split(/[?&]/).slice(1).map(function (paramPair) {
+                    return paramPair.split(/=(.+)?/).slice(0, 2);
+                }).reduce(function (obj, pairArray) {
+                    obj[pairArray[0]] = pairArray[1];
+                    obj[pairArray[1]] = pairArray[3];
+                    return obj;
+                }, {});
+                localStorage.setItem('task_id', urlParams.task_id.replace(/%20/g, " "));
+                localStorage.setItem('proposal_users_id', urlParams.proposal_users_id.replace(/%20/g, " "));
+
+                $('.back-button').html('<a href="review-offer.html?task_id=' + localStorage.getItem("task_id") + '&offset=1"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>Deposit Milestone');
+                $.ajax({
+                    type: "POST",
+                    url: localStorage.getItem("url_service") + '/rest-api/server',
+                    data: {
+                        cmd: "get_offer_info",
+                        task_id: localStorage.getItem("task_id"),
+                        users_id: localStorage.getItem("users_id"),
+                        proposal_users_id: localStorage.getItem("proposal_users_id")
+                    },
+                    success: function (results) {
+                        Arr = JSON.parse(results);
+                        $("#proposal_id").val(Arr[0].id);
+                        if (Arr[0].budget_type == "1") {
+                            $("#budget").val(Arr[0].cost);
+                        } else {
+                            hourlyCost = Arr[0].cost;
+                            totalHours = Arr[0].hours;
+                            $("#budget").val(hourlyCost * totalHours);
+                            $("#budget").attr('disabled','disabled');
+                            $("#total-hours").val(totalHours);
+                            $("#total_hours").html('<div class="due-date text-left direction"><p><span><i class="fa fa-clock-o" aria-hidden="true"></i></span> Durations: <span style="color: #3a3d3e; font-weight: 500; font-size: 14px">' + Arr[0].hours + ' hours</span></p></div>');
+                            $("#pre-hour").html('<div class="form-group">' +
+                                    '<label class="form-label" for="taks">Hourly Rate</label>' +
+                                    '<div class="input-group">' +
+                                    '<span class="input-group-addon" id="basic-addon2">$</span>' +
+                                    '<input name="hourly-rates" id="hourly-rates" class="form-control input-lg" value="' + Arr[0].cost + '"  type="number" onkeyup="handleInput(this.value)" style="width: 90%;"><span style="padding:  5px;line-height: 50px;">/hr</span>' +
+                                    '</div>' +
+                                    '</div>');
+                            
+                        }
+                    }
+                });
+
+            }
+            task_info();
+            ///////////////////////////////////////
+
+
+            function accept_offer() {
+                document.getElementById("loader").style.display = "block";
+                $("#loader-bg").addClass("loader-bg");
+
+                localStorage.removeItem("task_id");
+                localStorage.removeItem("proposal_users_id");
+                var urlParams = location.search.split(/[?&]/).slice(1).map(function (paramPair) {
+                    return paramPair.split(/=(.+)?/).slice(0, 2);
+                }).reduce(function (obj, pairArray) {
+                    obj[pairArray[0]] = pairArray[1];
+                    obj[pairArray[1]] = pairArray[3];
+                    return obj;
+                }, {});
+                localStorage.setItem('task_id', urlParams.task_id.replace(/%20/g, " "));
+                localStorage.setItem('proposal_users_id', urlParams.proposal_users_id.replace(/%20/g, " "));
+
+
+                $.ajax({
+                    type: "POST",
+                    url: localStorage.getItem("url_service") + '/rest-api/server',
+                    data: {
+                        cmd: "accept_offer",
+                        task_id: localStorage.getItem("task_id"),
+                        users_id: localStorage.getItem("users_id"),
+                        proposal_users_id: localStorage.getItem("proposal_users_id"),
+                        proposal_id: $("#proposal_id").val(),
+                        comment: $("#comment").val(),
+                        creditCardType: $("#creditCardType").val(),
+                        card_number: $("#card_number").val(),
+                        exp_month: $("#exp_month").val(),
+                        exp_year: $("#exp_year").val(),
+                        cvc: $("#cvc").val(),
+                        cost: $("#budget").val()
+                    },
+                    success: function (results) {
+                        Arr = JSON.parse(results);
+                        if (Arr['status'] === "success")
+                        {
+                            toastr.options.onHidden = function () {
+                                //window.location.href = 'accept_offer_done.html?task_id=' + localStorage.getItem("task_id") + '&proposal_users_id=' + localStorage.getItem("proposal_users_id");
+                                window.location.href = 'my-task.html';
+                            };
+                            toastr.options.timeOut = 1500;
+                            toastr.success(Arr['msg']);
+                            $("#loader-bg").removeClass("loader-bg");
+                            document.getElementById("loader").style.display = "none";
+                        } else {
+                            toastr.options.timeOut = 3000;
+                            toastr.error(Arr['msg']);
+                            $("#loader-bg").removeClass("loader-bg");
+                            document.getElementById("loader").style.display = "none";
+                        }
+                    }
+                });
+            }
+
+            $('#pay_now').click(function () {
+                accept_offer();
+            });
+
+            $("#card_number").keyup(function () {
+                $("#card_number").val(this.value.match(/[0-9]*/));
+            });
+            $("#exp_month").keyup(function () {
+                $("#exp_month").val(this.value.match(/[0-9]*/));
+            });
+            $("#exp_year").keyup(function () {
+                $("#exp_year").val(this.value.match(/[0-9]*/));
+            });
+            $("#cvc").keyup(function () {
+                $("#cvc").val(this.value.match(/[0-9]*/));
+            });
+
+            /*
+             function accept_offer() {
+             localStorage.removeItem("task_id");
+             localStorage.removeItem("proposal_users_id");
+             var urlParams = location.search.split(/[?&]/).slice(1).map(function (paramPair) {
+             return paramPair.split(/=(.+)?/).slice(0, 2);
+             }).reduce(function (obj, pairArray) {
+             obj[pairArray[0]] = pairArray[1];
+             obj[pairArray[1]] = pairArray[3];
+             return obj;
+             }, {});
+             localStorage.setItem('task_id', urlParams.task_id.replace(/%20/g, " "));
+             localStorage.setItem('proposal_users_id', urlParams.proposal_users_id.replace(/%20/g, " "));
+             
+             $.ajax({
+             type: "POST",
+             url: localStorage.getItem("url_service") + '/rest-api/server',
+             data: {
+             cmd: "accept_offer",
+             first_name: $("#first_name").val(),
+             last_name: $("#last_name").val(),
+             creditCardType: $("#creditCardType").val(),
+             card_number: $("#card_number").val(),
+             exp_month: $("#exp_month").val(),
+             exp_year: $("#exp_year").val(),
+             cvc: $("#cvc").val(),
+             task_id: localStorage.getItem("task_id"),
+             users_id: localStorage.getItem("users_id"),
+             proposal_users_id: localStorage.getItem("proposal_users_id"),
+             proposal_id: $("#proposal_id").val(),
+             comment: $("#comment").val(),
+             cost: $("#budget").val()
+             },
+             success: function (results) {
+             Arr = JSON.parse(results);
+             if (Arr['status'] === "success")
+             {
+             toastr.options.onHidden = function () {
+             //window.location.href = 'accept_offer_done.html?task_id=' + localStorage.getItem("task_id") + '&proposal_users_id=' + localStorage.getItem("proposal_users_id");
+             window.location.href = 'my-task.html';
+             };
+             toastr.options.timeOut = 1500;
+             toastr.success(Arr['msg']);
+             } else {
+             toastr.options.timeOut = 3000;
+             toastr.error(Arr['L_LONGMESSAGE0']);
+             }
+             }
+             });
+             }
+             $('#add_card').click(function () {
+             accept_offer();
+             });
+             
+             $("#card_number").keyup(function () {
+             $("#card_number").val(this.value.match(/[0-9]));
+             });
+             $("#exp_month").keyup(function () {
+             $("#exp_month").val(this.value.match(/[0-9]));
+             });
+             $("#exp_year").keyup(function () {
+             $("#exp_year").val(this.value.match(/[0-9]));
+             });
+             $("#cvc").keyup(function () {
+             $("#cvc").val(this.value.match(/[0-9]));
+             });
+             */
+
+            function isNumberKey(evt) {
+                var charCode = (evt.which) ? evt.which : evt.keyCode
+                if (charCode == 46)
+                    return true;
+                if (charCode > 31 && (charCode < 48 || charCode > 57))
+                    return false;
+                return true;
+            }
+            function handleInput(value) {
+                $("#budget").val(($("#hourly-rates").val()) * ($("#total-hours").val()));
+            }
+            
+        </script>
+
+    </body>
+</html>

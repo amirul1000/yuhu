@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Task reminders</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/font-awesome.min.css">
+        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="css/respnsive.css">
+        <script src="js/jquery.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/jquery.mobile-1.4.5.min.js"></script>
+        <script src="js/toastr.js"></script>
+        <link rel="stylesheet" href="css/toastr.css">
+        <script src="js/custom.js"></script>
+    </head>
+    <body  onload="myFunction()" style="margin:0;">
+        <!--Loader-->    
+        <div id="loader-bg" class="loader-bg"></div>
+        <div id="loader"></div>
+        <section class="back-button-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="back-button">
+
+                            <a href="notification-settings.html"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
+                            Task reminders
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="profile-edit">
+            <div class="all-info">
+                <h5 style="line-height: 18px;padding: 20px 15px;">We’ll remind you if you still need to release a payment, accept an offer, or leave a review.</h5>
+            </div>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12" style="padding-right: 0">
+                        <ul class="side-menu-area">
+                            <li>
+                                <a href="JavaScript:Void(0);">Email 
+                                    <small class="pull-right">
+                                        <div class="btn-group" id="email_status" data-toggle="buttons" style="margin-top: 0;">
+                                            <label class="btn btn-default btn-on btn-sm on-btn" style="padding: 2px 10px;">
+                                                <input value="1" name="email_status" type="radio">YES
+                                            </label>
+                                            <label class="btn btn-default btn-off btn-sm off-btn active" style="padding: 2px 10px;">
+                                                <input value="0" name="email_status" type="radio">NO
+                                            </label>
+                                        </div>
+                                    </small>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="JavaScript:Void(0);">SMS 
+                                    <small class="pull-right">
+                                        <div class="btn-group" id="sms_status" data-toggle="buttons" style="margin-top: 0;">
+                                            <label class="btn btn-default btn-on btn-sm on-btn" style="padding: 2px 10px;">
+                                                <input value="1" name="sms_status" type="radio">YES
+                                            </label>
+                                            <label class="btn btn-default btn-off btn-sm off-btn active" style="padding: 2px 10px;">
+                                                <input value="0" name="sms_status" type="radio">NO
+                                            </label>
+                                        </div>
+                                    </small>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="JavaScript:Void(0);">Push notification 
+                                    <small class="pull-right">
+                                        <div class="btn-group" id="push_status" data-toggle="buttons" style="margin-top: 0;">
+                                            <label class="btn btn-default btn-on btn-sm on-btn" style="padding: 2px 10px;">
+                                                <input value="1" name="push_status" type="radio">YES
+                                            </label>
+                                            <label class="btn btn-default btn-off btn-sm off-btn active" style="padding: 2px 10px;">
+                                                <input value="0" name="push_status" type="radio">NO
+                                            </label>
+                                        </div>
+                                    </small>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+         <script>
+            function check_email_notification() {
+                $.ajax({
+                    headers: {
+                        "Access-Control-Allow-Origin": "*",
+                        "Access-Control-Allow-Methods": "GET, POST, PUT",
+                        "Access-Control-Allow-Headers": "Content-Type",
+                    },
+                    type: "POST",
+                    url: localStorage.getItem("url_service") + '/rest-api/server',
+                    data: {
+                        cmd: "check_notification",
+                        session_id: localStorage.getItem("session_id"),
+                        type: 'email',
+                        title: 'task_remainders',
+                        users_id: localStorage.getItem("users_id")
+                    },
+                    success: function (results) {
+                        Arr = JSON.parse(results);
+                        if (Arr['status'] == 1)
+                        {
+                            $("#email_status .btn-on").addClass('active');
+                            $("#email_status .btn-off").removeClass('active');
+                            $("#email_status input[value='1']").attr('checked', 'checked');
+                        } else {
+                            $("#email_status .btn-off").addClass('active');
+                            $("#email_status .btn-on").removeClass('active');
+                            $("#email_status input[value='0']").attr('checked', 'checked');
+                        }
+                    }
+
+                });
+            }
+            
+            function check_sms_notification() {
+                $.ajax({
+                    headers: {
+                        "Access-Control-Allow-Origin": "*",
+                        "Access-Control-Allow-Methods": "GET, POST, PUT",
+                        "Access-Control-Allow-Headers": "Content-Type",
+                    },
+                    type: "POST",
+                    url: localStorage.getItem("url_service") + '/rest-api/server',
+                    data: {
+                        cmd: "check_notification",
+                        session_id: localStorage.getItem("session_id"),
+                        type: 'sms',
+                        title: 'task_remainders',
+                        users_id: localStorage.getItem("users_id")
+                    },
+                    success: function (results) {
+                        Arr = JSON.parse(results);
+                        if (Arr['status'] == 1)
+                        {
+                            $("#sms_status .btn-on").addClass('active');
+                            $("#sms_status .btn-off").removeClass('active');
+                            $("#sms_status input[value='1']").attr('checked', 'checked');
+                        } else {
+                            $("#sms_status .btn-off").addClass('active');
+                            $("#sms_status .btn-on").removeClass('active');
+                            $("#sms_status input[value='0']").attr('checked', 'checked');
+                        }
+                    }
+
+                });
+            }
+
+            function check_push_notification() {
+                $.ajax({
+                    headers: {
+                        "Access-Control-Allow-Origin": "*",
+                        "Access-Control-Allow-Methods": "GET, POST, PUT",
+                        "Access-Control-Allow-Headers": "Content-Type",
+                    },
+                    type: "POST",
+                    url: localStorage.getItem("url_service") + '/rest-api/server',
+                    data: {
+                        cmd: "check_notification",
+                        session_id: localStorage.getItem("session_id"),
+                        type: 'push',
+                        title: 'task_remainders',
+                        users_id: localStorage.getItem("users_id")
+                    },
+                    success: function (results) {
+                        Arr = JSON.parse(results);
+                        if (Arr['status'] == 1)
+                        {
+                            $("#push_status .btn-on").addClass('active');
+                            $("#push_status .btn-off").removeClass('active');
+                            $("#push_status input[value='1']").attr('checked', 'checked');
+                        } else {
+                            $("#push_status .btn-off").addClass('active');
+                            $("#push_status .btn-on").removeClass('active');
+                            $("#push_status input[value='0']").attr('checked', 'checked');
+                        }
+                    }
+
+                });
+            }
+
+            check_email_notification();
+            check_sms_notification();
+            check_push_notification();
+
+            $("#email_status").change(function () {
+                $.ajax({
+                    headers: {
+                        "Access-Control-Allow-Origin": "*",
+                        "Access-Control-Allow-Methods": "GET, POST, PUT",
+                        "Access-Control-Allow-Headers": "Content-Type",
+                    },
+                    type: "POST",
+                    url: localStorage.getItem("url_service") + '/rest-api/server',
+                    data: {
+                        cmd: "save_notification_settings",
+                        session_id: localStorage.getItem("session_id"),
+                        status: $(".active input[name='email_status']").val(),
+                        type: 'email',
+                        title: 'task_remainders',
+                        users_id: localStorage.getItem("users_id")
+                    },
+                    success: function (results) {
+                        Arr = JSON.parse(results);
+                        if (Arr['status'] === "success")
+                        {
+                            toastr.options.timeOut = 1500;
+                            toastr.success(Arr['msg']);
+                        } else {
+                            toastr.options.timeOut = 1500;
+                            toastr.error(Arr['msg']);
+                        }
+                    }
+
+                });
+            });
+            
+            $("#sms_status").change(function () {
+                $.ajax({
+                    headers: {
+                        "Access-Control-Allow-Origin": "*",
+                        "Access-Control-Allow-Methods": "GET, POST, PUT",
+                        "Access-Control-Allow-Headers": "Content-Type",
+                    },
+                    type: "POST",
+                    url: localStorage.getItem("url_service") + '/rest-api/server',
+                    data: {
+                        cmd: "save_notification_settings",
+                        session_id: localStorage.getItem("session_id"),
+                        status: $(".active input[name='sms_status']").val(),
+                        type: 'sms',
+                        title: 'task_remainders',
+                        users_id: localStorage.getItem("users_id")
+                    },
+                    success: function (results) {
+                        Arr = JSON.parse(results);
+                        if (Arr['status'] === "success")
+                        {
+                            toastr.options.timeOut = 1500;
+                            toastr.success(Arr['msg']);
+                        } else {
+                            toastr.options.timeOut = 1500;
+                            toastr.error(Arr['msg']);
+                        }
+                    }
+
+                });
+            });
+
+            $("#push_status").change(function () {
+                $.ajax({
+                    headers: {
+                        "Access-Control-Allow-Origin": "*",
+                        "Access-Control-Allow-Methods": "GET, POST, PUT",
+                        "Access-Control-Allow-Headers": "Content-Type",
+                    },
+                    type: "POST",
+                    url: localStorage.getItem("url_service") + '/rest-api/server',
+                    data: {
+                        cmd: "save_notification_settings",
+                        session_id: localStorage.getItem("session_id"),
+                        status: $(".active input[name='push_status']").val(),
+                        type: 'push',
+                        title: 'task_remainders',
+                        users_id: localStorage.getItem("users_id")
+                    },
+                    success: function (results) {
+                        Arr = JSON.parse(results);
+                        if (Arr['status'] === "success")
+                        {
+                            toastr.options.timeOut = 1500;
+                            toastr.success(Arr['msg']);
+                        } else {
+                            toastr.options.timeOut = 1500;
+                            toastr.error(Arr['msg']);
+                        }
+                    }
+
+                });
+            });
+        </script>
+    </body>
+</html>
+

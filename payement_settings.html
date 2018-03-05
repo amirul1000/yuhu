@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <title>Payment settings</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/font-awesome.min.css">
+        <link rel="stylesheet" href="css/jquery.mobile-1.4.5.min.css">
+        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="css/respnsive.css">
+        <script src="js/jquery.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/jquery.mobile-1.4.5.min.js"></script>
+        <script src="js/toastr.js"></script>
+        <link rel="stylesheet" href="css/toastr.css">
+        <script src="js/custom.js"></script>
+    </head>
+
+    <body onload="myFunction()" style="margin:0;">
+        <!--Loader-->
+        <div id="loader-bg" class="loader-bg"></div>
+        <div id="loader"></div>
+        <section class="back-button-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="back-button"> <a href="more-option.html"><i class="fa fa-arrow-left" aria-hidden="true"></i></a> Payment settings</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="payment-setting-content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-xs-12 no-padding">
+                        <div role="tabpanel" class="tab-pane" id="profile">
+                            <ul class="side-menu-area card-settings">
+                                <!--                                <li>
+                                                                    <a class="text-size-info" href="billing_address.html"> <i class="fa fa-home" aria-hidden="true"></i>
+                                                                        <div class="card-text">Add billing address</div>
+                                                                        <div class="pull-right" style="font-size: 22px"><i class="fa fa-angle-right" aria-hidden="true"></i></div>
+                                                                    </a>
+                                                                    <div class="clearfix"></div>
+                                                                </li>
+                                                                <li>
+                                                                    <a class="text-size-info" href="bank-account.html"> <i class="fa fa-university" aria-hidden="true"></i>
+                                                                        <div class="card-text">Add a bank account</div>
+                                                                        <div class="pull-right" style="font-size: 22px"><i class="fa fa-angle-right" aria-hidden="true"></i></div>
+                                                                    </a>
+                                                                    <div class="clearfix"></div>
+                                                                </li>-->
+                                <li>
+                                    <a class="text-size-info" href="add_paypal.html"> <i class="fa fa-paypal" aria-hidden="true"></i>
+                                        <div class="card-text" id="paymentInfo">Add a PayPal account</div>
+                                        <div class="pull-right" style="font-size: 22px"><i class="fa fa-angle-right" aria-hidden="true"></i></div>
+                                    </a>
+                                    <div class="clearfix"></div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <script>
+            $.ajax({
+                headers: {
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Methods": "GET, POST, PUT",
+                    "Access-Control-Allow-Headers": "Content-Type",
+                },
+                type: "POST",
+                url: localStorage.getItem("url_service") + '/rest-api/server',
+                data: {
+                    cmd: "get_paypal",
+                    users_id: localStorage.getItem("users_id")
+                },
+                success: function (results) {
+                    Arr = JSON.parse(results);
+                    if(Arr.paypal_id != ''){
+                        $('#paymentInfo').html('Change PayPal account');
+                    }
+                }
+            });
+        </script>
+    </body>
+
+</html>

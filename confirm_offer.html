@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">    
+    <head>        
+        <title>More options</title>        
+        <meta charset="utf-8">   
+        <meta name="theme-color" content="#033c56" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">        
+        <link rel="stylesheet" href="css/bootstrap.min.css">        
+        <link rel="stylesheet" href="css/style.css">        
+        <link rel="stylesheet" href="css/font-awesome.min.css">        
+        <script src="js/jquery.min.js"></script>        
+        <script src="js/bootstrap.min.js"></script>  
+        <script src="js/toastr.js"></script>
+        <script src="js/custom.js"></script>
+        <link rel="stylesheet" href="css/toastr.css">
+    </head>    
+    <body  onload="myFunction()" style="margin:0;">  
+        <!--Loader-->    
+        <div id="loader-bg" class="loader-bg"></div>
+        <div id="loader"></div>
+
+        <section class="back-button-section">            
+            <div class="container">                
+                <div class="row">                    
+                    <div class="col-xs-12">                        
+                        <div class="back-button">                            
+                            More options                        
+                        </div>                    
+                    </div>                
+                </div>            
+            </div>        
+        </section>        
+        <section class="main-content">            
+            <div class="container-fluid">                
+                <div class="row">                    
+                    <div class="col-md-12" style="padding-right: 0">                        
+                        <ul class="side-menu-area">                            
+                            <li id="paypal_account"><a href="add_paypal_offer.html">Add PayPal Account <span class="pull-right"><i class="fa fa-angle-right" aria-hidden="true"></i></span></a></li>                        
+                            <li id="phone_number"><a href="mobile-verifications.html">Provide Your Mobile Number <span class="pull-right"><i class="fa fa-angle-right" aria-hidden="true"></i></span></a></li>
+                            <!--<li id="billing_address"><a href="billing_address.html">Provide Your Billing Address <span class="pull-right"><i class="fa fa-angle-right" aria-hidden="true"></i></span></a></li>-->
+                            <li id="dob"><a href="add_dob.html">Date of Birth <span class="pull-right"><i class="fa fa-angle-right" aria-hidden="true"></i></span></a></li>
+                        </ul>                    
+                    </div>                
+                </div>            
+            </div>        
+        </section> 
+        <div class="post-comment" style="padding: 15px" id="confirm_offer_url">
+            <!--<button class="awaiting-btn accept-btn text-center" href="accept-offer.html">Continue</button>-->
+            <button type="button" class="awaiting-btn accept-btn text-center" style="width: 100%; background-color: #ccc" disabled>Continue</button>
+        </div>
+        <script>
+            function task_info() {
+                localStorage.removeItem("task_id");
+                var urlParams = location.search.split(/[?&]/).slice(1).map(function (paramPair) {
+                    return paramPair.split(/=(.+)?/).slice(0, 2);
+                }).reduce(function (obj, pairArray) {
+                    obj[pairArray[0]] = pairArray[1];
+                    return obj;
+                }, {});
+
+                localStorage.setItem('task_id', urlParams.task_id.replace(/%20/g, " "));
+                $("#paypal_account").html('<a href="add_paypal_offer.html?task_id=' + localStorage.getItem("task_id") + '">Add PayPal Account <span class="pull-right"><i class="fa fa-angle-right" aria-hidden="true"></i></span></a>');
+                $("#phone_number").html('<a href="mobile-verifications.html?task_id=' + localStorage.getItem("task_id") + '">Provide Your Mobile Number <span class="pull-right"><i class="fa fa-angle-right" aria-hidden="true"></i></span></a>');
+                $("#dob").html('<a href="add_dob.html?task_id=' + localStorage.getItem("task_id") + '">Date of Birth <span class="pull-right"><i class="fa fa-angle-right" aria-hidden="true"></i></span></a>');
+
+                $.ajax({
+                    headers: {
+                        "Access-Control-Allow-Origin": "*",
+                        "Access-Control-Allow-Methods": "GET, POST, PUT",
+                        "Access-Control-Allow-Headers": "Content-Type",
+                    },
+                    type: "POST",
+                    url: localStorage.getItem("url_service") + '/rest-api/server',
+                    data: {
+                        cmd: "check_offer_required",
+                        users_id: localStorage.getItem("users_id")
+                    },
+                    success: function (results) {
+                        Arr = JSON.parse(results);
+                        if (Arr.phone_info === 'yes') {
+                            $("#phone_number").addClass('hide');
+                        }
+                        if (Arr.paypal_account === 'yes') {
+                            $("#paypal_account").addClass('hide');
+                        }
+                        if (Arr.dob_info === 'yes') {
+                            $("#dob").addClass('hide');
+                        }
+                        if ((Arr.dob_info === 'yes') && (Arr.phone_info === 'yes') && (Arr.paypal_account === 'yes')) {
+                            window.location.href = 'confirm_offer_done.html?task_id=' + localStorage.getItem("task_id");
+                        }
+                        if ((Arr.phone_info === 'yes') && (Arr.dob_info === 'yes') && (Arr.paypal_account === 'yes')) {
+                            $("#confirm_offer_url").html('<a class="awaiting-btn accept-btn text-center" href="confirm_offer_done.html?task_id=' + localStorage.getItem("task_id") + '" >Submit</a>');
+                        }
+                    }
+                });
+            }
+            task_info();
+        </script>
+    </body>
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>YUHU Life</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/font-awesome.min.css">
+        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="css/jquery.steps.css">
+
+        <script src="js/jquery.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/jquery.steps.js"></script>
+        <style>
+            .steps.clearfix{
+                display: none;
+            }
+        </style>
+
+    </head>
+    <body>
+        <div id="example-basic">
+            <h3>Keyboard</h3>
+            <section class="screen-area">
+                <h4>Do you need any task completed?</h4>
+                <p>Post your task and get online offers from companies and skilled individuals. For a more informed quote, ask for a free on-site visit. </p>
+            </section>
+            <h3>Effects</h3>
+            <section class="screen-area">
+                <h4>It’s quick and free to post a task</h4>
+                <p>Just choose a task category, describe with words and pictures or videos, tell when and where you want it completed, and how much you want to pay.</p>
+            </section>
+            <h3>Pager</h3>
+            <section class="screen-area">
+                <h4>Receive offers from companies and individuals</h4>
+                <p>Companies and individuals who specialize in that field will receive an instant notification and start making offers. Review the offers by checking ratings, portfolio, cost, and availability.</p>
+            </section>
+            <h3>Pager</h3>
+            <section class="screen-area">
+                <h4>Accept an offer</h4>
+                <p>After you find the right company or person for the job, it’s easy to accept their offer by depositing payment with Yuhu Life. You will release payment after the task is successfully completed.</p>
+            </section>
+            <h3>Effects</h3>
+            <section class="screen-area">
+                <h4>Do you have a particular set of skills?</h4>
+                <p>Yuhu Life is an ideal platform to increase your business, start your business, or just make money doing what you love.</p>
+            </section>
+            <h3>Effects</h3>
+            <section class="screen-area">
+                <h4>It pays to use the Yuhu Life app</h4>
+                <p>Yuhu Life is the least expensive task posting platform available. It’s completely free to post tasks and make offers. The task worker only pays a 20% platform fee, <strong>not to exceed $9.95.</strong></p>
+            </section>
+        </div>
+
+        <script language="JavaScript">
+            $("#example-basic").steps({
+                headerTag: "h3",
+                bodyTag: "section",
+                transitionEffect: "slideLeft",
+                autoFocus: true,
+            });
+            $('a[href="#finish"]').click(function (event) {
+                localStorage.removeItem("action");
+                var urlParams = location.search.split(/[?&]/).slice(1).map(function (paramPair) {
+                    return paramPair.split(/=(.+)?/).slice(0, 2);
+                }).reduce(function (obj, pairArray) {
+                    obj[pairArray[0]] = pairArray[1];
+                    return obj;
+                }, {});
+                localStorage.setItem('action', urlParams.action.replace(/%20/g, " "));
+                $.ajax({
+                    headers: {
+                        "Access-Control-Allow-Origin": "*",
+                        "Access-Control-Allow-Methods": "GET, POST, PUT",
+                        "Access-Control-Allow-Headers": "Content-Type",
+                    },
+                    type: "POST",
+                    url: localStorage.getItem("url_service") + '/rest-api/server',
+                    data: {
+                        cmd: "save_screen_show_info",
+                        token: localStorage.getItem("token")
+                    },
+                    success: function (results) {
+                        if (localStorage.getItem("action") === 'signup') {
+                            window.location.href = "signup.html";
+                        } else {
+                            window.location.href = "login.html";
+                        }
+                    }
+                });
+            });
+        </script>
+    </body>
+</html>
+

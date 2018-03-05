@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Profile</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="css/mdbootstrap.min.css">
+        <link rel="stylesheet" href="css/compiled.min.css">
+        <link rel="stylesheet" href="css/font-awesome.min.css">
+        <link rel="stylesheet" href="css/component.css" >
+        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="css/toastr.css">
+        <link rel="stylesheet" href="css/respnsive.css">
+        <link rel="stylesheet" href="css/select2.min.css">
+
+        <script src="js/jquery.min.js"></script>
+        <script src="js/mdbootstrap.min.js"></script>
+        <script src="js/toastr.js"></script>
+        <script src="js/select2.min.js"></script>
+        <script src="js/custom.js"></script>
+        <script src="js/cordova.js"></script>
+        <style>
+            .select2-container{
+                width: 93% !important;
+                border: 1px solid rgba(0,0,0,.15);
+                border-radius: 4px;
+            }
+            .select2-container--default .select2-selection--multiple {
+                border-bottom: 0;
+            }
+            .select2-container--open .select2-dropdown--below {
+                width: 90% !important;
+            }
+        </style>
+    </head>
+    <!--
+    https://cordova.apache.org/docs/en/3.0.0/cordova/file/filetransfer/filetransfer.html
+    -->
+
+    <body  onload="myFunction()" style="margin:0;">
+        <!--Loader-->    
+        <div id="loader-bg" class="loader-bg"></div>
+        <div id="loader"></div>
+
+        <section class="back-button-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="back-button">
+                            <a href="more-option.html"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
+                            Profile
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="profile-top text-center ">
+            <div class="bg-color bg-opecity">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="image-pro">
+                                <div id="profile_pic">
+
+                                </div>
+
+                                <link href="Simple-Ajax-Uploader-master/assets/css/styles.css" rel="stylesheet">
+                                <div class="camera">
+                                    <div class="box">
+                                        <input  type="file" id="uploadBtn" class="inputfile" />
+                                        <!--<input type="file" name="file-5" id="uploadBtn" class="inputfile inputfile-4" />-->
+
+                                    </div>
+                                </div>
+
+
+
+                                <div class="row" style="padding-top:10px;">
+                                    <div class="col-10">
+                                        <div id="progressOuter" class="progress progress-striped active" style="display:none;">
+                                            <div id="progressBar" class="progress-bar progress-bar-success"  role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row" style="padding-top:10px;">
+                                    <div class="col-10">
+                                        <div id="msgBox">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!--</div>-->
+                                <script src="Simple-Ajax-Uploader-master/SimpleAjaxUploader.js"></script>
+                                <script>
+        function escapeTags(str) {
+            return String(str)
+                    .replace(/&/g, '&amp;')
+                    .replace(/"/g, '&quot;')
+                    .replace(/'/g, '&#39;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;');
+        }
+
+        $(document).ready(function () {
+
+            var btn = document.getElementById('uploadBtn'),
+                    progressBar = document.getElementById('progressBar'),
+                    progressOuter = document.getElementById('progressOuter'),
+                    msgBox = document.getElementById('msgBox');
+
+            var uploader = new ss.SimpleUpload({
+                button: btn,
+                url: localStorage.getItem("url_service") + '/rest-api/server?cmd=profile_pic_upload&users_id=' + localStorage.getItem("users_id"),
+                sessionProgressUrl: 'Simple-Ajax-Uploader-master/code/sessionProgress.php',
+                name: 'file_picture',
+                multipart: true,
+                hoverClass: 'hover',
+                focusClass: 'focus',
+                responseType: 'json',
+                startXHR: function () {
+                    progressOuter.style.display = 'block'; // make progress bar visible
+                    this.setProgressBar(progressBar);
+                },
+                onSubmit: function () {
+                    msgBox.innerHTML = ''; // empty the message box
+                    btn.innerHTML = 'Uploading...'; // change button text to "Uploading..."
+                },
+                onComplete: function (filename, response) {
+                    //btn.innerHTML = 'Choose Another File';
+                    btn.innerHTML = 'Choose File';
+                    progressOuter.style.display = 'none'; // hide progress bar when upload is completed
+
+                    if (!response) {
+                        msgBox.innerHTML = 'Unable to upload file';
+                        return;
+                    }
+
+                    if (response.success === true) {
+                        msgBox.innerHTML = '<strong>' + escapeTags(filename) + '</strong>' + ' successfully uploaded.';
+
+                    } else {
+                        if (response.msg) {
+                            profile();
+                            msgBox.innerHTML = escapeTags(response.msg);
+
+                        } else {
+                            msgBox.innerHTML = 'An error occurred and the upload failed.';
+                        }
+                    }
+                },
+                onError: function () {
+                    progressOuter.style.display = 'none';
+                    msgBox.innerHTML = 'Unable to upload file';
+                }
+            });
+        });
+                                </script>
+
+                                <h4 id="fullname"></h4>
+                                <p>Last online Now <br><i class="fa fa-map-marker" aria-hidden="true"></i> <span id="location"></span></p>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+        <div class="margin_b_30"></div>
+        <section class="profile-bottom">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <p class="text-size-info text-center">Looks like you haven't received any reviews just yet.</p>
+                        <div class="review-avg text-center">
+                            <div class="rating" id="ratimg_me">
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star defult-star" aria-hidden="true"></i>
+                                <span><small>24 reviews</small></span>
+                            </div>
+                            <p class="text-size-info"><span id="comrate"></span>% Completion Rate 
+                                <a href="#" title="" data-toggle="popover" data-placement="top" data-trigger="focus" data-content="Click anywhere in the document to close this popover" data-original-title="Dismissible popover"><i class="fa fa-info-circle" aria-hidden="true"></i></a>
+                            </p>
+                            <h5 class="text-title">about <span class="pull-right edit-icon" data-toggle="modal" data-target="#aboutModal"><i class="fa fa-pencil" aria-hidden="true"></i></span> </h5>
+                            <p class="text-size-info text-left" id="about_me"></p>
+                            <h5 class="text-title">Languages <span class="pull-right edit-icon" data-toggle="modal" data-target="#lngModal"><i class="fa fa-pencil" aria-hidden="true"></i></span></h5>
+                            <div class="tag-selector static language_chip">
+
+                            </div>
+
+                            <h5 class="text-title">Skills <span class="pull-right edit-icon" data-toggle="modal" data-target="#skillModal"><i class="fa fa-pencil" aria-hidden="true"></i></span></h5>
+                            <div class="tag-selector static specialities_chip">
+
+                            </div>
+                            <div class="margin_b_30"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- About Modal -->
+        <div class="modal fade" id="aboutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">About</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <textarea class="form-control" name="about" id="aboutme"></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="updateAbout">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Language Modal -->
+        <div class="modal fade" id="lngModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Language</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <select class="form-control input-lg multi-select2" name="language[]" id="language" multiple="multiple">
+
+                        </select>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="updateLang">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Skills Modal -->
+        <div class="modal fade" id="skillModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Language</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <select class="form-control input-lg multi-select2" name="specialities[]" id="specialities" multiple="multiple">
+
+                        </select>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="updateSkill">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Name Modal -->
+        <div class="modal fade" id="nameModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Name</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>First Name</label>
+                            <input class="form-control" name="first_name" id="first_name">
+                        </div>
+                        <div class="form-group">
+                            <label>Last Name</label>
+                            <input class="form-control" name="last_name" id="last_name">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="updateName">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="js/mdb.min.js"></script>
+        <script src="js/popper.min.js"></script>
+        <script>
+        //multi selet
+        $(document).ready(function () {
+            $('.multi-select2').select2();
+        });
+        // about update
+        $('#updateAbout').click(function () {
+
+            $.ajax({
+                headers: {
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Methods": "GET, POST, PUT",
+                    "Access-Control-Allow-Headers": "Content-Type",
+                },
+                type: "POST",
+                url: localStorage.getItem("url_service") + '/rest-api/server',
+                data: {
+                    cmd: "update_profile",
+                    session_id: localStorage.getItem("session_id"),
+                    about_me: $("#aboutme").val(),
+                    users_id: localStorage.getItem("users_id")
+                },
+                success: function (results) {
+                    Arr = JSON.parse(results);
+                    if (Arr['status'] === "success")
+                    {
+                        toastr.options.onHidden = function () {
+                            location.reload();
+                        }
+                        toastr.options.timeOut = 1500;
+                        toastr.success(Arr['msg']);
+                    }
+                }
+
+            });
+        });
+        // language update
+        $('#updateLang').click(function () {
+
+            $.ajax({
+                headers: {
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Methods": "GET, POST, PUT",
+                    "Access-Control-Allow-Headers": "Content-Type",
+                },
+                type: "POST",
+                url: localStorage.getItem("url_service") + '/rest-api/server',
+                data: {
+                    cmd: "update_profile",
+                    session_id: localStorage.getItem("session_id"),
+                    language_in: $("select[name='language[]']").val(),
+                    users_id: localStorage.getItem("users_id")
+                },
+                success: function (results) {
+                    Arr = JSON.parse(results);
+                    if (Arr['status'] === "success")
+                    {
+                        toastr.options.onHidden = function () {
+                            location.reload();
+                        }
+                        toastr.options.timeOut = 1500;
+                        toastr.success(Arr['msg']);
+                    }
+                }
+
+            });
+        });
+        //update skills
+        $('#updateSkill').click(function () {
+
+            $.ajax({
+                headers: {
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Methods": "GET, POST, PUT",
+                    "Access-Control-Allow-Headers": "Content-Type",
+                },
+                type: "POST",
+                url: localStorage.getItem("url_service") + '/rest-api/server',
+                data: {
+                    cmd: "update_profile",
+                    session_id: localStorage.getItem("session_id"),
+                    specialities: $("select[name='specialities[]']").val(),
+                    users_id: localStorage.getItem("users_id")
+                },
+                success: function (results) {
+                    Arr = JSON.parse(results);
+                    if (Arr['status'] === "success")
+                    {
+                        toastr.options.onHidden = function () {
+                            location.reload();
+                        }
+                        toastr.options.timeOut = 1500;
+                        toastr.success(Arr['msg']);
+                    }
+                }
+
+            });
+        });
+        //update skills
+        $('#updateName').click(function () {
+
+            $.ajax({
+                headers: {
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Methods": "GET, POST, PUT",
+                    "Access-Control-Allow-Headers": "Content-Type",
+                },
+                type: "POST",
+                url: localStorage.getItem("url_service") + '/rest-api/server',
+                data: {
+                    cmd: "update_profile",
+                    session_id: localStorage.getItem("session_id"),
+                    first_name: $("#first_name").val(),
+                    last_name: $("#last_name").val(),
+                    users_id: localStorage.getItem("users_id")
+                },
+                success: function (results) {
+                    Arr = JSON.parse(results);
+                    if (Arr['status'] === "success")
+                    {
+                        toastr.options.onHidden = function () {
+                            location.reload();
+                        }
+                        toastr.options.timeOut = 1500;
+                        toastr.success(Arr['msg']);
+                    }
+                }
+
+            });
+        });
+
+        //show all languages
+        $.ajax({
+            headers: {
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Methods": "GET, POST, PUT",
+                "Access-Control-Allow-Headers": "Content-Type",
+            },
+            type: "POST",
+            url: localStorage.getItem("url_service") + '/rest-api/server',
+            data: {
+                cmd: "getLanguage",
+                session_id: localStorage.getItem("session_id"),
+                users_id: localStorage.getItem("users_id")
+            },
+            success: function (results) {
+                Arr = JSON.parse(results);
+                $('#language').html(Arr);
+            }
+
+        });
+        // Show skills data
+        $.ajax({
+            headers: {
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Methods": "GET, POST, PUT",
+                "Access-Control-Allow-Headers": "Content-Type",
+            },
+            type: "POST",
+            url: localStorage.getItem("url_service") + '/rest-api/server',
+            data: {
+                "cmd": "get_parent_cat",
+                "session_id": localStorage.getItem("session_id"),
+                "users_id": localStorage.getItem("users_id")
+            },
+            success: function (data) {
+                Arr = JSON.parse(data);
+                $('#specialities').html(Arr);
+            }
+        });
+
+
+        $("#activate-step-2").click(function () {
+            update();
+        });
+
+        function profile()
+        {
+            $.ajax({
+                headers: {
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Methods": "GET, POST, PUT",
+                    "Access-Control-Allow-Headers": "Content-Type",
+                },
+                type: "GET",
+                url: localStorage.getItem("url_service") + '/rest-api/server',
+                data: {
+                    "cmd": "profile",
+                    session_id: localStorage.getItem("session_id"),
+                    "users_id": localStorage.getItem("users_id")
+                },
+                success: function (data) {
+                    Arr = JSON.parse(data);
+
+                    all_task = '';
+                    strs = '';
+                    for (i = 0; i < Arr['rating']['rating']; i++) {
+                        strs = '<i class="fa fa-star" aria-hidden="true" style="padding:3px"></i>';
+                        all_task = all_task.concat(strs);
+                    }
+                    if ((5 - Arr['rating']['rating']) > 0) {
+                        for (i = 0; i < (5 - Arr['rating']['rating']); i++) {
+                            strs = '<i class="fa fa-star" aria-hidden="true" style="color: #ccc; padding:3px"></i>';
+                            all_task = all_task.concat(strs);
+                        }
+                    }
+                    $('#ratimg_me').html(all_task + ' <span><small>' + Arr['rating']['total_count'] + ' reviews</small></span>');
+                    $('#comrate').html(Arr['comrate']);
+
+
+                    $("#fullname").html(Arr[0].first_name + ' ' + Arr[0].last_name.charAt(0) + '. <span class="edit-icon" data-toggle="modal" data-target="#nameModal"><i class="fa fa-pencil" style="font-size: 16px;" aria-hidden="true"></i></span>');
+                    $('#first_name').val(Arr[0].first_name);
+                    $('#last_name').val(Arr[0].last_name);
+
+
+                    image = 'picture/3a.png';
+                    if (Arr[0].file_picture) {
+                        image = Arr[0].file_picture;
+                    }
+                    $("#profile_pic").html('<img src="' + localStorage.getItem("url_service") + '/' + image + '" />');
+
+                    if ((Arr[0].user_type) === 'employer') {
+                        $("#employer_btn").addClass('active');
+                    }
+                    if ((Arr[0].user_type) === 'worker') {
+                        $("#worker_btn").addClass('active');
+                    }
+
+                    $("#location").html(Arr[0].location);
+                    $("#tagline").val(Arr[0].tagline);
+                    $("#about_me").html(Arr[0].about_me);
+                    $("#aboutme").html(Arr[0].about_me);
+                    $("#email").val(Arr[0].email);
+                    $("#dob").val(Arr[0].dob);
+                    $("#ssn").val(Arr[0].ssn);
+                    $("#latitude").val(Arr[0].latitude);
+                    $("#longitude").val(Arr[0].longitude);
+                    $("#transportation").val(Arr[0].transportation);
+
+                    if (Arr[0].language.length > 0)
+                    {
+
+                        str = "";
+                        arrChip = Arr[0].language.split(",");
+                        for (i = 0; i < arrChip.length; i++)
+                        {
+                            str = str + '<div class="tag-item">' +
+                                    '<span class="text" >' + arrChip[i] + '</span>' +
+                                    '</div>';
+                        }
+
+                        $(".language_chip").html(str);
+
+
+                    }
+
+                   
+                    if (Arr[0].specialities.length > 0)
+                    {
+
+                        str = "";
+                        arrChip4 = Arr[0].specialities.split(",");
+                        for (i = 0; i < arrChip4.length; i++)
+                        {
+                            str = str + '<div class="tag-item">' +
+                                    '<span class="text">' + arrChip4[i] + '</span>' +
+                                    '</div>';
+                        }
+
+                        $(".specialities_chip").html(str);
+                    }
+
+                }
+            });
+        }
+        profile();
+
+        function change_worker() {
+            $.ajax({
+                headers: {
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Methods": "GET, POST, PUT",
+                    "Access-Control-Allow-Headers": "Content-Type",
+                },
+                type: "POST",
+                url: localStorage.getItem("url_service") + '/rest-api/server',
+                data: {
+                    cmd: "user_type_update",
+                    session_id: localStorage.getItem("session_id"),
+                    user_type: $("#worker").val(),
+                    users_id: localStorage.getItem("users_id")
+                },
+                success: function (results) {
+
+                    Arr = JSON.parse(results);
+                    if (Arr['status'] === "success")
+                    {
+                        toastr.options.timeOut = 1500;
+
+                        toastr.success(Arr['msg']);
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+
+                    toastr.options.timeOut = 1500;
+
+                    toastr.error("some error");
+
+                }
+
+            });
+        }
+        function change_employer() {
+            $.ajax({
+                headers: {
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Methods": "GET, POST, PUT",
+                    "Access-Control-Allow-Headers": "Content-Type",
+                },
+                type: "POST",
+                url: localStorage.getItem("url_service") + '/rest-api/server',
+                data: {
+                    cmd: "user_type_update",
+                    session_id: localStorage.getItem("session_id"),
+                    user_type: $("#employer").val(),
+                    users_id: localStorage.getItem("users_id")
+                },
+                success: function (results) {
+
+                    Arr = JSON.parse(results);
+                    if (Arr['status'] === "success")
+                    {
+                        toastr.options.timeOut = 1500;
+
+                        toastr.success(Arr['msg']);
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+
+                    toastr.options.timeOut = 1500;
+
+                    toastr.error("some error");
+
+                }
+
+            });
+        }
+        $('#worker_btn').click(function () {
+            change_worker();
+        });
+        $('#employer_btn').click(function () {
+            change_employer();
+        });
+
+        function profile_pic_upload() {
+            //alert($('#uploadBtn').val());
+            $.ajax({
+                headers: {
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Methods": "GET, POST, PUT",
+                    "Access-Control-Allow-Headers": "Content-Type",
+                },
+                type: "POST",
+                url: localStorage.getItem("url_service") + '/rest-api/server',
+                data: {
+                    cmd: "profile_pic_upload",
+                    session_id: localStorage.getItem("session_id"),
+                    profile_pic: $('#uploadBtn').val(),
+                    users_id: localStorage.getItem("users_id")
+                },
+                success: function (results) {
+
+                    Arr = JSON.parse(results);
+                    if (Arr['status'] === "success")
+                    {
+
+                        toastr.options.timeOut = 1500;
+                        toastr.success(Arr['msg']);
+                    }
+                },
+            });
+        }
+        $('#profile_pic_info').change(function () {
+
+            profile_pic_upload();
+        });
+
+        ////////////////////////////////////////
+
+
+        </script>
+
+
+    </body>
+</html>

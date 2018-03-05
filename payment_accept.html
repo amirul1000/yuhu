@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en"> 
+    <head>      
+        <title>Task Details</title>  
+        <meta charset="utf-8">    
+        <meta name="theme-color" content="#033c56" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">  
+        <link rel="stylesheet" href="css/bootstrap.min.css">     
+        <link rel="stylesheet" href="css/font-awesome.min.css">   
+        <!-- Include Bootstrap Datepicker -->      
+        <link rel="stylesheet" href="css/datepicker.min.css" />   
+        <link rel="stylesheet" href="css/datepicker3.min.css" />     
+        <link rel="stylesheet" href="css/style.css">       
+        <link rel="stylesheet" href="css/respnsive.css">   
+        <link rel="stylesheet" href="css/toastr.css">      
+        <script src="js/jquery.min.js"></script>      
+        <script src="js/bootstrap.min.js"></script>  
+        <script src="js/toastr.js"></script> 
+
+    </head>
+    <body  onload="myFunction()" style="margin:0;">
+        <!--Loader-->    
+        <div id="loader-bg" class="loader-bg"></div>
+        <div id="loader"></div>
+
+        <section class="back-button-section">    
+            <div class="container">         
+                <div class="row">           
+                    <div class="col-xs-12">                 
+                        <div class="back-button">                   
+                            <a href="bid_by.html"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>            
+                            Payment Accept
+                        </div>           
+                    </div>            
+                </div>        
+            </div>     
+        </section>   
+
+        <section class="main-content" style="padding-top:30px ">            
+            <div class="container-fluid">                
+                <div class="row">                    
+                    <div class="col-md-12 text-left">
+                        <h4 style="font-weight: 400" id="task_title"></h4>
+                        <div class="form-group">
+                            <label class="form-label" for="taks">Amount</label>
+                            <div class="input-group">
+                                <span class="input-group-addon" id="basic-addon2">$</span>
+                                <input name="budget" id="budget" class="form-control input-lg" value="" placeholder="Budget" aria-describedby="basic-addon2" type="number" disabled>
+                            </div>
+                        </div>                        
+                        <div class="form-group  margin_t_20">
+                            <label class="form-label" for="taks">Message</label>
+                            <textarea class="form-control" rows="4" name="message" id="message" disabled></textarea>
+                        </div> 
+                        <input type="hidden" name="taskowner_users_id" id="taskowner_users_id" value="" />
+                        <input type="hidden" name="payment_id" id="payment_id" value="" />
+                    </div>                
+                </div>            
+            </div>        
+        </section> 
+        <div class="post-comment" style="padding: 15px">
+            <button type="button" class="awaiting-btn accept-btn text-center" style="width: 100%" id="submintAccept">Accept</button>
+        </div>
+
+        <script src="js/bootstrap-datepicker.min.js"></script>   
+        <script src="js/step-form.js"></script>   
+        <script src="js/custom.js"></script>       
+        <script>
+        localStorage.removeItem("task_id");
+        var urlParams = location.search.split(/[?&]/).slice(1).map(function (paramPair) {
+            return paramPair.split(/=(.+)?/).slice(0, 2);
+        }).reduce(function (obj, pairArray) {
+            obj[pairArray[0]] = pairArray[1];
+            obj[pairArray[1]] = pairArray[3];
+            return obj;
+        }, {});
+        localStorage.setItem('task_id', urlParams.task_id.replace(/%20/g, " "));
+        localStorage.setItem('assignedto_users_id', urlParams.assignedto_users_id.replace(/%20/g, " "));
+        $.ajax({
+            type: "POST",
+            url: localStorage.getItem("url_service") + '/rest-api/server',
+            data: {
+                cmd: "get_milestone",
+                users_id: localStorage.getItem("assignedto_users_id"),
+                task_id: localStorage.getItem("task_id")
+            },
+            success: function (results) {
+                Arr = JSON.parse(results);
+                $('#task_title').html(Arr.task_title);
+                $('#budget').val(Arr.amount);
+                $('#message').val(Arr.message);
+                $('#taskowner_users_id').val(Arr.taskassign_id);
+                $('#payment_id').val(Arr.id);
+            }
+        });
+
+        $('#submintAccept').click(function (event) {
+
+            if ($("#budget").val() == "")
+            {
+                toastr.options.timeOut = 1500;
+                toastr.error("Amount Required");
+                return;
+            }
+            $.ajax({
+                type: "POST",
+                url: localStorage.getItem("url_service") + '/rest-api/server',
+                data: {
+                    cmd: "submit_payment_accept",
+                    payment_id: $("#payment_id").val()
+                },
+                success: function (results) {
+                    Arr = JSON.parse(results);
+                    if (Arr['status'] === "success")
+                    {
+                        toastr.options.onHidden = function () {
+                            redirect_url = 'bid_by.html';
+                            window.location.href = redirect_url;
+                        };
+
+                        toastr.options.timeOut = 1500;
+                        toastr.success(Arr['msg']);
+                    }
+                }
+            });
+        });
+        </script> 
+    </body>
+</html>

@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">   
+    <head>    
+        <title>Task Details</title>  
+        <meta charset="utf-8">   
+        <meta name="viewport" content="width=device-width, initial-scale=1"> 
+        <link rel="stylesheet" href="css/bootstrap.min.css">     
+        <link rel="stylesheet" href="css/font-awesome.min.css">   
+
+        <link rel="stylesheet" href="css/style.css">   
+        <link rel="stylesheet" href="css/respnsive.css">  
+        <script src="js/jquery.min.js"></script>     
+        <script src="js/bootstrap.min.js"></script>    
+        <script src="js/toastr.js"></script>      
+        <link rel="stylesheet" href="css/toastr.css">  
+        <style>      
+            .serch-show {     
+                width: 100%;  
+            }          
+            .filter-bar {      
+                border-bottom: 1px solid #ccc;  
+            }    
+        </style>  
+    </head>  
+    <body  onload="myFunction()" style="margin:0;" >  
+        <!--Loader-->            
+        <div id="loader-bg" class="loader-bg"></div>  
+        <div id="loader"></div>         
+        <section class="back-button-section">          
+            <div class="container">              
+                <div class="row">            
+                    <div class="col-xs-12">       
+                        <div class="back-button">          
+                            Private messages                  
+                        </div>           
+                    </div>          
+                </div>       
+            </div>      
+        </section>     
+
+        <section class="" style="padding-top: 60px;">     
+            <div class="container">       
+                <div class="row">                
+                    <div class="col-xs-12"> 
+                        <div class="form-group text-center" style="margin-top: 15px;">
+                            <div class="btn-group" id="status" data-toggle="buttons" style="margin-top: 5px;">
+                                <label class="btn btn-default btn-on btn-sm active on-btn" style="width: 130px; font-size: 14px;"><input value="1" name="" checked="checked" type="radio">As a Worker</label>
+                                <label class="btn btn-default btn-off btn-sm off-btn" style="width: 130px; font-size: 14px;"><input value="0" name="" type="radio">As a Poster</label>
+                            </div>
+                        </div>
+                        <div class="first-hide" style="margin-top: 50px;">
+                            <div class="descripion-project text-left" id="message_worker">         
+
+                            </div>
+                        </div>
+                        <div class="second-hide" style="margin-top: 50px;">
+                            <div class="descripion-project text-left" id="message_poster">         
+
+                            </div>
+                        </div>
+
+                    </div>             
+                </div>           
+            </div>     
+        </section>   
+        <div class="margin_b_50"></div>   
+        <section class="footer-menu-area">         
+            <ul class="footer-menu text-center">          
+                <li>                 
+                    <a href="task-post.html?parent_id=0">       
+                        <span><i class="fa fa-plus-square-o" aria-hidden="true"></i></span>   
+                        Post a task           
+                    </a>    
+                </li>            
+                <li>            
+                    <a href="my-task.html">   
+                        <span><i class="fa fa-bookmark-o" aria-hidden="true"></i></span>   
+                        My tasks        
+                    </a>           
+                </li>              
+                <li>               
+                    <a href="all-task.html">      
+                        <span><i class="fa fa-search" aria-hidden="true"></i></span>   
+                        Browse    
+                    </a>          
+                </li>      
+                <li class="active">      
+                    <a href="message.html">    
+                        <span class="unread-msg" style="display: none">0</span>
+                        <span><i class="fa fa-comments-o" aria-hidden="true"></i></span> 
+                        Message               
+                    </a>          
+                </li>             
+                <li>          
+                    <a href="more-option.html">         
+                        <span><i class="fa fa-ellipsis-h" aria-hidden="true"></i></span>
+                        More             
+                    </a>         
+                </li>        
+            </ul>        
+        </section>      
+
+        <script src="js/step-form.js"></script>     
+        <script src="js/custom.js"></script> 
+
+        <script type="text/javascript">
+        $(".on-btn").click(function () {
+            $(".second-hide").hide();
+            $(".first-hide").show();
+        });
+        $(".off-btn").click(function () {
+            $(".second-hide").show();
+            $(".first-hide").hide();
+        });
+
+        function get_message_worker() {
+            $.ajax({
+                type: "POST",
+                url: localStorage.getItem("url_service") + '/rest-api/server',
+                data: {
+                    cmd: "get_message_worker",
+                    session_id: localStorage.getItem("session_id"),
+                    users_id: localStorage.getItem("users_id")},
+                success: function (results) {
+                    Arr = JSON.parse(results);
+
+                    str_message = '';
+
+                    for (i = 0; i < Arr.length; i++) {
+                        image = 'picture/3a.png';
+                        if (Arr[i].file_picture) {
+                            image = Arr[i].file_picture;
+                        }
+                        strs = '<div class="row message-list">' +
+                                '<a href="message_box.html?task_id=' + Arr[i].task_id + '&message_id=' + Arr[i].message_id + '">' +
+                                '<div class="col-xs-3">' +
+                                '<div class="profile-pic text-right">' +
+                                '<img style="width: 80%" src="https://www.yuhu.life/' + image + '" alt="" title=""> ' +
+                                '</div>' +
+                                '</div>' +
+                                '<div class="col-xs-9 text-left no-padding">' +
+                                '<div class="profile-info">' +
+                                '<h4 class="text-color" style="margin: 0">' + Arr[i].first_name + ' ' + Arr[i].last_name + '<span class="time-ago">' + Arr[i].created + '</span></h4>' +
+                                '<p style="padding: 0; margin: 0">' + Arr[i].task_title + '</p> ' +
+                                '</div>' +
+                                '</div>' +
+                                '</a>' +
+                                '</div>';
+                        str_message = str_message.concat(strs);
+                    }
+                    $("#message_worker").html(str_message);
+                }
+            });
+        }
+        get_message_worker();
+
+        function get_message_poster() {
+            $.ajax({
+                type: "POST",
+                url: localStorage.getItem("url_service") + '/rest-api/server',
+                data: {
+                    cmd: "get_message_poster",
+                    session_id: localStorage.getItem("session_id"),
+                    users_id: localStorage.getItem("users_id")},
+                success: function (results) {
+                    Arr = JSON.parse(results);
+
+                    str_message = '';
+                    image = 'picture/3a.png';
+                    for (i = 0; i < Arr.length; i++) {
+                        if (Arr[i].file_picture) {
+                            image = Arr[i].file_picture;
+                        }
+                        strs = '<div class="row message-list">' +
+                                '<a href="message_box.html?task_id=' + Arr[i].task_id + '&message_id=' + Arr[i].message_id + '">' +
+                                '<div class="col-xs-3">' +
+                                '<div class="profile-pic text-right">' +
+                                '<img style="width: 80%" src="https://www.yuhu.life/' + image + '" alt="" title=""> ' +
+                                '</div>' +
+                                '</div>' +
+                                '<div class="col-xs-9 text-left no-padding">' +
+                                '<div class="profile-info">' +
+                                '<h4 class="text-color" style="margin: 0">' + Arr[i].first_name + ' ' + Arr[i].last_name + '<span class="time-ago">' + Arr[i].created + '</span></h4>' +
+                                '<p style="padding: 0; margin: 0">' + Arr[i].task_title + '</p> ' +
+                                '</div>' +
+                                '</div>' +
+                                '</a>' +
+                                '</div>';
+                        str_message = str_message.concat(strs);
+                    }
+                    $("#message_poster").html(str_message);
+                }});
+        }
+
+        get_message_poster();
+
+        $.ajax({
+            type: "POST",
+            url: localStorage.getItem("url_service") + '/rest-api/server',
+            data: {
+                cmd: "unread_msg",
+                session_id: localStorage.getItem("session_id"),
+                users_id: localStorage.getItem("users_id")
+            },
+            success: function (results) {
+                if (results > 0) {
+                    $(".unread-msg").show();
+                    $(".unread-msg").html(results);
+                }
+            }
+        });
+        </script>
+    </body>
+</html>

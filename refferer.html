@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>YUHU Life</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="js/jquery.min.js"></script>
+        <script src="js/jquery.cookie.js"></script>
+        <script>
+            localStorage.removeItem("refferer_id");
+            localStorage.removeItem("email");
+            var urlParams = location.search.split(/[?&]/).slice(1).map(function (paramPair) {
+                return paramPair.split(/=(.+)?/).slice(0, 2);
+            }).reduce(function (obj, pairArray) {
+                obj[pairArray[0]] = pairArray[1];
+                obj[pairArray[1]] = pairArray[3];
+                return obj;
+            }, {});
+            localStorage.setItem('refferer_id', urlParams.refferer_id.replace(/%20/g, " "));
+            localStorage.setItem('email', urlParams.email.replace(/%20/g, " "));
+            $.ajax({
+                type: "POST",
+                url: localStorage.getItem("url_service") + '/rest-api/server',
+                data: {
+                    cmd: "reffer",
+                    refferer: localStorage.getItem("refferer_id"),
+                    email: localStorage.getItem("email")
+                },
+                success: function (results) {
+                    Arr = JSON.parse(results);
+                    if (Arr['status'] === "success")
+                    {
+                        window.location.href = 'http://play.google.com/store/apps/details?id=com.yuhu.jobservice';
+                    }
+                }
+            });
+
+        </script>
+    </head>
+    <body>
+
+    </body>
+</html>

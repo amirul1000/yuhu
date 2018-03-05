@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>All Task</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/font-awesome.min.css">
+        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="css/respnsive.css">
+
+        <script src="js/jquery.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/toastr.js"></script>
+        <link rel="stylesheet" href="css/toastr.css">
+        <script>
+            function getGeoLocation() {
+                var options = {
+                    enableHighAccuracy: true,
+                    maximumAge: 3600000
+                }
+                var watchID = navigator.geolocation.getCurrentPosition(onSuccess, onError, options);
+
+                function onSuccess(position) {
+                    localStorage.setItem("go_latitude", position.coords.latitude);
+                    localStorage.setItem("go_longitude", position.coords.longitude);
+                }
+            }
+        </script>
+    </head>
+    <body  onload="myFunction()" style="margin:0;">
+        <!--Loader-->    
+        <div id="loader-bg" class="loader-bg"></div>
+        <div id="loader"></div>
+        <section class="back-button-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="back-button">
+                            Browse Tasks
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="filter-bar">
+            <ul id="topBarArea">
+                <li class="all-taks-list-area serch-hide">
+                    <div class="text-left arrow2">
+                        <button type="button" data-toggle="modal" data-target="#myModal" style="margin-top: 12px;"><i class="fa fa-sort" aria-hidden="true"></i> Browse by category</button>
+                    </div>
+                </li>
+                <li class="other-area serch-show serch-hide">
+                    <div id="navbar-search">
+                        <a href="#" style="line-height: 15px;"><i class="fa fa-search" aria-hidden="true" style="margin-bottom: 5px;"></i><span style="font-size: 12px; display: block;">Keyword</span></a>
+                    </div>
+                </li>
+
+                <li class="other-area serch-hide"><a href="location.html" style="line-height: 15px;"><i class="fa fa-map-marker" aria-hidden="true"></i><span style="font-size: 12px;display: block;">On a map</span></a></li>
+                <li class="other-area serch-hide"><a href="filter.html" style="line-height: 15px;"><i class="fa fa-cog" aria-hidden="true" style="margin-bottom: 7px;"></i><span style="font-size: 12px;display: block;">Filter</span></a></li>
+
+            </ul>
+
+            <div class="input-group" id="navbar-searchbarss" style="display: none">
+                <div id="imaginary_container" style="padding: 0 5px; float: left; width: 100%; margin: 11px 10px 7px;"> 
+                    <div class="input-group stylish-input-group" style="width: 70%;float: left;">
+                        <input type="text" name="search" id="search" class="form-control"  placeholder="Search" onkeyup="load_tasks('search');" >
+                        <span class="input-group-addon">
+                            <i class="fa fa-search" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <a href="" class="text-left" id="cancel-search">Cancel</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="tasks-area">
+            <h4>Tasks near <span id="location"></span> - 
+                <div class="dropdown">
+                    <button class="btn" id="menu1" type="button" data-toggle="dropdown">50 miles
+                        <span class="caret"></span></button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="#" onclick="load_distance(5);" >5 miles</a></li>
+                        <li><a href="#" onclick="load_distance(15);" >15 miles</a></li>
+                        <li><a href="#" onclick="load_distance(30);" >30 miles</a></li>
+                        <li><a href="#" onclick="load_distance(50);" >50 miles</a></li>
+                        <li><a href="#" onclick="load_distance(99999);" >All</a></li>    
+                    </ul>
+                </div>
+            </h4>
+            <div class="container-fluid">
+                <div class="row"  id="id_all_task">
+
+                </div>
+                <div class="" id="no_task"></div>
+                <div class="" id="task-loader" style="display: none">
+                    <span><img src="images/sp.gif" /></span>
+                </div>
+
+            </div>
+        </section>
+
+        <div class="margin_b_50"></div>
+        <section class="footer-menu-area">
+            <ul class="footer-menu text-center">
+                <li>
+                    <a href="task-post.html?parent_id=0">
+                        <span><i class="fa fa-plus-square-o" aria-hidden="true"></i></span>
+                        Post a task
+                    </a>
+                </li>
+                <li>
+                    <a href="my-task.html">
+                        <span><i class="fa fa-bookmark-o" aria-hidden="true"></i></span>
+                        My tasks
+                    </a>
+                </li>
+                <li class="active">
+                    <a href="all-task.html">
+                        <span><i class="fa fa-search" aria-hidden="true"></i></span>
+                        Browse
+                    </a>
+                </li>
+                <li>
+                    <a href="message.html">
+                        <span class="unread-msg" style="display: none">0</span>
+                        <span><i class="fa fa-comments-o" aria-hidden="true"></i></span>
+                        Message
+                    </a>
+                </li>
+                <li>
+                    <a href="more-option.html">
+                        <span><i class="fa fa-ellipsis-h" aria-hidden="true"></i></span>
+                        More
+                    </a>
+                </li>
+            </ul>
+        </section>
+
+        <!-- Modal -->
+        <div id="myModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <ul class="task-type">
+                            <li><a href="all-task.html?status=all">All Task</a></li>
+                            <li><a href="all-task.html?status=active">Open Task</a></li>
+                            <li><a href="all-task.html?status=online">Online Task</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <input type="hidden" value="50" id="dist">
+        <input type="hidden" name="offsets" id="offsets" value="1">
+        <script src="js/custom.js" type="text/javascript"></script>
+        <script type="text/javascript">
+                            $.ajax({
+                                type: "POST",
+                                url: localStorage.getItem("url_service") + '/rest-api/server',
+                                data: {
+                                    cmd: "unread_msg",
+                                    session_id: localStorage.getItem("session_id"),
+                                    users_id: localStorage.getItem("users_id")
+                                },
+                                success: function (results) {
+                                    if (results > 0) {
+                                        $(".unread-msg").show();
+                                        $(".unread-msg").html(results);
+                                    }
+                                }
+                            });
+
+                            status = "";
+                            $(document).ready(function () {
+                                var urlParams = location.search.split(/[?&]/).slice(1).map(function (paramPair) {
+                                    return paramPair.split(/=(.+)?/).slice(0, 2);
+                                }).reduce(function (obj, pairArray) {
+                                    obj[pairArray[0]] = pairArray[1];
+                                    return obj;
+                                }, {});
+                                status = urlParams.status.replace(/%20/g, " ");
+
+                                if (status == "")
+                                {
+                                    status = "all";
+                                }
+                                elseif(status == "active")
+                                {
+                                    status = "active";
+                                }
+                                elseif(status == "online")
+                                {
+                                    status = "online";
+                                }
+
+                            });
+
+
+                            var all_task = "";
+
+                            $(document).ready(function () {
+                                load_tasks('page_load');
+                                $("#location").html(localStorage.getItem("location"));
+                            });
+
+                            $(window).data('ajaxready', true).scroll(function (e) {
+                                if ($(window).data('ajaxready') == false)
+                                    return;
+                                var timeout = null;
+                                if ($(window).scrollTop() >= ($(document).height() - $(window).height())) {
+                                    $('#task-loader').show();
+                                    clearTimeout(timeout);
+                                    timeout = setTimeout(function () {
+                                        $(window).data('ajaxready', false);
+                                        $('#offsets').val(+offsets + +1);
+                                        load_data();
+                                    }, 1000);
+                                    $('[data-toggle="tooltip"]').tooltip();
+                                }
+                            });
+
+                            function load_data() {
+
+                                $.ajax({
+                                    cache: false,
+                                    type: "GET",
+                                    url: localStorage.getItem("url_service") + '/rest-api/server',
+                                    data: {
+                                        cmd: "load_all_task",
+                                        session_id: localStorage.getItem("session_id"),
+                                        users_id: localStorage.getItem("users_id"),
+                                        search: $("#search").val(),
+                                        offsets: $("#offsets").val(),
+                                        distance: $("#dist").val(),
+                                        latitude: localStorage.getItem("go_latitude"),
+                                        longitude: localStorage.getItem("go_longitude"),
+                                        status: 'page_load'
+                                    },
+                                    success: function (results) {
+
+                                        Arr = JSON.parse(results);
+                                        all_task = '';
+                                        if (Arr.length > 0) {
+                                            for (i = 0; i < Arr.length; i++)
+                                            {
+                                                if (Arr[i].budget_type == "1") {
+                                                    budget = '$' + Arr[i].budget;
+                                                    hours = '';
+                                                } else {
+                                                    budget = '$' + Arr[i].price_per_hour + '/hr';
+                                                    hours = '<p class="hr-rate"><i class="fa fa-clock-o"></i> ' + Arr[i].hours + ' hours</p>';
+                                                }
+
+                                                if (Arr[i].online == "1")
+                                                {
+                                                    status = Arr[i].task_location + '(Dis ' + parseFloat(Arr[i].distance).toFixed(2) + ' miles)';
+                                                } else
+                                                {
+                                                    status = "online";
+                                                }
+                                                image = 'picture/3a.png';
+                                                if (Arr[i].file_picture) {
+                                                    image = Arr[i].file_picture;
+                                                }
+                                                onsite_quote = '';
+                                                if (Arr[i].onsite_quote == 'yes') {
+                                                    onsite_quote = '<a href="JavaScript:Void(0);" class="onsite_quote" data-placement="left" data-toggle="tooltip" title="This task allow  on-site quote" ><img src="images/quote.png" ></a>';
+                                                }
+                                                if (Arr[i].users_id === localStorage.getItem("users_id")) {
+
+                                                    str = '<div class="tasks-section"><a href="task-details.html?task_id=' + Arr[i].id + '" >' +
+                                                            '<div class="col-xs-3 no-padding">' +
+                                                            '<div class="profile-img">' +
+                                                            '<img src="https://www.yuhu.life/' + image + '" alt="" title="" />' +
+                                                            '</div>' +
+                                                            '</div>' +
+                                                            '<div class="col-xs-6 no-padding">' +
+                                                            '<div class="task-description">' +
+                                                            '<h5>' + Arr[i].task_title + '</h5>' +
+                                                            '<p><i class="fa fa-map-marker" aria-hidden="true"></i>  ' + status + '</p>' +
+                                                            '<p><small>' + Arr[i].total_comment + ' Comments</small></p>' + hours +
+                                                            '</div>' +
+                                                            '</div>' +
+                                                            '<div class="col-xs-3">' +
+                                                            '<div class="amount text-center">' +
+                                                            '<h3>' + budget + '</h3>' +
+                                                            '<span class="earn-btn">Posted</span>' + onsite_quote +
+                                                            '</div>' +
+                                                            '</div>' +
+                                                            '</a></div>';
+                                                } else {
+                                                    str = '<div class="tasks-section"><a href="make-offer.html?task_id=' + Arr[i].id + '" >' +
+                                                            '<div class="col-xs-3 no-padding">' +
+                                                            '<div class="profile-img">' +
+                                                            '<img src="https://www.yuhu.life/' + image + '" alt="" title="" />' +
+                                                            '</div>' +
+                                                            '</div>' +
+                                                            '<div class="col-xs-6 no-padding">' +
+                                                            '<div class="task-description">' +
+                                                            '<h5>' + Arr[i].task_title + '</h5>' +
+                                                            '<p><i class="fa fa-map-marker" aria-hidden="true"></i>  ' + status + '</p>' +
+                                                            '<p><small>' + Arr[i].total_comment + ' Comments</small></p>'+ hours +
+                                                            '</div>' +
+                                                            '</div>' +
+                                                            '<div class="col-xs-3">' +
+                                                            '<div class="amount text-center">' +
+                                                            '<h3>' + budget + '</h3>' +
+                                                            '<span class="earn-btn">Earn</span>' + onsite_quote +
+                                                            '</div>' +
+                                                            '</div>' +
+                                                            '</a></div>';
+                                                }
+
+
+                                                all_task = all_task.concat(str);
+                                                $('#task-loader').hide();
+                                            }
+                                        } else {
+                                            all_task = all_task.concat('<h3 style="font-size: 14px;text-align: center;">No Task Found</h3>');
+                                        }
+                                        if (Arr.length > 0) {
+                                            $("#id_all_task").append(all_task);
+                                            offsets = $("#offsets").val();
+                                        } else {
+                                            $('#no_task').show();
+                                            $("#no_task").html(all_task);
+                                            $('#task-loader').hide();
+                                        }
+                                        $(window).data('ajaxready', true);
+                                    }
+                                });
+                            }
+
+
+                            function load_tasks(load_type)
+                            {
+
+                                if (load_type == 'search')
+                                {
+                                    $('#no_task').hide();
+                                    status = "all";
+                                    $('#offsets').val(1);
+                                }
+                                $.ajax({
+                                    type: "GET",
+                                    url: localStorage.getItem("url_service") + '/rest-api/server',
+                                    data: {
+                                        cmd: "load_all_task",
+                                        session_id: localStorage.getItem("session_id"),
+                                        users_id: localStorage.getItem("users_id"),
+                                        search: $("#search").val(),
+                                        offsets: $("#offsets").val(),
+                                        distance: $("#dist").val(),
+                                        latitude: localStorage.getItem("go_latitude"),
+                                        longitude: localStorage.getItem("go_longitude"),
+                                        status: status
+                                    },
+                                    success: function (results) {
+
+                                        Arr = JSON.parse(results);
+                                        all_task = '';
+                                        if (Arr.length > 0) {
+                                            for (i = 0; i < Arr.length; i++)
+                                            {
+                                                if (Arr[i].budget_type == "1") {
+                                                    budget = '$' + Arr[i].budget;
+                                                    hours = '';
+                                                } else {
+                                                    budget = '$' + Arr[i].price_per_hour + '/hr';
+                                                    hours = '<p class="hr-rate"><i class="fa fa-clock-o"></i> '+Arr[i].hours+' hours</p>';
+                                                }
+                                                if (Arr[i].online == "1")
+                                                {
+                                                    status = Arr[i].task_location + '(Dis ' + parseFloat(Arr[i].distance).toFixed(2) + ' miles)';
+                                                } else
+                                                {
+                                                    status = "online";
+                                                }
+                                                image = 'picture/3a.png';
+                                                if (Arr[i].file_picture) {
+                                                    image = Arr[i].file_picture;
+                                                }
+                                                onsite_quote = '';
+                                                if (Arr[i].onsite_quote == 'yes') {
+                                                    onsite_quote = '<a href="JavaScript:Void(0);" class="onsite_quote" data-placement="left" data-toggle="tooltip" title="This task allow  on-site quote" ><img src="images/quote.png" ></a>';
+                                                }
+                                                if (Arr[i].users_id === localStorage.getItem("users_id")) {
+                                                    str = '<div class="tasks-section"><a href="task-details.html?task_id=' + Arr[i].id + '">' +
+                                                            '<div class="col-xs-3 no-padding">' +
+                                                            '<div class="profile-img">' +
+                                                            '<img src="https://www.yuhu.life/' + image + '" alt="" title="" />' +
+                                                            '</div>' +
+                                                            '</div>' +
+                                                            '<div class="col-xs-6 no-padding">' +
+                                                            '<div class="task-description">' +
+                                                            '<h5>' + Arr[i].task_title + '</h5>' +
+                                                            '<p><i class="fa fa-map-marker" aria-hidden="true"></i>  ' + status + '</p>' +
+                                                            '<p><small>' + Arr[i].total_comment + ' Comments</small></p>'+ hours +
+                                                            '</div>' +
+                                                            '</div>' +
+                                                            '<div class="col-xs-3">' +
+                                                            '<div class="amount text-center">' +
+                                                            '<h3>' + budget + '</h3>' +
+                                                            '<span class="earn-btn">Posted</span>' + onsite_quote +
+                                                            '</div>' +
+                                                            '</div>' +
+                                                            '</a></div>';
+                                                } else {
+                                                    str = '<div class="tasks-section"><a href="make-offer.html?task_id=' + Arr[i].id + '" >' +
+                                                            '<div class="col-xs-3 no-padding">' +
+                                                            '<div class="profile-img">' +
+                                                            '<img src="https://www.yuhu.life/' + image + '" alt="" title="" />' +
+                                                            '</div>' +
+                                                            '</div>' +
+                                                            '<div class="col-xs-6 no-padding">' +
+                                                            '<div class="task-description">' +
+                                                            '<h5>' + Arr[i].task_title + '</h5>' +
+                                                            '<p><i class="fa fa-map-marker" aria-hidden="true"></i>  ' + status + '</p>' +
+                                                            '<p><small>' + Arr[i].total_comment + ' Comments</small></p>'+ hours +
+                                                            '</div>' +
+                                                            '</div>' +
+                                                            '<div class="col-xs-3">' +
+                                                            '<div class="amount text-center">' +
+                                                            '<h3>' + budget + '</h3>' +
+                                                            '<span class="earn-btn">Earn</span>' + onsite_quote +
+                                                            '</div>' +
+                                                            '</div>' +
+                                                            '</a></div>';
+                                                }
+
+
+                                                all_task = all_task.concat(str);
+                                            }
+                                        } else {
+                                            all_task = all_task.concat('<h3 style="font-size: 14px;text-align: center;">No Task Found</h3>');
+                                        }
+                                        if (Arr.length > 0) {
+                                            $("#id_all_task").html(all_task);
+                                            offsets = $("#offsets").val();
+                                        } else {
+                                            $('#no_task').show();
+                                            $("#no_task").html(all_task);
+                                        }
+                                        $('[data-toggle="tooltip"]').tooltip();
+                                    }
+                                });
+
+                            }
+
+
+                            //form dropdown for area distance select
+                            $(function () {
+                                $(".dropdown-menu li a").click(function () {
+                                    $(".btn:first-child").text($(this).text());
+                                    $(".btn:first-child").html($(this).text() + ' <span class="caret"></span>');
+                                });
+                            });
+                            function load_distance(dist) {
+                                $('#no_task').hide();
+                                $("#dist").val(dist);
+                                $("#offsets").val(1);
+
+                                $.ajax({
+                                    cache: false,
+                                    type: "GET",
+                                    url: localStorage.getItem("url_service") + '/rest-api/server',
+                                    data: {
+                                        cmd: "load_all_task",
+                                        session_id: localStorage.getItem("session_id"),
+                                        users_id: localStorage.getItem("users_id"),
+                                        search: $("#search").val(),
+                                        offsets: $("#offsets").val(),
+                                        distance: $("#dist").val(),
+                                        latitude: localStorage.getItem("go_latitude"),
+                                        longitude: localStorage.getItem("go_longitude"),
+                                        status: 'page_load'
+                                    },
+                                    success: function (results) {
+
+                                        Arr = JSON.parse(results);
+                                        all_task = '';
+                                        if (Arr.length > 0) {
+                                            for (i = 0; i < Arr.length; i++)
+                                            {
+                                                if (Arr[i].budget_type == "1") {
+                                                    budget = '$' + Arr[i].budget;
+                                                    hours = '';
+                                                } else {
+                                                    budget = '$' + Arr[i].price_per_hour + '/hr';
+                                                    hours = '<p class="hr-rate"><i class="fa fa-clock-o"></i> '+Arr[i].hours+' hours</p>';
+                                                }
+
+                                                if (Arr[i].online == "1")
+                                                {
+                                                    status = Arr[i].task_location + '(Dis ' + parseFloat(Arr[i].distance).toFixed(2) + ' miles)';
+                                                } else
+                                                {
+                                                    status = "online";
+                                                }
+                                                image = 'picture/3a.png';
+                                                if (Arr[i].file_picture) {
+                                                    image = Arr[i].file_picture;
+                                                }
+                                                onsite_quote = '';
+                                                if (Arr[i].onsite_quote == 'yes') {
+                                                    onsite_quote = '<a href="JavaScript:Void(0);" class="onsite_quote" data-placement="left" data-toggle="tooltip" title="This task allow  on-site quote" ><img src="images/quote.png" ></a>';
+                                                }
+                                                if (Arr[i].users_id === localStorage.getItem("users_id")) {
+
+                                                    str = '<div class="tasks-section"><a href="task-details.html?task_id=' + Arr[i].id + '" >' +
+                                                            '<div class="col-xs-3 no-padding">' +
+                                                            '<div class="profile-img">' +
+                                                            '<img src="https://www.yuhu.life/' + image + '" alt="" title="" />' +
+                                                            '</div>' +
+                                                            '</div>' +
+                                                            '<div class="col-xs-6 no-padding">' +
+                                                            '<div class="task-description">' +
+                                                            '<h5>' + Arr[i].task_title + '</h5>' +
+                                                            '<p><i class="fa fa-map-marker" aria-hidden="true"></i>  ' + status + '</p>' +
+                                                            '<p><small>' + Arr[i].total_comment + ' Comments</small></p>' + hours +
+                                                            '</div>' +
+                                                            '</div>' +
+                                                            '<div class="col-xs-3">' +
+                                                            '<div class="amount text-center">' +
+                                                            '<h3>' + budget + '</h3>' +
+                                                            '<span class="earn-btn">Posted</span>' + onsite_quote +
+                                                            '</div>' +
+                                                            '</div>' +
+                                                            '</a></div>';
+                                                } else {
+                                                    str = '<div class="tasks-section"><a href="make-offer.html?task_id=' + Arr[i].id + '" >' +
+                                                            '<div class="col-xs-3 no-padding">' +
+                                                            '<div class="profile-img">' +
+                                                            '<img src="https://www.yuhu.life/' + image + '" alt="" title="" />' +
+                                                            '</div>' +
+                                                            '</div>' +
+                                                            '<div class="col-xs-6 no-padding">' +
+                                                            '<div class="task-description">' +
+                                                            '<h5>' + Arr[i].task_title + '</h5>' +
+                                                            '<p><i class="fa fa-map-marker" aria-hidden="true"></i>  ' + status + '</p>' +
+                                                            '<p><small>' + Arr[i].total_comment + ' Comments</small></p>' + hours +
+                                                            '</div>' +
+                                                            '</div>' +
+                                                            '<div class="col-xs-3">' +
+                                                            '<div class="amount text-center">' +
+                                                            '<h3>' + budget + '</h3>' +
+                                                            '<span class="earn-btn">Earn</span>' + onsite_quote +
+                                                            '</div>' +
+                                                            '</div>' +
+                                                            '</a></div>';
+                                                }
+
+
+                                                all_task = all_task.concat(str);
+                                            }
+                                        } else {
+                                            all_task = all_task.concat('<h3 style="font-size: 14px;text-align: center;">No Task Found</h3>');
+                                        }
+                                        if (Arr.length > 0) {
+                                            $("#id_all_task").html(all_task);
+                                            offsets = 1;
+                                        } else {
+                                            $('#no_task').show();
+                                            $("#no_task").html(all_task);
+                                        }
+                                        $(window).data('ajaxready', true);
+                                    }
+                                });
+                            }
+
+        </script>
+    </body>
+</html>

@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Dashboard</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/font-awesome.min.css">
+        <link rel="stylesheet" href="css/chart.css">
+        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="css/respnsive.css">
+        <script src="js/jquery.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/jquery.mobile-1.4.5.min.js"></script>
+        <script src="js/toastr.js"></script>
+        <link rel="stylesheet" href="css/toastr.css">
+        <script src="js/custom.js"></script>
+    </head>
+    <body  onload="myFunction()" style="margin:0;">
+        <!--Loader-->    
+        <div id="loader-bg" class="loader-bg"></div>
+        <div id="loader"></div>
+
+        <section class="back-button-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="back-button">
+                            <a href="more-option.html"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
+                            Dashboard
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="dashboard-info" style="min-height: auto">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="form-group text-center" style="margin-top: 15px;">
+                            <div class="btn-group" id="status" data-toggle="buttons" style="margin-top: 5px;">
+                                <label class="btn btn-default btn-on btn-sm active on-btn" style="width: 130px; font-size: 14px;"><input value="1" name="" checked="checked" type="radio">As a Worker</label>
+                                <label class="btn btn-default btn-off btn-sm off-btn" style="width: 130px; font-size: 14px;"><input value="0" name="" type="radio">As a Poster</label>
+                            </div>
+                        </div>
+                        <div class="first-hide" style="margin-top: 50px; overflow: hidden">
+                            <div class="chart">
+                                <ul class="bars">
+                                    <li id="bid_on"></li>
+                                    <li id="assigned"></li>
+                                    <li id="overdue"></li>
+                                    <li id="awaiting_payment"><div data-percentage="3" class="bar" style="background-color: #f5ab5d"></div><span style="color: #f5ab5d; border-color: #f5ab5d">0</span></li>
+                                </ul>
+                            </div>
+                            <div class="title-bar">
+                                <ul>
+                                    <li>Bid on</li>
+                                    <li>Assigned</li>
+                                    <li>Overdue</li>
+                                    <li>Awaiting Payments</li>
+                                </ul>
+                            </div>
+                            <div class="row my-task">
+                                <div class="col-xs-12 no-padding">
+                                    <ul>
+                                        <li>
+                                            <div class="completed-count">
+                                                <h1 id="total_completed_by"></h1>
+                                                <p class="text-size-info" style="font-size: 16px;">Completed</p>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="avg-ratting">
+                                                <div class="rating" id="ratimg_me" style="margin: 15px 0 0;">
+
+                                                </div>
+                                                <p style="padding: 0; margin: 0 0 15px"><span id="rating_count_worker"></span> Reviews</p>
+                                                <p class="text-size-info"><span id="p_avg_rate_worker"></span>% Completion Rate 
+                                                    <a href="#" title="" data-toggle="popover" data-placement="top" data-trigger="focus" data-content="Click anywhere in the document to close this popover" data-original-title="Dismissible popover"><i class="fa fa-info-circle" aria-hidden="true"></i></a>
+                                                </p>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="second-hide" style="margin-top: 50px; overflow: hidden">
+                            <div class="chart">
+                                <ul class="bars">
+                                    <li id="open_for_offer"></li>
+                                    <li id="assigned_to"></li>
+                                    <li id="overdue_to"></li>
+                                    <li id="awaiting_payment_to"><div data-percentage="3" class="bar" style="background-color: #f5ab5d"></div><span style="color: #f5ab5d; border-color: #f5ab5d">0</span></li>
+                                </ul>
+                            </div>
+                            <div class="title-bar">
+                                <ul>
+                                    <li>Bid on</li>
+                                    <li>Assigned</li>
+                                    <li>Overdue</li>
+                                    <li>Awaiting Payments</li>
+                                </ul>
+                            </div>
+                            <div class="row my-task">
+                                <div class="col-xs-12 no-padding">
+                                    <ul>
+                                        <li>
+                                            <div class="completed-count">
+                                                <h1 id="total_completed_to"></h1>
+                                                <p class="text-size-info" style="font-size: 16px;">Completed</p>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="avg-ratting">
+                                                <div class="rating" id="ratimg_to" style="margin: 15px 0 0;">
+
+                                                </div>
+                                                <p style="padding: 0; margin: 0 0 15px"><span id="rating_count_poster"></span> Reviews</p>
+                                                <p class="text-size-info"><span id="p_avg_rate_poster"></span>% Completion Rate 
+                                                    <a href="#" title="" data-toggle="popover" data-placement="top" data-trigger="focus" data-content="Click anywhere in the document to close this popover" data-original-title="Dismissible popover"><i class="fa fa-info-circle" aria-hidden="true"></i></a>
+                                                </p>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="my-task">
+            <div class="container-fluid">
+                <h5 class="text-title">notifications(<span id="count_notifications"></span>)</h5>
+                <div class="row" id="notifications">
+
+                </div>
+            </div>
+        </section>
+
+        <script>
+            $(".on-btn").click(function () {
+                $(".second-hide").hide();
+                $(".first-hide").show();
+            });
+            $(".off-btn").click(function () {
+                $(".second-hide").show();
+                $(".first-hide").hide();
+            });
+
+            function get_all_info() {
+
+                $.ajax({
+                    type: "POST",
+                    url: localStorage.getItem("url_service") + '/rest-api/server',
+                    data: {
+                        cmd: "get_dashboard_info",
+                        session_id: localStorage.getItem("session_id"),
+                        users_id: localStorage.getItem("users_id")
+                    },
+                    success: function (results) {
+                        Arr = JSON.parse(results);
+                        if (Arr['status'] === "success")
+                        {
+                            $('#bid_on').html('<div data-percentage="' + Arr['num_bid'] + '" class="bar" style="background-color: #9fc104"></div><a href="bid_on.html"><span style="color: #9fc104; border-color: #9fc104">' + Arr['num_bid'] + '</span></a>');
+                            $('#assigned').html('<div data-percentage="' + Arr['assign_me'] + '" class="bar" style="background-color:#054a6a"></div><a href="bid_on.html"><span style="color: #054a6a; border-color: #054a6a">' + Arr['assign_me'] + '</span></a>');
+                            $('#overdue').html('<div data-percentage="0" class="bar" style="background-color: #f5ab5d"></div><a href="bid_on.html"><span style="color: #f5ab5d; border-color: #f5ab5d">0</span></a>');
+                            $('#awaiting_payment').html('<div data-percentage="' + Arr['payment_me'] + '" class="bar" style="background-color: #f5ab5d"></div><a href="bid_on.html"><span style="color: #f5ab5d; border-color: #f5ab5d">' + Arr['payment_me'] + '</a></span>');
+
+                            $('#open_for_offer').html('<div data-percentage="' + Arr['open_for_offer'] + '" class="bar" style="background-color: #9fc104"></div><a href="bid_by.html"><span style="color: #9fc104; border-color: #9fc104">' + Arr['open_for_offer'] + '</a></span>');
+                            $('#assigned_to').html('<div data-percentage="' + Arr['assign_to'] + '" class="bar" style="background-color:#054a6a"></div><a href="bid_by.html"><span style="color: #054a6a; border-color: #054a6a">' + Arr['assign_to'] + '</a></span>');
+                            $('#overdue_to').html('<div data-percentage="0" class="bar" style="background-color: #f5ab5d"></div><a href="bid_by.html"><span style="color: #f5ab5d; border-color: #f5ab5d">0</span></a>');
+                            $('#awaiting_payment_to').html('<div data-percentage="' + Arr['payment_to'] + '" class="bar" style="background-color: #f5ab5d"><a href="bid_by.html"></div><span style="color: #f5ab5d; border-color: #f5ab5d">' + Arr['payment_to'] + '</a></span>');
+
+                            $('#total_completed_by').html(Arr['total_completed_by']);
+                            $('#total_completed_to').html(Arr['total_completed_to']);
+                            all_task = '';
+                            for (i = 0; i < Arr['rating_worker']; i++) {
+                                str = '<i class="fa fa-star" aria-hidden="true"></i>';
+                                all_task = all_task.concat(str);
+                            }
+                            if ((5 - Arr['rating_worker']) > 0) {
+                                for (i = 0; i < (5 - Arr['rating_worker']); i++) {
+                                    str = '<i class="fa fa-star" aria-hidden="true" style="color: #ccc;"></i>';
+                                    all_task = all_task.concat(str);
+                                }
+                            }
+
+                            $('#ratimg_me').html(all_task);
+
+                            all_task_p = '';
+                            for (i = 0; i < Arr['rating_poster']; i++) {
+                                strs = '<i class="fa fa-star" aria-hidden="true"></i>';
+                                all_task_p = all_task_p.concat(strs);
+                            }
+                            if ((5 - Arr['rating_poster']) > 0) {
+                                for (i = 0; i < (5 - Arr['rating_poster']); i++) {
+                                    strs = '<i class="fa fa-star" aria-hidden="true" style="color: #ccc;"></i>';
+                                    all_task_p = all_task_p.concat(strs);
+                                }
+                            }
+
+                            $('#ratimg_to').html(all_task_p);
+
+                            $('#rating_count_worker').html(Arr['rating_count_worker']);
+                            $('#p_avg_rate_worker').html(Arr['p_avg_rate_worker']);
+                            $('#rating_count_poster').html(Arr['rating_count_poster']);
+                            $('#p_avg_rate_poster').html(Arr['p_avg_rate_poster']);
+
+                            chart();
+                        } else {
+
+                        }
+                    }
+                });
+            }
+
+            get_all_info();
+
+            function chart() {
+                $(".bars li .bar").each(function (key, bar) {
+                    var percentage = $(this).data('percentage');
+
+                    $(this).animate({
+                        'height': percentage + '0%'
+                    }, 1000);
+                });
+            }
+
+            $.ajax({
+                type: "POST",
+                url: localStorage.getItem("url_service") + '/rest-api/server',
+                data: {
+                    cmd: "get_notifications",
+                    session_id: localStorage.getItem("session_id"),
+                    users_id: localStorage.getItem("users_id")},
+                success: function (results) {
+                    Arr = JSON.parse(results);
+
+                    str_notification = '';
+                    image = 'picture/3a.png';
+                    for (i = 0; i < Arr.length; i++) {
+                        if (Arr[i].file_picture) {
+                            image = Arr[i].file_picture;
+                        }
+                        if (Arr[i].type == 'offer') {
+                            text = 'has made an offer on ';
+                            icon = '<i class="fa fa-gavel" aria-hidden="true"></i>';
+                        } else if (Arr[i].type == 'comment') {
+                            text = 'commented on  ';
+                            icon = '<i class="fa fa-comment" aria-hidden="true" style="background-color: #00ccff;"></i>';
+                        }
+                        strs = '<div class="col-md-12 notification">' +
+                                '<div class="profile-photo">' +
+                                '<img src="https://www.yuhu.life/' + image + '" alt="" title="">' +
+                                '</div>' +
+                                '<div class="notification-text">' +
+                                '<div class="notification-title">' +
+                                '<p><strong>' + Arr[i].first_name + ' ' + Arr[i].last_name + '</strong> ' + text +
+                                '<strong> ' + Arr[i].task_title + '</strong></p>' +
+                                '</div>  ' +
+                                '<div class="offer-comment">' +
+                                '<div class="offer-icon">' +
+                                '<a href="make-offer.html?task_id=' + Arr[i].task_id + '">' + icon + '</i></a>' +
+                                '</div>' +
+                                '<div class="notification-time">' +
+                                '<p>' + Arr[i].created + '</p>' +
+                                '</div>' +
+                                '</div>' +
+                                '</div>' +
+                                '</div>';
+                        str_notification = str_notification.concat(strs);
+                    }
+                    $("#notifications").html(str_notification);
+                    $('#count_notifications').html(Arr.length);
+
+                }});
+        </script>
+
+        <style>
+            #ratimg_me i{
+                padding: 0 3px;
+            }
+            #ratimg_to i{
+                padding: 0 3px;
+            }
+        </style>
+    </body>
+</html>

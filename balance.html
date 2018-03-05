@@ -1,0 +1,64 @@
+<!DOCTYPE html><html lang="en">    
+    <head>     
+        <title>Your Balance</title>  
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">  
+        <link rel="stylesheet" href="css/bootstrap.min.css">       
+        <link rel="stylesheet" href="css/font-awesome.min.css">      
+        <link rel="stylesheet" href="css/jquery.mobile-1.4.5.min.css">     
+        <link rel="stylesheet" href="css/style.css">     
+        <link rel="stylesheet" href="css/respnsive.css">     
+        <link rel="stylesheet" href="css/toastr.css">    
+        <script src="js/jquery.min.js"></script>     
+        <script src="js/bootstrap.min.js"></script>      
+        <script src="js/toastr.js"></script>        
+        <script src="js/custom.js"></script>   
+    </head>  
+    <body  onload="myFunction()" style="margin:0;">   
+        <!--Loader-->         
+        <div id="loader-bg" class="loader-bg"></div>    
+        <div id="loader"></div>      
+        <section class="back-button-section">     
+            <div class="container">            
+                <div class="row">                
+                    <div class="col-xs-12">           
+                        <div class="back-button">     
+                            <a href="more-option.html"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>  
+                            Your Balance
+                        </div>               
+                    </div>            
+                </div>        
+            </div>     
+        </section>   
+        <section class="payment-history-content">         
+            <div class="container-fluid">             
+                <div class="row">
+                    <div class="payment-area">
+                        <div class="col-xs-8">          
+                            <h4>Your Balance</h4>
+                        </div>
+
+                        <div class="col-xs-4 text-right">          
+                            <h3>$<span id="balance"></span></h3>
+                            <a href="withdraw.html" class="earn-btn withdraw-btn">Withdraw</a>
+                        </div>
+                    </div>
+                </div>         
+            </div>    
+        </section>  
+        <script>
+            $.ajax({
+                type: "POST",
+                url: localStorage.getItem("url_service") + '/rest-api/server',
+                data: {
+                    cmd: "get_balance",
+                    users_id: localStorage.getItem("users_id")
+                },
+                success: function (results) {
+                    Arr = JSON.parse(results);
+                    $('#balance').html(Arr.balance);
+                }
+            });
+        </script>
+    </body>
+</html>

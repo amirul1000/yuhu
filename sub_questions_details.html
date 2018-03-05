@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <title>Help</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="css/font-awesome.min.css">
+        <script src="js/jquery.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/toastr.js"></script>
+        <link rel="stylesheet" href="css/toastr.css">
+        <script src="js/custom.js"></script>
+        <style>
+            .questions_details h4 {
+                font-size: 18px;
+                color: #46c94f;
+                margin-top: 30px;
+                font-weight: 400;
+                margin-bottom: 20px
+            }
+            .questions_details p {
+                margin-top: 15px;
+            }
+        </style>
+    </head>
+
+    <body>
+        <section class="back-button-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="back-button"> <a href="help.html"><i class="fa fa-arrow-left" aria-hidden="true"></i></a> Support centre </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="main-content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="questions_details text-left">
+                            <h4 id="question"></h4>
+                            <div id="details"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <script>
+            var urlParams = location.search.split(/[?&]/).slice(1).map(function (paramPair) {
+                return paramPair.split(/=(.+)?/).slice(0, 2);
+            }).reduce(function (obj, pairArray) {
+                obj[pairArray[0]] = pairArray[1];
+                return obj;
+            }, {});
+            localStorage.setItem('sub_questions_id', urlParams.sub_questions_id.replace(/%20/g, " "));
+
+            $.ajax({
+                type: "POST",
+                url: localStorage.getItem("url_service") + '/rest-api/server',
+                data: {
+                    cmd: "get_sub_quick_questions_details",
+                    questions_id: localStorage.getItem("sub_questions_id")
+                },
+                success: function (data) {
+                    Arr = JSON.parse(data);
+                    $("#question").html(Arr[0].sub_questions);
+                    $("#details").html(Arr[0].answer);
+                }
+            });
+            $('.back-button').html('<a href="sub_questions.html?questions_id=' + localStorage.getItem("questions_id") + '"><i class="fa fa-arrow-left" aria-hidden="true"></i></a> Support centre ');
+        </script>
+    </body>
+</html>

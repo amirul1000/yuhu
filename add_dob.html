@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">  
+    <head>       
+        <title>Add Date of Birth</title>    
+        <meta charset="utf-8">    
+        <meta name="theme-color" content="#033c56" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">    
+        <link rel="stylesheet" href="css/bootstrap.min.css">     
+        <link rel="stylesheet" href="css/jquery.mobile-1.4.5.min.css">  
+        <link rel="stylesheet" href="css/font-awesome.min.css">  
+
+        <link href="css/mobiscroll.jquery.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="css/style.css">      
+        <link rel="stylesheet" href="css/respnsive.css">    
+        <link rel="stylesheet" href="css/toastr.css"> 
+
+        <script src="js/jquery.min.js"></script>     
+        <script src="js/bootstrap.min.js"></script> 
+        <script src="js/mobiscroll.custom-3.2.5.min.js"></script>
+        <script src="js/toastr.js"></script>  
+        <script src="js/custom.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                var urlParams = location.search.split(/[?&]/).slice(1).map(function (paramPair) {
+                    return paramPair.split(/=(.+)?/).slice(0, 2);
+                }).reduce(function (obj, pairArray) {
+                    obj[pairArray[0]] = pairArray[1];
+                    return obj;
+                }, {});
+                localStorage.setItem('task_id', urlParams.task_id.replace(/%20/g, " "));
+            });
+        </script>
+    </head> 
+    <body  onload="myFunction()" style="margin:0;">  
+        <!--Loader-->    
+        <div id="loader-bg" class="loader-bg"></div>
+        <div id="loader"></div>
+
+        <section class="back-button-section">   
+            <div class="container">         
+                <div class="row">                 
+                    <div class="col-xs-12">                 
+                        <div class="back-button">   
+                            <a href="task-post.html"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>      
+                            Add Date of Birth       
+                        </div>              
+                    </div>             
+                </div>     
+            </div>     
+        </section>     
+        <section class="notify-form">     
+            <form>           
+                <div class="container-fluid">  
+                    <div class="row">       
+                        <div class="col-xs-12">  
+                            <div class="form-group">    
+                                <label class="form-label" for="taks" style="margin: 12px 0;">Date of Birth</label>   
+                                <input type="tel" class="form-control input-lg datePicker" name="dob" id="dob" placeholder="Date of Birth"> 
+                            </div>          
+                            <div class="form-group text-center">
+                                <button type="button" name="dob_btn" id="dob_btn" class="btn submit-btn">Saved</button>                    
+                            </div>               
+                        </div>                
+                    </div>            
+                </div>       
+            </form>     
+        </section>  
+        <script src="js/bootstrap-datepicker.min.js"></script>
+        <script>
+        $('#dob_btn').click(function () {
+
+            $.ajax({
+                headers: {
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Methods": "GET, POST, PUT",
+                    "Access-Control-Allow-Headers": "Content-Type",
+                },
+                type: "POST",
+                url: localStorage.getItem("url_service") + '/rest-api/server',
+                data: {
+                    cmd: "update_dob",
+                    dob: $("#dob").val(),
+                    task_id: localStorage.getItem("task_id"),
+                    users_id: localStorage.getItem("users_id")
+                },
+                success: function (results) {
+
+                    Arr = JSON.parse(results);
+                    if (Arr['status'] === "success")
+                    {
+                        toastr.options.onHidden = function () {
+                            window.location.href = 'confirm_offer.html?task_id=' + Arr['task_id'];
+                        };
+                        toastr.options.timeOut = 1500;
+                        toastr.success(Arr['msg']);
+                    } else {
+                        toastr.options.timeOut = 1500;
+                        toastr.error(Arr['msg']);
+                    }
+                }
+
+            });
+        });
+
+        $(function () {
+            var now = new Date(),
+                    max = new Date(now.getFullYear() + 100, now.getMonth(), now.getDate());
+
+            $('.datePicker').mobiscroll().date({
+                theme: 'ios',
+                lang: 'en',
+                display: 'bottom',
+                max: max
+            });
+        });
+        </script>
+    </body>
+</html>

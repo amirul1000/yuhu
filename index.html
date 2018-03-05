@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>YUHU Life</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="css/mdbootstrap.min.css">
+        <link rel="stylesheet" href="css/mdb.min.css">
+        <link rel="stylesheet" href="css/font-awesome.min.css">
+        <link rel="stylesheet" href="css/animate.css">
+        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="css/respnsive.css">
+        <link rel="stylesheet" href="css/toastr.css">
+
+        <script src="js/jquery.min.js"></script>
+        <script src="js/mdbootstrap.min.js"></script>
+        <script src="js/mdb.min.js"></script>
+        <script src="js/popper.min.js"></script>
+        <script src="js/wow.min.js"></script>
+        <script src="js/toastr.js"></script>
+        <script type="text/javascript" src="js/facebookConnectPlugin.js"></script>
+        <script>
+            var myVar;
+            function myLanding() {
+                myVar = setTimeout(showPage, 3000);
+            }
+            function showPage() {
+                $(".main-logo").removeClass("land-load");
+                $(".main-logo").removeClass("hidden");
+                $(".user-btm").removeClass("hidden");
+                $("#carousel-example-1z").removeClass("hidden");
+                $(".an-logo").addClass("hidden");
+            }
+
+            wow = new WOW(
+                    {
+                        animateClass: 'animated',
+                        offset: 100,
+                        callback: function (box) {
+                            console.log("WOW: animating <" + box.tagName.toLowerCase() + ">")
+                        }
+                    }
+            );
+            wow.init();
+
+        </script>
+    </head>
+    <body onload="myLanding()" style="margin:0;" >
+        <!--Loader-->
+        <div id="loader-bg" class=""></div>
+        <div id="loader" style="display: none"></div>
+        <section class="landing-page">
+            <div class="bg-opacity">
+
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-sm-12 no-padding">
+                            <div data-wow-iteration="3" class="an-logo wow pulse" data-wow-duration="0.25" >
+                                <img src="images/main-logo.png" style="width: 250px" alt="Others"/>
+                            </div>
+                            <!--Carousel Wrapper-->
+                            <div id="carousel-example-1z" class="carousel hidden slide carousel-fade wow fadeInDown" data-ride="carousel">
+                               
+                                <!--Slides-->
+                                <div class="carousel-inner" role="listbox">
+                                    <!--First slide-->
+                                    <div class="carousel-item active">
+                                        <img class="d-block w-100" src="images/slider/01.jpg" alt="First slide">
+                                    </div>
+                                    <!--/Third slide-->
+                                </div>
+                            </div>
+                            <!--/.Carousel Wrapper-->
+                            <div class="main-logo hidden wow fadeInUp" data-wow-delay="100ms">
+                                <img src="images/main-logo.png" style="width: 170px" alt="Others"/>
+                            </div>
+
+                            <div class="user-btm col-12 hidden text-center text-size  wow fadeInUp" data-wow-delay="100ms">
+                                <div class="facbook">
+                                    <h5>Connect with Social Media</h5>
+                                    <div class="social-box">
+                                        <div class="row mg-btm">
+                                            <div class="col-6" style="padding-right: 3px">
+                                                <a href="javascript:void();" onclick="fb_login()" id="fbLink" class="btn btn-block no-padding">
+                                                    <span><i class="fa fa-facebook" aria-hidden="true"></i></span> <span class="facebook-text">Facebook </span>
+                                                </a>
+                                            </div>
+                                            <div class="col-6" style="padding-left: 3px">
+                                                <a href="javascript:void();" onclick="google_login()" class="btn btn-block no-padding" style="background-color: #df4a32;">
+                                                    <span style="background-color: #c83c26"><i class="fa fa-google" aria-hidden="true"></i></span> <span class="facebook-text" style="background-color: #df4a32">Google </span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <script>
+                                        var google_login = function () {
+                                            window.plugins.googleplus.login(
+                                                    {
+                                                        'scopes': '',
+                                                        'webClientId': '1092609296185-gji5838t0tnk1bbeomadnjvkg3u78jis.apps.googleusercontent.com',
+                                                        'offline': true,
+                                                    },
+                                                    function (obj) {
+                                                        googleLoginSuccess(obj);
+                                                    },
+                                                    function (msg) {
+                                                        alert('error: ' + msg);
+                                                    }
+                                            );
+                                        }
+                                        //Google login success
+                                        function googleLoginSuccess(googleData) {
+                                            document.getElementById("loader").style.display = "block";
+                                            $("#loader-bg").addClass("loader-bg");
+                                            $.ajax({
+                                                headers: {
+                                                    "Access-Control-Allow-Origin": "*",
+                                                    "Access-Control-Allow-Methods": "GET, POST, PUT",
+                                                    "Access-Control-Allow-Headers": "Content-Type",
+                                                },
+                                                type: "POST",
+                                                url: localStorage.getItem("url_service") + '/rest-api/server',
+                                                data: {
+                                                    "cmd": "google_login",
+                                                    "id": googleData.userId,
+                                                    "email": googleData.email,
+                                                    "first_name": googleData.displayName,
+                                                    "last_name": googleData.familyName,
+                                                    "picture": googleData.imageUrl,
+                                                    "latitude": localStorage.getItem("go_latitude"),
+                                                    "longitude": localStorage.getItem("go_longitude"),
+                                                    "token": localStorage.getItem("token")
+                                                },
+                                                success: function (data) {
+                                                    Arr = JSON.parse(data);
+                                                    if (Arr['status'] === "success")
+                                                    {
+                                                        localStorage.setItem("users_id", Arr['users_id']);
+                                                        localStorage.setItem("email", Arr['email']);
+                                                        localStorage.setItem("password", Arr['password']);
+                                                        localStorage.setItem("user_type", Arr['user_type']);
+                                                        localStorage.setItem("first_name", Arr['first_name']);
+                                                        localStorage.setItem("last_name", Arr['last_name']);
+
+                                                        localStorage.setItem("location", Arr['location']);
+                                                        localStorage.setItem("latitude", Arr['latitude']);
+                                                        localStorage.setItem("longitude", Arr['longitude']);
+
+                                                        localStorage.setItem("file_picture", Arr['file_picture']);
+                                                        localStorage.setItem("session_id", Arr['session_id']);
+
+                                                        toastr.options.onHidden = function () {
+                                                            $("#loader-bg").removeClass("loader-bg");
+                                                            document.getElementById("loader").style.display = "none";
+                                                            window.location.href = "home.html";
+                                                        };
+
+                                                        toastr.options.timeOut = 1500;
+                                                        toastr.success(Arr['msg']);
+
+
+                                                    } else
+                                                    {
+                                                        toastr.options.timeOut = 1500;
+                                                        toastr.error(Arr['msg']);
+                                                    }
+                                                }
+                                            });
+                                        }
+
+                                        var fb_login = function () {
+                                            if (!window.cordova) {
+                                                var appId = prompt("134628060629380", "");
+                                                facebookConnectPlugin.browserInit(appId);
+                                            }
+
+                                            facebookConnectPlugin.login(["email"],
+                                                    function (response) {
+                                                        onLoginSuccess();
+                                                    },
+                                                    function (response) {
+                                                        alert(JSON.stringify(response));
+                                                    }
+                                            );
+                                        }
+
+                                        var onLoginSuccess = function () {
+                                            var apiRoute = "me/?fields=id,first_name,last_name,birthday,education,email,location,hometown,picture.width(720).height(720)";
+                                            facebookConnectPlugin.api(apiRoute, [],
+                                                    function (response) {
+                                                        fbData = JSON.parse(JSON.stringify(response));
+                                                        fblogin(fbData);
+                                                    },
+                                                    function (response) {
+                                                        alert(JSON.stringify(response))
+                                                    });
+                                        }
+
+                                        function fblogin(fbData) {
+                                            document.getElementById("loader").style.display = "block";
+                                            $("#loader-bg").addClass("loader-bg");
+                                            $.ajax({
+                                                headers: {
+                                                    "Access-Control-Allow-Origin": "*",
+                                                    "Access-Control-Allow-Methods": "GET, POST, PUT",
+                                                    "Access-Control-Allow-Headers": "Content-Type",
+                                                },
+                                                type: "POST",
+                                                url: localStorage.getItem("url_service") + '/rest-api/server',
+                                                data: {
+                                                    "cmd": "facebook_login",
+                                                    "id": fbData['id'],
+                                                    "email": fbData['email'],
+                                                    "first_name": fbData['first_name'],
+                                                    "last_name": fbData['last_name'],
+                                                    "location": fbData['location'],
+                                                    "latitude": localStorage.getItem("go_latitude"),
+                                                    "longitude": localStorage.getItem("go_longitude"),
+                                                    "picture": fbData['picture']['data']['url'],
+                                                    "birthday": fbData['birthday'],
+                                                    "token": localStorage.getItem("token")
+                                                },
+                                                success: function (data) {
+                                                    Arr = JSON.parse(data);
+                                                    if (Arr['status'] === "success")
+                                                    {
+                                                        localStorage.setItem("users_id", Arr['users_id']);
+                                                        localStorage.setItem("email", Arr['email']);
+                                                        localStorage.setItem("password", Arr['password']);
+                                                        localStorage.setItem("user_type", Arr['user_type']);
+                                                        localStorage.setItem("first_name", Arr['first_name']);
+                                                        localStorage.setItem("last_name", Arr['last_name']);
+
+                                                        localStorage.setItem("location", Arr['location']);
+                                                        localStorage.setItem("latitude", Arr['latitude']);
+                                                        localStorage.setItem("longitude", Arr['longitude']);
+
+                                                        localStorage.setItem("file_picture", Arr['file_picture']);
+                                                        localStorage.setItem("session_id", Arr['session_id']);
+
+
+                                                        toastr.options.onHidden = function () {
+                                                            $("#loader-bg").removeClass("loader-bg");
+                                                            document.getElementById("loader").style.display = "none";
+                                                            window.location.href = "home.html";
+                                                        };
+
+                                                        toastr.options.timeOut = 1500;
+                                                        toastr.success(Arr['msg']);
+
+
+                                                    } else
+                                                    {
+                                                        toastr.options.timeOut = 1500;
+                                                        toastr.error(Arr['msg']);
+                                                    }
+
+                                                }
+                                            });
+                                        }
+
+                                    </script>
+
+                                </div>
+
+                                <h5 class="sn-btn">Connect with Your Email</h5>
+                                <a href="javascript:void(0)"  class="btn awaiting-btn accept-btn text-center" id="signup"  data-toggle="modal" data-target="#exampleModal" style="margin: 0 0 15px; background-color: #202020;" >Sign up</a>
+                                <a href="login.html" class="btn awaiting-btn accept-btn text-center margin_b_30" id="login" style="color: #fff; border: 0; margin: 0;" >Log in</a>
+                                <p class="tcpp">By signing up or logging in, you agree to our <a href="#"> Terma & Conditions</a> and <a href="#"> Privacy Policy</a></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="app">
+                <div id="deviceready" class="blink">
+                    <p class="event listening"></p>
+                    <p class="event received"></p>
+                </div>
+            </div>
+        </section>
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <h5 class="sn-btn" style="text-align: center; margin-top:20px; font-size: 25px;">I want to:</h5>
+                        <div class="form-group">
+                            <a href="signup_poster.html"  class="btn btn-default btn-rounded btn-block btn-lg">Post a task</a>
+                        </div>
+                        <p class="text-center">or</p>
+                        <div class="form-group">
+                            <a href="signup.html" class="btn btn-info btn-rounded btn-block btn-lg">Bid a task</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--<script type="text/javascript" src="cordova.js"></script>-->
+        <script language="JavaScript">
+            // Firebse token id set in localStorage
+            var app = {
+                initialize: function () {
+                    document.addEventListener('deviceready', this.onDeviceReady.bind(this), false);
+                },
+                onDeviceReady: function () {
+                    this.receivedEvent('deviceready');
+                    window.FirebasePlugin.getToken(function (token) {
+                        localStorage.setItem("token", token);
+                    }, function (error) {
+                        console.error(error);
+                    });
+                },
+                // Update DOM on a Received Event
+                receivedEvent: function (id) {
+                    var parentElement = document.getElementById(id);
+                    var listeningElement = parentElement.querySelector('.listening');
+                    var receivedElement = parentElement.querySelector('.received');
+
+                    listeningElement.setAttribute('style', 'display:none;');
+                    receivedElement.setAttribute('style', 'display:block;');
+
+                    console.log('Received Event: ' + id);
+                }
+            };
+            app.initialize();
+
+            //localStorage.setItem("url_service", "http://10.0.2.2/yuhuService");
+            //localStorage.setItem("url_service", "http://localhost/yuhuService");
+
+            $(document).ready(function () {
+                localStorage.setItem("url_service", "https://www.yuhu.life");
+                //localStorage.setItem("url_service", "http://localhost/yuhu-server");
+                document.addEventListener("deviceready", onDeviceReady, false);
+                function onDeviceReady() {
+                    getGeoLocation();
+                    check_login();
+                } 
+            });
+            function check_login() {
+                if (localStorage.getItem("email").length > 0)
+                {
+                    $.ajax({
+                        headers: {
+                            "Access-Control-Allow-Origin": "*",
+                            "Access-Control-Allow-Methods": "GET, POST, PUT",
+                            "Access-Control-Allow-Headers": "Content-Type",
+                        },
+                        type: "POST",
+                        url: localStorage.getItem("url_service") + '/rest-api/server',
+                        data: {
+                            "cmd": "check_login",
+                            users_id: localStorage.getItem("users_id"),
+                            email: localStorage.getItem("email"),
+                            latitude: localStorage.getItem("go_latitude"),
+                            longitude: localStorage.getItem("go_longitude"),
+                            session_id: localStorage.getItem("session_id"),
+                            token: localStorage.getItem("token")
+                        },
+                        success: function (data) {
+                            Arr = JSON.parse(data);
+                            if (Arr['status'] === "success")
+                            {
+                                localStorage.setItem("users_id", Arr['users_id']);
+                                localStorage.setItem("email", Arr['email']);
+                                localStorage.setItem("password", Arr['password']);
+                                localStorage.setItem("user_type", Arr['user_type']);
+                                localStorage.setItem("first_name", Arr['first_name']);
+                                localStorage.setItem("last_name", Arr['last_name']);
+
+                                localStorage.setItem("location", Arr['location']);
+                                localStorage.setItem("latitude", Arr['latitude']);
+                                localStorage.setItem("longitude", Arr['longitude']);
+
+                                localStorage.setItem("file_picture", Arr['file_picture']);
+                                localStorage.setItem("session_id", Arr['session_id']);
+                                window.location.href = "home.html";
+                            } else
+                            {
+                                localStorage.clear();
+                                localStorage.setItem("url_service", "https://www.yuhu.life");
+
+                                window.location.href = "index.html";
+                            }
+                        }
+                    });
+                }
+            }
+
+            function validate()
+            {
+                return false;
+            }
+
+            function getGeoLocation() {
+                var options = {
+                    enableHighAccuracy: true,
+                    maximumAge: 3600000
+                }
+                var watchID = navigator.geolocation.getCurrentPosition(onSuccess, onError, options);
+
+                function onSuccess(position) {
+                    localStorage.setItem("go_latitude", position.coords.latitude);
+                    localStorage.setItem("go_longitude", position.coords.longitude);
+                }
+                function onError(error) {
+
+                }
+            }
+
+            // check device id and show slide for know yuhu life 
+            $.ajax({
+                headers: {
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Methods": "GET, POST, PUT",
+                    "Access-Control-Allow-Headers": "Content-Type",
+                },
+                type: "POST",
+                url: localStorage.getItem("url_service") + '/rest-api/server',
+                data: {
+                    cmd: "check_token",
+                    token: localStorage.getItem("token")
+                },
+                success: function (results) {
+                    Arr = JSON.parse(results);
+                    if (Arr.status === 1) {
+                        $("#login").attr("href", "yuhuife_screen.html?action=login");
+                        $("#signup").attr("href", "yuhuife_screen.html?action=signup");
+                    }
+                }
+            });
+        </script>
+
+
+    </body>
+</html>
+

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+    <head>
+
+        <title>Bootstrap Example</title>
+
+        <meta charset="utf-8">
+
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+
+        <link rel="stylesheet" href="css/font-awesome.min.css">
+
+        <link rel="stylesheet" href="css/style.css">
+
+        <link rel="stylesheet" href="css/respnsive.css">
+
+        <script src="js/jquery.min.js"></script>
+
+        <script src="js/bootstrap.min.js"></script>
+
+        <script src="js/jquery.mobile-1.4.5.min.js"></script>
+        <script src="js/toastr.js"></script>
+        <link rel="stylesheet" href="css/toastr.css">
+        <script src="js/custom.js"></script>
+
+    </head>
+
+    <body  onload="myFunction()" style="margin:0;">
+        <!--Loader-->    
+         <div id="loader-bg" class="loader-bg"></div>
+        <div id="loader"></div>
+        
+        <section class="back-button-section">
+
+            <div class="container">
+
+                <div class="row">
+
+                    <div class="col-xs-12">
+
+                        <div class="back-button">
+
+                            <a href="settings.html"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
+
+                            Notification Settings
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <section class="profile-edit">
+            <div class="all-info">
+                <h5 style="line-height: 20px;padding: 20px 15px;">Update your notification settings anytime via the options below</h5>
+               
+            </div>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12" style="padding-right: 0">
+                       
+                        <ul class="side-menu-area">
+                            <li><a href="add-transactional.html">Transactional <span class="pull-right"><small style="font-size: 80%">Email, SMS</small> &nbsp;&nbsp;<i class="fa fa-angle-right" aria-hidden="true"></i></span></a></li>
+                            <li><a href="add-task-update.html">Task update <span class="pull-right"><small style="font-size: 80%">Email, SMS</small> &nbsp;&nbsp;<i class="fa fa-angle-right" aria-hidden="true"></i></span></a></li>
+                            <li><a href="add-task-remainder.html">Task reminders <span class="pull-right"><small style="font-size: 80%">Email, SMS</small> &nbsp;&nbsp;<i class="fa fa-angle-right" aria-hidden="true"></i></span></a></li>
+                            <li><a href="add-yuhu-alerts.html">YUHU alerts <span class="pull-right"><small style="font-size: 80%">Email, SMS</small> &nbsp;&nbsp;<i class="fa fa-angle-right" aria-hidden="true"></i></span></a></li>
+                            <!--<li><a href="add-recommendatins.html">Task recommendatins <span class="pull-right"><small style="font-size: 80%">Email, SMS</small> &nbsp;&nbsp;<i class="fa fa-angle-right" aria-hidden="true"></i></span></a></li>-->
+                            <li><a href="add-helpful-information.html">Helpful information <span class="pull-right"><small style="font-size: 80%">Email, SMS</small> &nbsp;&nbsp;<i class="fa fa-angle-right" aria-hidden="true"></i></span></a></li>
+                            <li><a href="add-newsletter.html">Update & newsletter <span class="pull-right"><small style="font-size: 80%">Email, SMS</small> &nbsp;&nbsp;<i class="fa fa-angle-right" aria-hidden="true"></i></span></a></li>
+                            
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <div class="modal fade" id="myupload" role="dialog" style="margin-top: 100px">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-body text-center" style="border: 1px solid #ccc; margin: 5px">
+                        <h4 style="margin: 0; font-weight: 400">Attach image</h4>
+                        <p style="font-weight: 300; color: #222; font-size: 13px">Select source</p>
+                        <a href="" class="btn btn-default more-option">Camera</a>
+                        <a href="" class="btn btn-default more-option margin_b_30">Gallery</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </body>
+
+
+
+</html>
+

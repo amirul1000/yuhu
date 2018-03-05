@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Add credit card</title>
+        <meta charset="utf-8">
+        <meta name="theme-color" content="#033c56" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/jquery.mobile-1.4.5.min.css">
+        <link rel="stylesheet" href="css/font-awesome.min.css">
+        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="css/respnsive.css">
+
+        <script src="js/jquery.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/jquery.mobile-1.4.5.min.js"></script>
+        <script src="js/toastr.js"></script>
+        <link rel="stylesheet" href="css/toastr.css">
+        <script src="js/custom.js"></script>
+
+    </head>
+    <body  onload="myFunction()" style="margin:0;" >      
+        <!--Loader-->    
+        <div id="loader-bg" class="loader-bg"></div>
+        <div id="loader"></div>
+
+
+        <section class="back-button-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="back-button" id="backurl">
+                            <a href="make-offer.html"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>On-site Quote
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="main-content">            
+            <div class="container-fluid">   
+                <div class="row">
+                    <div class="col-xs-12 text-left margin_t_20">
+                        <h4><span id="task_title"></span></h4>
+                        <div class="profile-shot">                   
+                            <span id="profile_pic" style="width: 47px"></span>    
+                            <span>Posted by <span style="color: #054a6a; font-weight: 400;" id="posted_by"></span> <span class="time-ago" id="task_post_time"></span></span> 
+                        </div>
+                        <div id="onsite_quote" class="text-center"></div>
+                        <div id="onsite_quote_date"></div>
+                    </div>
+                </div>
+                <div class="row">                    
+                    <div class="col-md-12 text-left"> 
+                        <div class="form-group ">
+                            <label class="form-label" for="taks">YUHU Life Fee</label>
+                            <div class="input-group">
+                                <span class="input-group-addon" id="basic-addon2">$</span>
+                                <input type="text" name="budget" id="budget" value="9.95" class="form-control input-lg" placeholder="YUHU Life Fee" disabled>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="taks">Describe</label>
+                            <textarea class="form-control" rows="4" name="description" id="comment"></textarea>
+                        </div>  
+                    </div>                
+                </div> 
+                <div class="row">
+                    <div class="col-xs-12 text-left">
+                        <h5>Your credit card information is safe from us.We are not keeping any information of your card with us</h5>
+                        <form action="">
+                            <div class="margin_t_20">
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <div class="form-group">
+                                            <label class="text-size-info font-size16">Card Type</label>
+                                            <select name="creditCardType" id="creditCardType" class="form-control input-lg">
+                                                <option value="Visa" selected>Visa</option>
+                                                <option value="MasterCard">MasterCard</option>
+                                                <option value="Discover">Discover</option>
+                                                <option value="Amex">American Express</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12">
+                                        <div class="form-group">
+                                            <label class="text-size-info font-size16">Credit card number</label>
+                                            <input type="text" name="card_number" id="card_number" class="form-control input-lg" maxlength="16" pattern="([0-9]|[0-9]|[0-9])"  placeholder="Card number" >
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-4" style="padding-right: 6px">
+                                        <div class="form-group">
+                                            <label class="text-size-info font-size16" for="name">Expiry</label>
+                                            <input type="text" name="exp_month" id="exp_month" maxlength="2" pattern="([0-9]|[0-9]|[0-9])" class="form-control input-lg" placeholder="MM">
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-4 no-padding">
+                                        <div class="form-group">
+                                            <label class="text-size-info font-size16" for="name">&nbsp;</label>
+                                            <input type="text" name="exp_year" id="exp_year" maxlength="4" pattern="([0-9]|[0-9]|[0-9])" class="form-control input-lg" placeholder="YYYY">
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-4" style="padding-left: 6px;">
+                                        <div class="form-group">
+                                            <label class="text-size-info font-size16" for="name">CVC</label>
+                                            <input type="text" name="cvc" id="cvc" maxlength="3" pattern="([0-9]|[0-9]|[0-9])"  class="form-control input-lg">
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12">
+                                        <p class="text-size-info">You will be given Poster’s contact information and they will be given yours. It will be your responsibility to contact the task Poster and schedule an on-site quote. You and the task Poster will make payment arrangements outside the Yuhu Life platform. There will be no additional task fee from Yuhu Life.<a href="">Terms & Conditions</a></p>
+                                    </div>
+                                    <div class="margin_b_50 clearfix"></div>
+                                    <div style="margin-bottom: 100px"></div>
+                                    <div class="post-comment" style="padding: 15px">
+                                        <button type="button" class="awaiting-btn accept-btn text-center" id="add_card" style="width: 100%">Add card</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>        
+        </section>
+
+        <script>
+            //////get proposal id
+            function task_info() {
+                localStorage.removeItem("task_id");
+                localStorage.removeItem("proposal_users_id");
+                var urlParams = location.search.split(/[?&]/).slice(1).map(function (paramPair) {
+                    return paramPair.split(/=(.+)?/).slice(0, 2);
+                }).reduce(function (obj, pairArray) {
+                    obj[pairArray[0]] = pairArray[1];
+                    return obj;
+                }, {});
+                localStorage.setItem('task_id', urlParams.task_id.replace(/%20/g, " "));
+
+                $.ajax({
+                    type: "GET",
+                    url: localStorage.getItem("url_service") + '/rest-api/server',
+                    data: {
+                        cmd: "task_details",
+                        task_id: localStorage.getItem("task_id")
+                    },
+                    success: function (results) {
+                        Arr = JSON.parse(results);
+                        $("#task_title").html(Arr[0].task_title);
+                        $("#posted_by").html(Arr[0].first_name + ' ' + Arr[0].last_name);
+                        $("#description").html(Arr[0].task_title);
+                        image = 'picture/3a.png';
+                        if (Arr[0].file_picture) {
+                            image = Arr[0].file_picture;
+                        }
+                        $("#profile_pic").html('<img src="https://www.yuhu.life/' + image + '" />');
+
+                        if (Arr[0].onsite_quote == 'yes') {
+                            $("#onsite_quote").html('<a href="JavaScript:Void(0);" style="border-radius: 0px;border: 1px solid #eee; display: block; text-decoration: none;"><img src="images/quote.png" /> On-site Quote</a>');
+                            $("#onsite_quote_date").html('<div class="due-date text-left direction">' +
+                                    '<small>Poster\'\s first available day to meet for an on-site quote: </small>' +
+                                    '<p><span><i class="fa fa-calendar-o" aria-hidden="true"></i></span><span style="color: #3a3d3e; font-weight: 500; font-size: 14px"> ' + Arr[0].earliest_date + '</span></p> ' +
+                                    '</div>' +
+                                    '<div class="due-date text-left direction"> ' +
+                                    '<small>Poster\'\s last available day to meet for an on-site quote: </small>' +
+                                    '<p><span><i class="fa fa-calendar-o" aria-hidden="true"></i></span><span style="color: #3a3d3e; font-weight: 500; font-size: 14px"> ' + Arr[0].complation_date + '</span></p>' +
+                                    '</div>');
+                        }
+
+                    }
+                });
+
+            }
+            task_info();
+            ///////////////////////////////////////
+
+
+            function accept_offer() {
+                localStorage.removeItem("task_id");
+                var urlParams = location.search.split(/[?&]/).slice(1).map(function (paramPair) {
+                    return paramPair.split(/=(.+)?/).slice(0, 2);
+                }).reduce(function (obj, pairArray) {
+                    obj[pairArray[0]] = pairArray[1];
+                    return obj;
+                }, {});
+                localStorage.setItem('task_id', urlParams.task_id.replace(/%20/g, " "));
+                //loader
+                $("#loader-bg").addClass("loader-bg");
+                document.getElementById("loader").style.display = "block";
+                $.ajax({
+                    type: "POST",
+                    url: localStorage.getItem("url_service") + '/rest-api/server',
+                    data: {
+                        cmd: "onsite_quote",
+                        creditCardType: $("#creditCardType").val(),
+                        card_number: $("#card_number").val(),
+                        exp_month: $("#exp_month").val(),
+                        exp_year: $("#exp_year").val(),
+                        cvc: $("#cvc").val(),
+                        task_id: localStorage.getItem("task_id"),
+                        users_id: localStorage.getItem("users_id"),
+                        comment: $("#comment").val()
+                    },
+                    success: function (results) {
+                        Arr = JSON.parse(results);
+                        if (Arr['status'] === "success")
+                        {
+                            toastr.options.onHidden = function () {
+                                $("#loader-bg").removeClass("loader-bg");
+                                document.getElementById("loader").style.display = "none";
+                                window.location.href = 'make-offer.html?task_id=' + localStorage.getItem("task_id");
+                            };
+                            toastr.options.timeOut = 1500;
+                            toastr.success(Arr['msg']);
+
+                        } else {
+                            toastr.options.timeOut = 1500;
+                            toastr.error(Arr['msg']);
+                            $("#loader-bg").removeClass("loader-bg");
+                            document.getElementById("loader").style.display = "none";
+                        }
+                    }
+                });
+            }
+            $('#add_card').click(function () {
+                accept_offer();
+            });
+
+            $("#card_number").keyup(function () {
+                $("#card_number").val(this.value.match(/[0-9]*/));
+            });
+            $("#exp_month").keyup(function () {
+                $("#exp_month").val(this.value.match(/[0-9]*/));
+            });
+            $("#exp_year").keyup(function () {
+                $("#exp_year").val(this.value.match(/[0-9]*/));
+            });
+            $("#cvc").keyup(function () {
+                $("#cvc").val(this.value.match(/[0-9]*/));
+            });
+
+            function isNumberKey(evt) {
+                var charCode = (evt.which) ? evt.which : evt.keyCode
+                if (charCode == 46)
+                    return true;
+                if (charCode > 31 && (charCode < 48 || charCode > 57))
+                    return false;
+                return true;
+            }
+
+            $.ajax({
+                type: "POST",
+                url: localStorage.getItem("url_service") + '/rest-api/server',
+                data: {
+                    cmd: "check_onsute_quote",
+                    task_id: localStorage.getItem("task_id"),
+                    users_id: localStorage.getItem("users_id")
+                },
+                success: function (results) {
+                    Arr = JSON.parse(results);
+                    if (Arr['status'] === "success")
+                    {
+                        $('.post-comment').html('<button type="button" style="background-color: #ccc;width: 100%" class="awaiting-btn accept-btn text-center" >You have already send request!</button>');
+                    }
+                }
+            });
+            //Back button
+            $('.back-button').html('<a href="make-offer.html?task_id=' + localStorage.getItem("task_id") + '"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>On-site Quote')
+        </script>
+
+    </body>
+</html>

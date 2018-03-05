@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Sign up</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="css/mdbootstrap.min.css">
+        <link rel="stylesheet" href="css/font-awesome.min.css">
+        <link href="css/mobiscroll.jquery.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="css/croppic.css">
+        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="css/toastr.css">
+        <link rel="stylesheet" href="css/select2.min.css">
+
+
+        <script src="js/jquery-2.1.3.min.js"></script>
+        <script src="js/mdbootstrap.min.js"></script>
+        <script src="js/select2.min.js"></script>
+
+        <script src="js/toastr.js"></script>
+        <script src="js/jquery.cookie.js"></script>
+        <script src="js/mobiscroll.custom-3.2.5.min.js"></script>
+        <script src="js/signup-step-form.js"></script>
+        <!--<script type="text/javascript" src="cordova.js"></script>-->
+        <script type="text/javascript" src="js/facebookConnectPlugin.js"></script>
+
+        <style>
+            .select2-container{
+                width: 100% !important;
+                border: 1px solid rgba(0,0,0,.15);
+                border-radius: 4px;
+            }
+            .select2-container--default .select2-selection--multiple {
+                border-bottom: 0;
+                padding: 7px;
+            }
+        </style>
+        <script>
+            //Loader
+            var myVar;
+            function myFunction() {
+                myVar = setTimeout(showPage, 2000);
+                $("#loader-bg").addClass("loader-bg");
+            }
+            function showPage() {
+                $("#loader-bg").removeClass("loader-bg");
+                document.getElementById("loader").style.display = "none";
+
+            }
+
+        </script>
+    </head>
+    <body  onload="myFunction()" style="margin:0;">
+        <!--Loader-->
+        <!--Loader-->      
+        <div id="loader-bg" class="loader-bg"></div>    
+        <div id="loader"></div>
+        <section class="back-button-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="back-button">
+                            <a href="index.html"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
+                            Sign up
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="task task-create" style="text-align: left">
+            <div class="container" style="display: none">
+                <div class="row form-group">
+                    <div class="col-12">
+                        <ul class="nav nav-justified setup-panel">
+                            <li class="active">
+                                <span></span>
+                                <a href="#step-1" id="step-11">Details</a>
+                            </li>
+                            <li class="disabled">
+                                <span></span>
+                                <a href="#step-2" id="step-12">due date</a>
+                            </li>
+                            <li class="disabled">
+                                <span></span>
+                                <a href="#step-3" id="step-13">Budget</a>
+                            </li>
+                            <li class="disabled">
+                                <span></span>
+                                <a href="#step-4" id="step-14">Budget</a>
+                            </li>
+                            <li class="disabled">
+                                <span></span>
+                                <a href="#step-5" id="step-15">Budget</a>
+                            </li>
+                            <li class="disabled">
+                                <span></span>
+                                <a href="#step-6" id="step-16">Budget</a>
+                            </li>
+                            <li class="disabled">
+                                <span></span>
+                                <a href="#step-7" id="step-17">Budget</a>
+                            </li>
+                            <li class="disabled">
+                                <span></span>
+                                <a href="#step-8" id="step-18">Budget</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>	
+            <div class="container">
+                <!--Step-1-->
+                <div class="row setup-content" id="step-1">
+                    <div class="col-12">
+                        <div class="form-group">
+                            <h3 class="label-area">What is your name?</h3>
+                            <input type="text" name="first_name" id="first_name" class="form-control input-lg" placeholder="First Name" required />
+                        </div>
+                        <div class="form-group">
+                            <input type="text" name="last_name" id="last_name" class="form-control input-lg" placeholder="Last Name" required>
+                        </div>
+                    </div>
+                    <div class="col-12 margin-top-50 zindex99">
+                        <div class="form-group text-center post-btn">
+                            <button type="button" id="activate-step-2" class="btn submit-btn pull-right" style="width: 35%; font-weight: 500">Next</button>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+                <!--Step-2-->
+                <div class="row setup-content" id="step-2">
+                    <div class="col-12">
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100" style="width:10%">
+                                10%
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="col-12">
+                        <div class="form-group">
+                            <h3 class="label-area">What is your Address?</h3>
+                            <div class="exm-area">
+                                <h4>For Example...</h4>
+                                <p>City, State, Zip</p>
+                            </div>
+                            <input type="text" name="location" id="location" class="form-control input-lg" placeholder="Address, City, State, Zip" required>
+                            <input type="hidden" name="latitude" id="latitude"  value="" style="width:250px;" >
+                            <input type="hidden" name="longitude" id="longitude"  value=""  style="width:250px;" >
+
+                            <script type="text/javascript">
+                                $(document).ready(function () {
+                                    $("#task_location").change(function () {
+                                        codeAddress();
+                                    });
+
+                                    function codeAddress() {
+                                        var address = $("#task_location").val();
+
+                                        $.ajax({
+                                            url: "https://maps.googleapis.com/maps/api/geocode/json?address=" + address + "&sensor=false",
+                                            type: "POST",
+                                            success: function (res) {
+                                                console.log(res.results[0].geometry.location.lat);
+                                                console.log(res.results[0].geometry.location.lng);
+
+                                                $("#latitude").val(res.results[0].geometry.location.lat);
+                                                $("#longitude").val(res.results[0].geometry.location.lng);
+                                            }
+                                        });
+                                    }
+
+                                });
+                            </script>
+                        </div>
+                    </div>
+                    <div class="col-12 margin-top-50">
+                        <div class="form-group text-center post-btn">
+                            <ul class="nav nav-justified setup-panel pull-left" style="width: 35%; display: inline-block">
+                                <li class="" style="width: 100%">
+                                    <a href="#step-1" class="btn btn-default more-option back-btn" style="border: 1px solid #ccc">Back</a>
+                                </li>
+                            </ul>
+                            <button type="button" id="activate-step-3" class="btn submit-btn pull-right" style="width: 35%; font-weight: 500">Next</button>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+                <!--Step-3-->
+                <div class="row setup-content" id="step-3">
+                    <div class="col-12">
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width:20%">
+                                20%
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="col-md-12">
+                        <div class="form-group" style="margin-bottom: 0">
+                            <h3 class="label-area">What is your Email address?</h3>
+                            <input type="text" name="email" id="email" class="form-control input-lg" placeholder="Email" required>
+                        </div>
+                    </div>
+                    <div class="col-12 margin-top-50 zindex99">
+                        <div class="form-group text-center post-btn">
+                            <ul class="nav nav-justified setup-panel pull-left" style="width: 35%; display: inline-block">
+                                <li class="" style="width: 100%">
+                                    <a href="#step-2" class="btn btn-default more-option back-btn">Back</a>
+                                </li>
+                            </ul>
+                            <button type="button" id="activate-step-4" class="btn submit-btn pull-right" style="width: 35%; font-weight: 500">Next</button>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+                <!--Step-4-->
+                <div class="row setup-content" id="step-4">
+                    <div class="col-12">
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" style="width:30%">
+                                30%
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="col-md-12">
+                        <h3 class="label-area">Create a password</h3>
+                        <div class="form-group">
+                            <input type="password"  name="password" id="password" class="form-control input-lg" placeholder="Password" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="password"  name="con-password" id="con-password" class="form-control input-lg" placeholder="Confirm Password" required>
+                        </div>
+                    </div>
+                    <div class="col-12 margin-top-50">
+                        <div class="form-group text-center post-btn">
+                            <ul class="nav nav-justified setup-panel pull-left" style="width: 35%; display: inline-block">
+                                <li class="" style="width: 100%">
+                                    <a href="#step-3" class="btn btn-default more-option back-btn">Back</a>
+                                </li>
+                            </ul>
+                            <button type="button" id="activate-step-5" class="btn submit-btn pull-right" style="width: 35%; font-weight: 500">Next</button>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+                <!--Step-5-->
+                <div class="row setup-content" id="step-5">
+                    <div class="col-12">
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:40%">
+                                40%
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="col-12">
+                        <div class="form-group">
+                            <h3 class="label-area">Upload your profile picture</h3>
+                        </div>
+                        <div id="cropContainerModal"></div>
+                    </div>
+                    <div class="col-12 margin-top-50">
+                        <div class="form-group text-center post-btn">
+                            <ul class="nav nav-justified setup-panel pull-left" style="width: 35%; display: inline-block">
+                                <li class="" style="width: 100%">
+                                    <a href="#step-4" class="btn btn-default more-option back-btn">Back</a>
+                                </li>
+                            </ul>
+                            <button type="button" onclick="register();" class="btn submit-btn pull-right" style="width: 35%; font-weight: 500">Done</button>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+               
+            </div>
+        </section>
+
+        <!-- Modal -->
+        <div id="myModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Terms & conditions</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p id="modal_content"></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="app">
+            <div id="deviceready" class="blink">
+                <p class="event listening"></p>
+                <p class="event received"></p>
+            </div>
+        </div>
+
+        <script language="JavaScript">
+            // Firebse token id set in localStorage
+            var app = {
+                initialize: function () {
+                    document.addEventListener('deviceready', this.onDeviceReady.bind(this), false);
+                },
+                onDeviceReady: function () {
+                    this.receivedEvent('deviceready');
+                    window.FirebasePlugin.getToken(function (token) {
+                        localStorage.setItem("token", token);
+                    }, function (error) {
+                        console.error(error);
+                    });
+                },
+                // Update DOM on a Received Event
+                receivedEvent: function (id) {
+                    var parentElement = document.getElementById(id);
+                    var listeningElement = parentElement.querySelector('.listening');
+                    var receivedElement = parentElement.querySelector('.received');
+
+                    listeningElement.setAttribute('style', 'display:none;');
+                    receivedElement.setAttribute('style', 'display:block;');
+
+                    console.log('Received Event: ' + id);
+                }
+            };
+            app.initialize();
+        </script>
+
+
+
+        <script language="JavaScript">
+            function register() {
+                document.getElementById("loader").style.display = "block";
+                $("#loader-bg").addClass("loader-bg");
+                $.ajax({
+                    type: "POST",
+                    url: localStorage.getItem("url_service") + '/rest-api/server',
+                    data: {
+                        cmd: "register",
+                        first_name: $("#first_name").val(),
+                        last_name: $("#last_name").val(),
+                        email: $.trim($("#email").val()),
+                        password: $("#password").val(),
+                        location: $("#location").val(),
+                        latitude: $("#latitude").val(),
+                        longitude: $("#longitude").val(),
+                        deviceid: $("#deviceid").val(),
+                        imageName: $("#imageName").val(),
+                        specialities: $("select[name='states[]']").val(),
+                        language: $("select[name='language[]']").val(),
+                        about: $("#about").val(),
+                        working_distance: $("#working_distance").val(),
+                        dob: $("#dob").val(),
+                        status: 'active'
+                    },
+                    success: function (data) {
+                        Arr = JSON.parse(data);
+                        if (Arr['status'] === "success")
+                        {
+
+                            toastr.options.onHidden = function () {
+                                window.location.href = "login.html";
+                                $("#loader-bg").removeClass("loader-bg");
+                                document.getElementById("loader").style.display = "none";
+                            };
+                            toastr.options.timeOut = 1500;
+                            toastr.success(Arr['msg']);
+
+                        } else
+                        {
+                            toastr.options.timeOut = 1500;
+                            toastr.error(Arr['msg']);
+                        }
+
+                    }
+                });
+            }
+
+
+            function terms_condition()
+            {
+                $('.modal').modal();
+
+                $.ajax({
+                    type: "GET",
+                    url: localStorage.getItem("url_service") + '/rest-api/server',
+                    data: {
+                        cmd: "terms_condition"
+                    },
+                    success: function (results) {
+                        //append the html to the modal
+                        $('#modal_content').html(results);
+                        //init the tabs
+                        //open the modal
+                        $('#modal1').modal('open');
+                    }
+                });
+
+            }
+            function getPosition() {
+                var options = {
+                    enableHighAccuracy: true,
+                    maximumAge: 3600000
+                }
+                var watchID = navigator.geolocation.getCurrentPosition(onSuccess, onError, options);
+
+                function onSuccess(position) {
+                    localStorage.setItem("go_latitude", position.coords.latitude);
+                    localStorage.setItem("go_longitude", position.coords.longitude);
+                }
+                function onError(error) {
+
+                }
+            }
+            getPosition();
+
+            // Firebse token id set in localStorage
+            var app = {
+                initialize: function () {
+                    document.addEventListener('deviceready', this.onDeviceReady.bind(this), false);
+                },
+                onDeviceReady: function () {
+                    this.receivedEvent('deviceready');
+                    window.FirebasePlugin.getToken(function (token) {
+                        localStorage.setItem("token", token);
+                    }, function (error) {
+                        console.error(error);
+                    });
+                },
+                // Update DOM on a Received Event
+                receivedEvent: function (id) {
+                    var parentElement = document.getElementById(id);
+                    var listeningElement = parentElement.querySelector('.listening');
+                    var receivedElement = parentElement.querySelector('.received');
+
+                    listeningElement.setAttribute('style', 'display:none;');
+                    receivedElement.setAttribute('style', 'display:block;');
+
+                    console.log('Received Event: ' + id);
+                }
+            };
+            app.initialize();
+
+            function initMap() {
+                var input = document.getElementById('location');
+                new google.maps.places.Autocomplete(input);
+
+
+                $('#latitude').val(localStorage.getItem("go_latitude"));
+                $('#longitude').val(localStorage.getItem("go_latitude"));
+
+                geocoder = new google.maps.Geocoder();
+                var latlng = new google.maps.LatLng(localStorage.getItem("go_latitude"), localStorage.getItem("go_longitude"));
+                // This is making the Geocode request
+                geocoder.geocode({'latLng': latlng}, function (results, status) {
+
+                    var address = results[0].formatted_address;
+                    $('#location').val(address);
+
+                });
+            }
+
+            $("#email").on('keyup', function () {
+                $("#email").val($("#email").val().toLowerCase());
+            });
+
+            $("#location").on('blur', function () {
+                codeAddress();
+            });
+
+            function codeAddress() {
+                var address = $("#location").val();
+
+                geocoder = new google.maps.Geocoder();
+                geocoder.geocode({'address': address}, function (results, status) {
+                    if (status === 'OK') {
+                        $("#latitude").val(results[0].geometry.location.lat());
+                        $("#longitude").val(results[0].geometry.location.lng());
+                    } else {
+                        alert('Geocode was not successful for the following reason: ' + status);
+                    }
+                });
+            }
+        </script>
+        <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDv5TZ4_il1sukhMFSFChda0UHcL0js0Zg&callback=initMap&libraries=places"></script>
+
+        <script src="js/croppic.min.js"></script>
+        <script>
+            var croppicHeaderOptions = {
+                //uploadUrl:'img_save_to_file.php',
+                cropData: {
+                    "dummyData": 1,
+                    "dummyData2": "asdas"
+                },
+                cropUrl: localStorage.getItem("url_service") + '/rest-api/img_crop_to_file',
+                customUploadButtonId: 'cropContainerHeaderButton',
+                modal: false,
+                processInline: true,
+                loaderHtml: '<div class="loader bubblingG"><span id="bubblingG_1"></span><span id="bubblingG_2"></span><span id="bubblingG_3"></span></div> ',
+                onBeforeImgUpload: function () {
+                    console.log('onBeforeImgUpload')
+                },
+                onAfterImgUpload: function () {
+                    console.log('onAfterImgUpload')
+                },
+                onImgDrag: function () {
+                    console.log('onImgDrag')
+                },
+                onImgZoom: function () {
+                    console.log('onImgZoom')
+                },
+                onBeforeImgCrop: function () {
+                    console.log('onBeforeImgCrop')
+                },
+                onAfterImgCrop: function () {
+                    console.log('onAfterImgCrop')
+                },
+                onReset: function () {
+                    console.log('onReset')
+                },
+                onError: function (errormessage) {
+                    console.log('onError:' + errormessage)
+                }
+            }
+            var croppic = new Croppic('croppic', croppicHeaderOptions);
+
+
+            var croppicContainerModalOptions = {
+                uploadUrl: localStorage.getItem("url_service") + '/rest-api/img_save_to_file',
+                cropUrl: localStorage.getItem("url_service") + '/rest-api/img_crop_to_file',
+                modal: true,
+                imgEyecandyOpacity: 0.4,
+                loaderHtml: '<div class="loader bubblingG"><span id="bubblingG_1"></span><span id="bubblingG_2"></span><span id="bubblingG_3"></span></div> ',
+                onBeforeImgUpload: function () {
+                    console.log('onBeforeImgUpload')
+                },
+                onAfterImgUpload: function () {
+                    console.log('onAfterImgUpload')
+                },
+                onImgDrag: function () {
+                    console.log('onImgDrag')
+                },
+                onImgZoom: function () {
+                    console.log('onImgZoom')
+                },
+                onBeforeImgCrop: function () {
+                    console.log('onBeforeImgCrop')
+                },
+                onAfterImgCrop: function () {
+                    console.log('onAfterImgCrop')
+                },
+                onReset: function () {
+                    console.log('onReset')
+                },
+                onError: function (errormessage) {
+                    console.log('onError:' + errormessage)
+                }
+            }
+            var cropContainerModal = new Croppic('cropContainerModal', croppicContainerModalOptions);
+
+        </script>
+    </body>
+</html>

@@ -1,0 +1,233 @@
+<!DOCTYPE html><html lang="en">    
+    <head>     
+        <title>Payment history</title>  
+        <meta charset="utf-8">     
+        <meta name="theme-color" content="#033c56" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">  
+        <link rel="stylesheet" href="css/bootstrap.min.css">       
+        <link rel="stylesheet" href="css/font-awesome.min.css">      
+        <link rel="stylesheet" href="css/jquery.mobile-1.4.5.min.css">   
+        <!-- Bootstrap Datepicker CSS -->
+        <link href="css/daterangepicker.css" rel="stylesheet">
+        <link rel="stylesheet" href="css/style.css">     
+        <link rel="stylesheet" href="css/respnsive.css">     
+        <link rel="stylesheet" href="css/toastr.css">    
+        <script src="js/jquery.min.js"></script>     
+        <script src="js/bootstrap.min.js"></script>      
+        <script src="js/toastr.js"></script> 
+        <!-- Date range picker -->
+        <script type="text/javascript" src="js/moment.min.js"></script>
+        <script type="text/javascript" src="js/daterangepicker.js"></script>
+        <script src="js/custom.js"></script> 
+        <style>
+            .table{font-size: 12px;}
+        </style>
+        <script type="text/javascript">
+            // date range picker
+            $(function () {
+
+                var start = moment().startOf('month');
+                var end = moment().endOf('month');
+
+                $('.daterange').daterangepicker({
+                    startDate: start,
+                    endDate: end,
+                    opens: "left",
+                    ranges: {
+                        'Today': [moment(), moment()],
+                        'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                        'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                        'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                        'This Month': [moment().startOf('month'), moment().endOf('month')],
+                        'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                    }
+                }, cb);
+                cb(start, end);
+            });
+            function cb(start, end) {
+                $('.daterange span').html(start.format('MMM D, YYYY') + ' - ' + end.format('MMM D, YYYY'));
+                $('.daterange input').val(start.format('YYYY-MM-DD') + ',' + end.format('YYYY-MM-DD'));
+                get_payment();
+            }
+
+            $(function () {
+
+                var start = moment().startOf('month');
+                var end = moment().endOf('month');
+
+                $('.daterange2').daterangepicker({
+                    startDate: start,
+                    endDate: end,
+                    opens: "left",
+                    ranges: {
+                        'Today': [moment(), moment()],
+                        'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                        'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                        'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                        'This Month': [moment().startOf('month'), moment().endOf('month')],
+                        'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                    }
+                }, cbd);
+                cbd(start, end);
+            });
+            function cbd(start, end) {
+                $('.daterange2 span').html(start.format('MMM D, YYYY') + ' - ' + end.format('MMM D, YYYY'));
+                $('.daterange2 input').val(start.format('YYYY-MM-DD') + ',' + end.format('YYYY-MM-DD'));
+                get_outgoing();
+            }
+        </script>
+    </head>  
+    <body  onload="myFunction()" style="margin:0;">   
+        <!--Loader-->         
+        <div id="loader-bg" class="loader-bg"></div>    
+        <div id="loader"></div>      
+        <section class="back-button-section">     
+            <div class="container">            
+                <div class="row">                
+                    <div class="col-xs-12">           
+                        <div class="back-button">     
+                            <a href="more-option.html"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>  
+                            Payment history         
+                        </div>               
+                    </div>            
+                </div>        
+            </div>     
+        </section>   
+        <section class="payment-history-content">         
+            <div class="container-fluid">             
+                <div class="row">               
+                    <div class="col-xs-12 no-padding">          
+                        <div>                       
+                            <!-- Nav tabs -->            
+                            <div class="form-group text-center" style="margin-top: 15px;">    
+                                <div class="btn-group" id="status" data-toggle="buttons" style="margin-top: 5px;">  
+                                    <label class="btn btn-default btn-on btn-sm active on-btn" style="width: 130px; font-size: 14px;"><input value="1" name="" checked="checked" type="radio">Earned</label>    
+                                    <label class="btn btn-default btn-off btn-sm off-btn" style="width: 130px; font-size: 14px;"><input value="0" name="" type="radio">Outgoing</label>    
+                                </div>                      
+                            </div>                    
+                            <!-- Tab panes -->          
+                            <div class="first-hide">             
+                                <ul class="earned">               
+                                    <li><i class="fa fa-calendar-o" aria-hidden="true"></i></li>   
+                                    <li>Showing</li>                             
+                                    <li>    
+                                        <div class="daterange bt-date-field">
+                                            <span id="dateData"></span> <b class="caret"></b>
+                                            <input type="hidden" value="" name="date_range" id="dateRange">
+                                        </div>
+                                    </li>                             
+                                </ul>
+                                <div class="history-list">
+                                    <table class="table" style="margin-top: 20px">
+                                        <thead>
+                                            <tr>
+                                                <th width="25%">DATE</th>
+                                                <th width="55%">TASK TITLE</th>
+                                                <th width="20%" class="text-right">AMOUNT</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="paynemt_list">
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>                      
+                            <div class="second-hide">       
+                                <ul class="earned">                 
+                                    <li><i class="fa fa-calendar-o" aria-hidden="true"></i></li>        
+                                    <li>Showing</li>                              
+                                    <li>                                     
+                                        <div class="daterange2 bt-date-field">
+                                            <span></span> <b class="caret"></b>
+                                            <input type="hidden" value="" name="date_range" >
+                                        </div>                        
+                                    </li>                    
+                                </ul> 
+                                <div class="history-list">
+                                    <table class="table" style="margin-top: 20px">
+                                        <thead>
+                                            <tr>
+                                                <th width="25%">DATE</th>
+                                                <th width="55%">TASK TITLE</th>
+                                                <th width="55%">Type</th>
+                                                <th width="20%" class="text-right">AMOUNT</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="outgoing_list">
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>                  
+                        </div>            
+                    </div>             
+                </div>         
+            </div>    
+        </section>   
+        <script>
+            function get_payment() {
+                $.ajax({
+                    type: "POST",
+                    url: localStorage.getItem("url_service") + '/rest-api/server',
+                    data: {
+                        cmd: "earned_history",
+                        date_range: $('.daterange input').val(),
+                        users_id: localStorage.getItem("users_id")
+
+                    },
+                    success: function (results) {
+                        Arr = JSON.parse(results);
+                        all_history = '';
+                        if (Arr.length > 0) {
+                            for (i = 0; i < Arr.length; i++)
+                            {
+                                str = '<tr>' +
+                                        '<td>' + Arr[i].date + '</td>' +
+                                        '<td>' + Arr[i].task_title + '</td>' +
+                                        '<td class = "text-right">$' + Arr[i].credit + '</td>' +
+                                        '</tr>';
+                                all_history = all_history.concat(str);
+                                $("#paynemt_list").html(all_history);
+                            }
+                        } else {
+                            $("#paynemt_list").html('');
+                        }
+                    }
+                });
+            }
+
+            function get_outgoing() {
+                $.ajax({
+                    type: "POST",
+                    url: localStorage.getItem("url_service") + '/rest-api/server',
+                    data: {
+                        cmd: "outgoing_history",
+                        date_range: $('.daterange2 input').val(),
+                        users_id: localStorage.getItem("users_id")
+
+                    },
+                    success: function (results) {
+                        Arr = JSON.parse(results);
+                        all_history = '';
+                        if (Arr.length > 0) {
+                            for (i = 0; i < Arr.length; i++)
+                            {
+                                str = '<tr>' +
+                                        '<td>' + Arr[i].date + '</td>' +
+                                        '<td>' + Arr[i].task_title + '</td>' +
+                                        '<td>' + Arr[i].type + '</td>' +
+                                        '<td class = "text-right">$' + Arr[i].credit + '</td>' +
+                                        '</tr>';
+                                all_history = all_history.concat(str);
+                                $("#outgoing_list").html(all_history);
+                            }
+                        } else {
+                            $("#outgoing_list").html('');
+                        }
+                    }
+                });
+            }
+
+        </script>
+    </body>
+</html>

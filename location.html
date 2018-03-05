@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Locations</title>
+        <meta charset="utf-8">
+        <meta name="theme-color" content="#033c56" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/font-awesome.min.css">
+        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="css/respnsive.css">
+        <link rel="stylesheet" href="css/toastr.css">
+
+        <script src="js/jquery.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/toastr.js"></script>
+        <script src="js/cookie.js"></script>
+        <style>
+            .collection{
+                margin: 0;
+                padding: 0;
+            }
+            .collection li{
+                list-style: none;
+                line-height: 25px
+            }
+        </style>
+    </head>
+    <body  onload="myFunction()" style="margin:0;">
+        <!--Loader-->    
+        <div id="loader-bg" class="loader-bg"></div>
+        <div id="loader"></div>
+
+        <section class="back-button-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="back-button">
+                            Browse tasks
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="filter-bar">
+            <ul id="topBarArea">
+                <li class="all-taks-list-area serch-hide">
+                    <div class="text-left arrow2">
+                        <button type="button" data-toggle="modal" data-target="#myModal" style="margin-top: 12px;"><i class="fa fa-sort" aria-hidden="true"></i> Browse by category</button>
+                    </div>
+                </li>
+                <li class="other-area serch-show serch-hide">
+                    <div id="navbar-search">
+                        <a href="#" style="line-height: 15px;"><i class="fa fa-search" aria-hidden="true" style="margin-bottom: 5px;"></i><span style="font-size: 12px; display: block;">Keyword</span></a>
+                    </div>
+                </li>
+                <li class="other-area serch-hide"><a href="location.html" style="line-height: 15px;"><i class="fa fa-map-marker" aria-hidden="true"></i><span style="font-size: 12px;display: block;">On a map</span></a></li>
+                <li class="other-area serch-hide"><a href="filter.html" style="line-height: 15px;"><i class="fa fa-cog" aria-hidden="true" style="margin-bottom: 7px;"></i><span style="font-size: 12px;display: block;">Filter</span></a></li>
+            </ul>
+            <div class="input-group" id="navbar-searchbarss" style="display: none">
+                <div id="imaginary_container" style="padding: 0 5px; float: left; width: 100%;"> 
+                    <div class="input-group stylish-input-group" style="width: 60%;float: left;">
+                        <input type="text" name="search_key" id="search_key" class="form-control"  placeholder="Search"  onkeyup="searchData()">
+                        <span class="input-group-addon">
+                            <i class="fa fa-search" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <a href="" class="text-left" id="cancel-search">Cancel</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="tasks-area">
+            <h4 style="margin: 0">Tasks near <span id="location"></span> - 
+                <div class="dropdown">
+                    <button class="btn" id="menu1" type="button" data-toggle="dropdown">50 miles
+                        <span class="caret"></span></button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="#" onclick="load_distance(5);" >5 miles</a></li>
+                        <li><a href="#" onclick="load_distance(15);" >15 miles</a></li>
+                        <li><a href="#" onclick="load_distance(30);" >30 miles</a></li>
+                        <li><a href="#" onclick="load_distance(50);" >50 miles</a></li>
+                        <li><a href="#" onclick="load_distance(99999);" >All</a></li>    
+                    </ul>
+                </div>
+            </h4>
+            <!--<img style="width: 100%;" src="images/location.jpg"/>-->
+            <div id="map_canvas"  style="width:100%;height:800px;"></div>
+            <input type="text" name="latitude" id="latitude">
+            <input type="text" name="longitude" id="longitude">          
+        </section>
+        <section class="footer-menu-area">
+            <ul class="footer-menu text-center">
+                <li>
+                    <a href="task-post.html?parent_id=0">
+                        <span><i class="fa fa-plus-square-o" aria-hidden="true"></i></span>
+                        Post a task
+                    </a>
+                </li>
+                <li>
+                    <a href="my-task.html">
+                        <span><i class="fa fa-bookmark-o" aria-hidden="true"></i></span>
+                        My tasks
+                    </a>
+                </li>
+                <li class="active">
+                    <a href="all-task.html">
+                        <span><i class="fa fa-search" aria-hidden="true"></i></span>
+                        Browse
+                    </a>
+                </li>
+                <li>
+                    <a href="message.html">
+                        <span class="unread-msg" style="display: none">0</span>
+                        <span><i class="fa fa-comments-o" aria-hidden="true"></i></span>
+                        Message
+                    </a>
+                </li>
+                <li>
+                    <a href="more-option.html">
+                        <span><i class="fa fa-ellipsis-h" aria-hidden="true"></i></span>
+                        More
+                    </a>
+                </li>
+            </ul>
+        </section>
+
+        <!-- Modal -->
+        <div id="myModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <ul class="task-type">
+                            <li><a href="">All Task</a></li>
+                            <li><a href="">Open Task</a></li>
+                            <li><a href="">Online Task</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <input type="hidden" value="50" id="dist">
+        <div class="margin_b_30"></div>
+        <script src="js/custom.js"></script>
+        <script language="javascript">
+            $.ajax({
+                type: "POST",
+                url: localStorage.getItem("url_service") + '/rest-api/server',
+                data: {
+                    cmd: "unread_msg",
+                    users_id: localStorage.getItem("users_id")
+                },
+                success: function (results) {
+                    if (results > 0) {
+                        $(".unread-msg").show();
+                        $(".unread-msg").html(results);
+                    }
+                }
+            });
+                            $(document).ready(function () {
+                                $("#location").html(localStorage.getItem("location"));
+                            });
+
+                            function load_data()
+                            {
+
+                                $.ajax({
+                                    type: "GET",
+                                    url: localStorage.getItem("url_service") + '/rest-api/server',
+                                    data: {
+                                        cmd: "search",
+                                        /*search_key  : $("#search_key").val(), */
+                                        distance: $("#dist").val(),
+                                        latitude: $("#latitude").val(),
+                                        longitude: $("#longitude").val()
+                                    },
+                                    dataType: 'json',
+                                    success: function (data) {
+
+                                        var obj = eval(data);
+                                        html = "";
+
+                                        for (var i = 0; i < obj.length; i++)
+                                        {
+
+                                            lat = $("#latitude").val();
+                                            lng = $("#longitude").val();
+                                            lat2 = parseFloat(obj[i].latitude);
+                                            lng2 = parseFloat(obj[i].longitude);
+                                            dist = distance(lat, lng, lat2, lng2).toFixed(2);
+
+                                            //html = html + card;
+                                            add_marker(obj[i]);
+
+                                        }
+                                    }
+                                });
+                            }
+
+                            function add_marker(obj)
+                            {
+
+                                lat2 = parseFloat(obj.latitude);
+                                lng2 = parseFloat(obj.longitude);
+
+
+                                myLatLng = {'lat': lat2, 'lng': lng2};
+                                var marker = null;
+                                var pinImage = {
+                                    url: localStorage.getItem("url_service") + '/images/marker1.png', // url
+                                    scaledSize: new google.maps.Size(32, 32), // scaled size
+                                    origin: new google.maps.Point(0, 0), // origin
+                                    anchor: new google.maps.Point(0, 0) // anchor
+                                };
+                                marker = new google.maps.Marker({
+                                    position: myLatLng,
+                                    map: map,
+                                    icon: pinImage,
+                                    title: obj.company_name
+                                });
+
+
+                                //markersArray.push(marker);  								 
+                                dist = distance(lat, lng, lat2, lng2).toFixed(2);
+
+
+                                if (obj.file_picture != null && obj.file_picture.length > 0)
+                                {
+                                    picture = localStorage.getItem("url_service") + '/' + obj.file_picture;
+                                } else
+                                {
+                                    picture = localStorage.getItem("url_service") + '/images/no_image.jpg';
+
+                                }
+
+                                content = '<div class="card">' +
+                                        '<ul class="collection">' +
+                                        '<li class="collection-item" style="font-size: 14px;"><img src="' + picture + '" class="circle responsive-img" style="width:50px;height:50px;margin-right: 10px;">' +
+                                        '' + obj.first_name + ' ' + obj.last_name + ' </li>' +
+                                        '<li class="collection-item" style="font-size: 17px;padding: 5px 0 0; color:#054a6a;font-weight: 400;">Job title : ' + obj.task_title + '</li>' +
+                                        '<li class="collection-item">Distance:' + dist + 'miles</li><li class="collection-item">Location : ' + obj.task_location + '</li>' +
+                                        '<li class="collection-item">Description:' + obj.description + '</li><li class="collection-item">Estimated cost : ' + obj.budget + '</li>' +
+                                        '<li class="collection-item">Status : ' + obj.status +
+                                        '<li class="collection-item"><a href="make-offer.html?task_id=' + obj.id + '" class="earn-btn text-center" style="width:120px">Make an Offer</a></li></ul></div>';
+
+
+
+                                var infowindow = null;
+                                // now inside your initialise function /
+                                infowindow = new google.maps.InfoWindow({
+                                    content: content
+                                });
+
+
+                                google.maps.event.addListener(marker, 'click', function () {
+                                    // where I have added .html to the marker object.
+                                    infowindow.setContent(infowindow.content);
+                                    infowindow.open(map, this);
+                                });
+
+                                markersArray.push(marker);
+                                //map.setCenter(myLatLng);
+                            }
+
+                            function searchData() {
+
+                                $.ajax({
+                                    type: "GET",
+                                    url: localStorage.getItem("url_service") + '/rest-api/server',
+                                    data: {
+                                        cmd: "search",
+                                        search_key: $("#search_key").val(),
+                                        distance: $("#dist").val(),
+                                        latitude: $("#latitude").val(),
+                                        longitude: $("#longitude").val()
+                                    },
+                                    dataType: 'json',
+                                    success: function (data) {
+
+                                        var obj = eval(data);
+                                        html = "";
+
+                                        lat2 = parseFloat(obj[0].latitude);
+                                        lng2 = parseFloat(obj[0].longitude);
+
+                                        var latlng = new google.maps.LatLng(lat2, lng2);
+                                        var myOptions = {
+                                            zoom: 12,
+                                            center: latlng,
+                                            mapTypeId: google.maps.MapTypeId.ROADMAP
+                                        }
+                                        map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+                                        load_data();
+                                    }
+                                });
+                            }
+
+                            ////////////////////////////////////////////////
+
+//////                      ///distance/////////////
+                            function distance(lat1, lon1, lat2, lon2) {
+                                var p = 0.017453292519943295;    // Math.PI / 180
+                                var c = Math.cos;
+                                var a = 0.5 - c((lat2 - lat1) * p) / 2 + c(lat1 * p) * c(lat2 * p) * (1 - c((lon2 - lon1) * p)) / 2;
+                                return 12742 * Math.asin(Math.sqrt(a)); // 2 * R; R = 6371 mi
+                            }
+        </script>
+
+
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCmddm-p2QquB0oBaVVGLGVUF6kJwuBhGs&callback=initialize">
+        </script>
+        <!--Google Map-->									                       
+        <script type="text/javascript">
+
+            var geocoder;
+            var map;
+            //clear
+            var markersArray = [];
+            function clearOverlays() {
+                for (var i = 0; i < markersArray.length; i++) {
+                    markersArray[i].setMap(null);
+                }
+            }
+
+            var navigator_geolocation = false;
+            if (readCookie('lat') == null && readCookie('lng') == null)
+            {
+                navigator_geolocation = true;
+                var lat = localStorage.getItem("latitude");
+                var lng = localStorage.getItem("longitude");
+            } else
+            {
+                var lat = readCookie('lat');
+                var lng = readCookie('lng');
+            }
+
+            function initialize() {
+                geocoder = new google.maps.Geocoder();
+                var latlng = new google.maps.LatLng(lat, lng);
+                var myOptions = {
+                    zoom: 12,
+                    center: latlng,
+                    mapTypeId: google.maps.MapTypeId.ROADMAP
+                }
+                map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+
+
+
+                placeMarker(latlng);
+                /*google.maps.event.addListener(map, 'click', function (event) {
+                 placeMarker(event.latLng);
+                 });*/
+
+
+
+                if (navigator_geolocation == true)
+                {
+
+                    // Try HTML5 geolocation.
+                    if (navigator.geolocation) {
+                        navigator.geolocation.getCurrentPosition(function (position) {
+                            var pos = {
+                                lat: position.coords.latitude,
+                                lng: position.coords.longitude
+                            };
+                            //clear
+                            clearOverlays();
+
+                            $("#latitude").val(pos.lat);
+                            $("#longitude").val(pos.lng);
+
+                            var marker = new google.maps.Marker({
+                                map: map,
+                                position: pos,
+                                label: {
+                                    text: 'I',
+                                    color: '#FF0000'
+                                },
+                                icon: localStorage.getItem("url_service") + '/images/man-icon-md.png',
+                            });
+                            markersArray.push(marker);
+                            placeMarker(new google.maps.LatLng(pos.lat, pos.lng));
+                            map.setCenter(pos);
+
+                        }, function () {
+                            handleLocationError(true, infoWindow, map.getCenter());
+                        });
+                    } else {
+                        // Browser doesn't support Geolocation
+                        handleLocationError(false, infoWindow, map.getCenter());
+                    }
+
+                }//end of cookiee check
+                else
+                {
+                    navigator_geolocation = false;
+                }
+                ////////Load data after map initialize
+
+                load_data();
+            }
+
+
+            function codeAddress() {
+                //clear
+                clearOverlays();
+
+                var address = $("#location").val();
+                geocoder.geocode({'address': address}, function (results, status) {
+
+                    if (status == google.maps.GeocoderStatus.OK) {
+                        map.setCenter(results[0].geometry.location);
+                        var marker = new google.maps.Marker({
+                            map: map,
+                            position: results[0].geometry.location
+                        });
+                        //store
+                        markersArray.push(marker);
+
+                        lat = marker.position.lat();
+                        lng = marker.position.lng();
+                        $("#latitude").val(lat);
+                        $("#longitude").val(lng);
+
+                        var latlng = new google.maps.LatLng(lat, lng);
+                        placeMarker(latlng);
+
+                    } else {
+                        //alert("Geocode was not successful for the following reason: " + status);
+                    }
+                });
+            }
+
+            function placeMarker(location) {
+                //clear
+                clearOverlays();
+
+                //$("#address").val("");
+
+                lat = location.lat();
+                lng = location.lng();
+                $("#latitude").val(lat);
+                $("#longitude").val(lng);
+                var marker = new google.maps.Marker({
+                    map: map,
+                    position: location,
+                    draggable: true,
+                    label: {
+                        text: 'I',
+                        color: '#FF0000'
+                    },
+                    icon: localStorage.getItem("url_service") + '/images/man-icon-md.png',
+                });
+                //store
+                markersArray.push(marker);
+                map.setCenter(location);
+
+                /* eraseCookie('lat');
+                 eraseCookie('lng');
+                 
+                 createCookie('lat',lat);
+                 createCookie('lng',lng);*/
+
+
+            }
+
+            function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+                infoWindow.setPosition(pos);
+                infoWindow.setContent(browserHasGeolocation ?
+                        'Error: The Geolocation service failed.' :
+                        'Error: Your browser doesn\'t support geolocation.');
+            }
+
+
+            google.maps.event.addDomListener(window, 'load', initialize);
+
+
+            //form dropdown for area distance select
+            $(function () {
+                $(".dropdown-menu li a").click(function () {
+                    $(".btn:first-child").text($(this).text());
+                    $(".btn:first-child").html($(this).text() + ' <span class="caret"></span>');
+                });
+            });
+
+            function load_distance(dist) {
+                $("#dist").val(dist);
+                initialize();
+            }
+
+        </script> 
+    </body>
+</html>
+
